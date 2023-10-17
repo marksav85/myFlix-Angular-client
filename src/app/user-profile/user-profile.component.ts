@@ -79,7 +79,7 @@ export class UserProfileComponent implements OnInit {
   // deletes user
 
   deleteUser(): void {
-    if (confirm('are you sure?')) {
+    if (confirm('Are you sure?')) {
       this.router.navigate(['welcome']).then(() => {
         this.snackBar.open(
           'Account deleted successfully',
