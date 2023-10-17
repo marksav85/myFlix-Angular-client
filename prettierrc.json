@@ -1,0 +1,22 @@
+{
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 120,
+    "htmlWhitespaceSensitivity": "ignore",
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ],
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    }
+  }
+  
