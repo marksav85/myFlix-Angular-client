@@ -36,12 +36,15 @@ ngOnInit(): void {
 
 // This is the function responsible for sending the form inputs to the backend
 loginUser(): void {
-    this.fetchApiData.userLogin(this.userData).subscribe((result) => {
+    this.fetchApiData.userLogin(this.userData).subscribe((data) => {
   // Logic for a successful user login goes here!
-    localStorage.setItem('user', result.user.Username);
-    localStorage.setItem('token', result.token);
+      localStorage.setItem("user", JSON.stringify(data.user))
+      localStorage.setItem("token", data.token);
+      localStorage.setItem('Username', data.user.Username)
+    /* localStorage.setItem('user', result.user.Username);
+    localStorage.setItem('token', result.token); */
      this.dialogRef.close(); // This will close the modal on success!
-     this.snackBar.open(result, 'OK', {
+     this.snackBar.open(data, 'OK', {
         duration: 2000
      });
      this.router.navigate(['movies']);
