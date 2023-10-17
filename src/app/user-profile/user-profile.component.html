@@ -1,1 +1,108 @@
-<p>user-profile works!</p>
+<app-navigation-bar></app-navigation-bar>
+
+<!-- <div class="favorite-movies">
+      <h2>Favorite Movies</h2>
+      <ul>
+        <li *ngFor="let movie of favoriteMovies">{{ movie }}</li>
+      </ul>
+    </div>
+  </div> -->
+
+<div class="profile-container">
+  <div class="user-info-container">
+    <div class="info">
+      <h1>Profile</h1>
+      <p><strong>Username: </strong>{{ user.Username }}</p>
+      <p><strong>Email: </strong>{{ user.Email }}</p>
+
+      <!-- <h2>favorite movies</h2>
+            <div *ngIf="favoriteMovies.length === 0">
+                <p>your list is empty</p>
+            </div> -->
+    </div>
+    <!-- <mat-list>
+            <mat-list-item *ngFor="let movie of favoriteMovies">
+                <img matListItemAvatar src="{{movie.ImagePath}}" />
+                <span matListItemTitle>{{movie.Title}}</span>
+            </mat-list-item>
+        </mat-list> -->
+  </div>
+
+  <div *ngIf="editMode">
+    <form #form="ngForm" (submit)="editUser(form)">
+      <h2>Update Profile</h2>
+
+      <br />
+
+      <mat-form-field>
+        <mat-label> Username </mat-label>
+        <input
+          matInput
+          [(ngModel)]="userData.Username"
+          type="text"
+          name="Username"
+          required
+          minlength="3"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [(ngModel)]="userData.Password"
+          type="password"
+          placeholder="Password"
+          name="Password"
+          required
+          minlength="6"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          [(ngModel)]="userData.Email"
+          type="email"
+          name="Email"
+          required
+          email
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Birthday</mat-label>
+        <input
+          matInput
+          [(ngModel)]="userData.Birthday"
+          type="date"
+          name="Birthday"
+          required
+        />
+      </mat-form-field>
+
+      <br />
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="form.invalid"
+      >
+        Save
+      </button>
+
+      <!-- <button mat-button color="warn" (click)="deleteUser()">
+            delete account
+        </button> -->
+    </form>
+  </div>
+  <button
+    *ngIf="!editMode"
+    mat-raised-button
+    color="primary"
+    (click)="toggleEditMode()"
+  >
+    Edit Profile
+  </button>
+</div>
