@@ -96,13 +96,19 @@ export class UserRegistrationService {
   // Making the api call to get favourite movies for a user
   getFavoriteMovies(): Observable<any> {
     const token = localStorage.getItem('token');
+    const username = localStorage.getItem('Username');
+    console.log(apiUrl + 'users/' + username);
     return this.http
-      .get(apiUrl + 'users/:Username/movies', {
+      .get(apiUrl + 'users/' + username, {
         headers: new HttpHeaders({
           Authorization: 'Bearer ' + token,
         }),
       })
-      .pipe(map(this.extractResponseData), catchError(this.handleError));
+      .pipe(
+        map(this.extractResponseData),
+        map((data) => data.FavoriteMovies),
+        catchError(this.handleError)
+      );
   }
 
   // Making the api call for the add favorite endpoint
@@ -146,10 +152,11 @@ export class UserRegistrationService {
   }
 
   // Making the api call for the delete favorite endpoint
-  deleteFavorite(): Observable<any> {
+  deleteFavoriteMovie(username: string, MovieID: string): Observable<any> {
     const token = localStorage.getItem('token');
+    console.log(apiUrl + 'users/' + username + '/movies/' + MovieID);
     return this.http
-      .delete(apiUrl + 'users/:Username/movies/:MovieID', {
+      .delete(apiUrl + 'users/' + username + '/movies/' + MovieID, {
         headers: new HttpHeaders({
           Authorization: 'Bearer ' + token,
         }),
