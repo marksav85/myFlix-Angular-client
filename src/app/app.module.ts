@@ -26,7 +26,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 
 // navigation bar
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 const appRoutes: Routes = [
   { path: 'welcome', component: WelcomePageComponent },
@@ -43,7 +43,7 @@ const appRoutes: Routes = [
     MovieCardComponent,
     WelcomePageComponent,
     UserProfileComponent,
-    NavigationBarComponent
+    NavigationBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,10 +59,9 @@ const appRoutes: Routes = [
     MatIconModule,
     FormsModule,
     RouterModule.forRoot(appRoutes),
-    MatToolbarModule
-
+    MatToolbarModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
