@@ -1,5 +1,6 @@
 <app-navigation-bar></app-navigation-bar>
 <!-- src/app/movie-card/movie-card.component.html -->
+
 <div style="display: flex">
   <mat-card *ngFor="let movie of movies" style="flex: 1 1 auto">
     <mat-card-header>
@@ -13,8 +14,23 @@
       <button mat-button color="primary">Genre</button>
       <button mat-button color="primary">Director</button>
       <button mat-button color="primary">Synopsis</button>
-      <button mat-button color="primary" (click)="addFavorite(movie._id)">
+      <!-- if movie not in isFavorite list, displays favorite_border icon and button adds movie to favorites list -->
+      <button
+        *ngIf="!isFavorite(movie._id)"
+        mat-icon-button
+        color="primary"
+        (click)="addFavorite(movie._id)"
+      >
         <mat-icon>favorite_border</mat-icon>
+      </button>
+      <!-- if movie is in isFavorite list, displays favorite icon and button removes movie from favorites list -->
+      <button
+        *ngIf="isFavorite(movie._id)"
+        mat-button
+        color="primary"
+        (click)="deleteFavorite(movie._id)"
+      >
+        <mat-icon>favorite</mat-icon>
       </button>
     </mat-card-actions>
   </mat-card>
