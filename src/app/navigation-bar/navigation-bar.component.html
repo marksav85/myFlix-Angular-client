@@ -1,19 +1,11 @@
 <mat-toolbar color="primary">
+  <button mat-raised-button color="accent" [routerLink]="['/movies']">
     <span>myFlix</span>
-    <span class="spacer"></span>
-    <button
-          mat-raised-button
-          (click)="toProfile()"
-          color="accent"
-        >
-          Profile
-        </button>
-      <button
-      mat-raised-button
-      (click)="toLogout()"
-      color="accent"
-    >
-      Logout
-    </button>
-  </mat-toolbar>
-  
+  </button>
+
+  <span class="spacer"></span>
+  <button mat-raised-button color="accent" [routerLink]="['/profile']">
+    Profile
+  </button>
+  <button mat-raised-button (click)="toLogout()" color="accent">Logout</button>
+</mat-toolbar>
