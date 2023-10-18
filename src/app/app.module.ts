@@ -27,6 +27,7 @@ import { NavigationBarComponent } from './navigation-bar/navigation-bar.componen
 
 // navigation bar
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MovieDetailsComponent } from './movie-details/movie-details.component';
 
 const appRoutes: Routes = [
   { path: 'welcome', component: WelcomePageComponent },
@@ -44,6 +45,7 @@ const appRoutes: Routes = [
     WelcomePageComponent,
     UserProfileComponent,
     NavigationBarComponent,
+    MovieDetailsComponent,
   ],
   imports: [
     BrowserModule,

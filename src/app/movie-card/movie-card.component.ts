@@ -2,6 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserRegistrationService } from '../fetch-api-data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { MovieDetailsComponent } from '../movie-details/movie-details.component';
 
 @Component({
   selector: 'app-movie-card',
@@ -17,7 +19,8 @@ export class MovieCardComponent {
 
   constructor(
     public fetchApiData: UserRegistrationService,
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -25,6 +28,7 @@ export class MovieCardComponent {
     this.getFavorite();
   }
 
+  // gets all movies and populates movies array
   getMovies(): void {
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
       this.movies = resp;
@@ -33,6 +37,7 @@ export class MovieCardComponent {
     });
   }
 
+  // gets favourtie movies and populates favorites array
   getFavorite(): void {
     this.fetchApiData.getFavoriteMovies().subscribe((resp: any) => {
       this.favorites = resp;
@@ -112,5 +117,50 @@ export class MovieCardComponent {
     } else {
       console.log('User data (username or token) is missing or undefined');
     }
+  }
+
+  // opens dialog with movie director details
+  openDirectorDialog(name: string, bio: string): void {
+    const dialogRef = this.dialog.open(MovieDetailsComponent, {
+      width: '250px',
+      data: {
+        title: name,
+        content: bio,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('Director dialog was closed');
+    });
+  }
+
+  // opens dialog with movie genre details
+  openGenreDialog(name: string, description: string): void {
+    const dialogRef = this.dialog.open(MovieDetailsComponent, {
+      width: '250px',
+      data: {
+        title: name,
+        content: description,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('Genre dialog was closed');
+    });
+  }
+
+  // opens dialog with movie synopsis details
+  openSynopsisDialog(description: string): void {
+    const dialogRef = this.dialog.open(MovieDetailsComponent, {
+      width: '250px',
+      data: {
+        title: 'Synopsis',
+        content: description,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('Synopsis dialog was closed');
+    });
   }
 }
