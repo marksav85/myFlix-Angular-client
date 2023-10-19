@@ -1,109 +1,119 @@
 <app-navigation-bar></app-navigation-bar>
 
-<div class="profile-container">
-  <div class="user-info-container">
-    <div class="info">
-      <h1>Profile</h1>
-      <p><strong>Username: </strong>{{ user.Username }}</p>
-      <p><strong>Email: </strong>{{ user.Email }}</p>
+<div class="container">
+  <div class="user-info">
+    <div class="profile-container">
+      <div class="profile-info">
+        <h2>Profile Information</h2>
+        <p><strong>Username: </strong>{{ user.Username }}</p>
+        <p><strong>Email: </strong>{{ user.Email }}</p>
+      </div>
+
+      <div class="edit-profile" *ngIf="editMode">
+        <form #form="ngForm" (submit)="editUser(form)">
+          <h2>Update Profile</h2>
+
+          <br />
+
+          <mat-form-field>
+            <mat-label> Username </mat-label>
+            <input
+              matInput
+              [(ngModel)]="userData.Username"
+              type="text"
+              name="Username"
+              required
+              minlength="3"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              [(ngModel)]="userData.Password"
+              type="password"
+              placeholder="Password"
+              name="Password"
+              required
+              minlength="5"
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              [(ngModel)]="userData.Email"
+              type="email"
+              name="Email"
+              required
+              email
+            />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Birthday</mat-label>
+            <input
+              matInput
+              [(ngModel)]="userData.Birthday"
+              type="date"
+              name="Birthday"
+              required
+            />
+          </mat-form-field>
+
+          <br />
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid"
+          >
+            Save
+          </button>
+          <button
+            *ngIf="editMode"
+            mat-raised-button
+            color="primary"
+            (click)="toggleEditMode()"
+          >
+            Cancel
+          </button>
+        </form>
+      </div>
+      <button
+        class="edit-button"
+        *ngIf="!editMode"
+        mat-raised-button
+        color="primary"
+        (click)="toggleEditMode()"
+      >
+        Edit Profile
+      </button>
     </div>
-
-    <div *ngIf="editMode">
-      <form #form="ngForm" (submit)="editUser(form)">
-        <h2>Update Profile</h2>
-
-        <br />
-
-        <mat-form-field>
-          <mat-label> Username </mat-label>
-          <input
-            matInput
-            [(ngModel)]="userData.Username"
-            type="text"
-            name="Username"
-            required
-            minlength="3"
-          />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Password</mat-label>
-          <input
-            matInput
-            [(ngModel)]="userData.Password"
-            type="password"
-            placeholder="Password"
-            name="Password"
-            required
-            minlength="5"
-          />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Email</mat-label>
-          <input
-            matInput
-            [(ngModel)]="userData.Email"
-            type="email"
-            name="Email"
-            required
-            email
-          />
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Birthday</mat-label>
-          <input
-            matInput
-            [(ngModel)]="userData.Birthday"
-            type="date"
-            name="Birthday"
-            required
-          />
-        </mat-form-field>
-
-        <br />
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          [disabled]="form.invalid"
-        >
-          Save
-        </button>
-      </form>
-    </div>
-    <button
-      *ngIf="!editMode"
-      mat-raised-button
-      color="primary"
-      (click)="toggleEditMode()"
-    >
-      Edit Profile
-    </button>
-    <button
-      *ngIf="editMode"
-      mat-raised-button
-      color="primary"
-      (click)="toggleEditMode()"
-    >
-      Cancel
-    </button>
-
-    <div>
+    <div class="delete-profile">
       <h2>Delete Account</h2>
-      <button mat-raised-button color="warn" (click)="deleteUser()">
+      <button
+        class="delete-button"
+        mat-raised-button
+        color="warn"
+        (click)="deleteUser()"
+      >
         Delete
       </button>
     </div>
   </div>
-  <h2>Favourite Movies:</h2>
-  <div style="display: flex">
-    <mat-card *ngFor="let favorite of favorites">
-      <mat-card-header>
-        <mat-card-title>{{ favorite.Title }}</mat-card-title>
-      </mat-card-header>
-      <img src="{{ favorite.ImagePath }}" alt="{{ favorite.Title }}" />
-    </mat-card>
+  <div class="favorites">
+    <h2>Favourite Movies:</h2>
+    <div class="card-container">
+      <mat-card *ngFor="let favorite of favorites">
+        <mat-card-header>
+          <mat-card-title>{{ favorite.Title }}</mat-card-title>
+        </mat-card-header>
+
+        <img src="{{ favorite.ImagePath }}" alt="{{ favorite.Title }}" />
+      </mat-card>
+    </div>
   </div>
 </div>
