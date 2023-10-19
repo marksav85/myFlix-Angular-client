@@ -18,7 +18,6 @@ export class UserRegistrationService {
   constructor(private http: HttpClient) {}
   // Making the api call for the user registration endpoint
   public userRegistration(userDetails: any): Observable<any> {
-    console.log(userDetails);
     return this.http
       .post(apiUrl + 'users', userDetails)
       .pipe(catchError(this.handleError));
@@ -26,7 +25,6 @@ export class UserRegistrationService {
 
   // Making the api call for the user login endpoint
   public userLogin(userDetails: any): Observable<any> {
-    console.log(userDetails);
     return this.http
       .post(apiUrl + 'login', userDetails)
       .pipe(catchError(this.handleError));
@@ -97,7 +95,6 @@ export class UserRegistrationService {
   getFavoriteMovies(): Observable<any> {
     const token = localStorage.getItem('token');
     const username = localStorage.getItem('Username');
-    console.log(apiUrl + 'users/' + username);
     return this.http
       .get(apiUrl + 'users/' + username, {
         headers: new HttpHeaders({
@@ -115,7 +112,6 @@ export class UserRegistrationService {
   addFavoriteMovie(username: string, MovieID: string): Observable<any> {
     const token = localStorage.getItem('token');
     const requestMovie = { movie_id: MovieID };
-    console.log(apiUrl + 'users/' + username + '/movies/' + MovieID);
     return this.http
       .post(apiUrl + 'users/' + username + '/movies/' + MovieID, requestMovie, {
         headers: new HttpHeaders({
@@ -154,7 +150,6 @@ export class UserRegistrationService {
   // Making the api call for the delete favorite endpoint
   deleteFavoriteMovie(username: string, MovieID: string): Observable<any> {
     const token = localStorage.getItem('token');
-    console.log(apiUrl + 'users/' + username + '/movies/' + MovieID);
     return this.http
       .delete(apiUrl + 'users/' + username + '/movies/' + MovieID, {
         headers: new HttpHeaders({
