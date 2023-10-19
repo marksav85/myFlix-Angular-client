@@ -11,10 +11,8 @@ import { MovieDetailsComponent } from '../movie-details/movie-details.component'
   styleUrls: ['./movie-card.component.scss'],
 })
 export class MovieCardComponent {
-  // arrays to hold movie data
+  // arrays to hold movie and favorites data
   movies: any[] = [];
-  directors: any[] = [];
-  genres: any[] = [];
   favorites: any[] = [];
 
   constructor(
@@ -32,7 +30,6 @@ export class MovieCardComponent {
   getMovies(): void {
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
       this.movies = resp;
-      console.log(this.movies);
       return this.movies;
     });
   }
@@ -41,7 +38,6 @@ export class MovieCardComponent {
   getFavorite(): void {
     this.fetchApiData.getFavoriteMovies().subscribe((resp: any) => {
       this.favorites = resp;
-      console.log(this.favorites);
       return this.favorites;
     });
   }
@@ -60,47 +56,31 @@ export class MovieCardComponent {
     const username = localStorage.getItem('Username');
     const token = localStorage.getItem('token');
 
-    console.log(username);
-    console.log(movieId);
-
-    console.log('Adding to favorites:', movieId);
-
     if (username && token) {
       this.fetchApiData.addFavoriteMovie(username, movieId).subscribe(
         (response) => {
-          console.log('Successfully added to favorites:', response);
           this.favorites.push(movieId); // updates favorites array
           this.snackBar.open('Movie added to favorites', 'OK', {
             duration: 2000,
           });
         },
         (error) => {
-          console.error('Failed to add movie to favorites:', error);
           this.snackBar.open('Failed to add movie to favorites', 'OK', {
             duration: 2000,
           });
         }
       );
-    } else {
-      console.log('User data (username or token) is missing or undefined');
     }
   }
 
   // calls deleteFavoriteMovie() to update both DB and favorites array
   deleteFavorite(movieId: string): void {
     const username = localStorage.getItem('Username');
-
     const token = localStorage.getItem('token');
-
-    console.log(username);
-    console.log(movieId);
-
-    console.log('Deleting from favorites:', movieId);
 
     if (username && token) {
       this.fetchApiData.deleteFavoriteMovie(username, movieId).subscribe(
         (response) => {
-          console.log('Successfully deleted from favorites:', response);
           // updates favorites array
           this.favorites = this.favorites.filter((movie) => movie !== movieId);
           this.snackBar.open('Movie deleted from favorites', 'OK', {
@@ -108,14 +88,11 @@ export class MovieCardComponent {
           });
         },
         (error) => {
-          console.error('Failed to delete movie from favorites:', error);
           this.snackBar.open('Failed to delete movie from favorites', 'OK', {
             duration: 2000,
           });
         }
       );
-    } else {
-      console.log('User data (username or token) is missing or undefined');
     }
   }
 
@@ -128,7 +105,6 @@ export class MovieCardComponent {
         content: bio,
       },
     });
-
     dialogRef.afterClosed().subscribe((result) => {
       console.log('Director dialog was closed');
     });
@@ -143,7 +119,6 @@ export class MovieCardComponent {
         content: description,
       },
     });
-
     dialogRef.afterClosed().subscribe((result) => {
       console.log('Genre dialog was closed');
     });
@@ -158,7 +133,6 @@ export class MovieCardComponent {
         content: description,
       },
     });
-
     dialogRef.afterClosed().subscribe((result) => {
       console.log('Synopsis dialog was closed');
     });
