@@ -25,7 +25,6 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUser();
-    this.getFavorites();
   }
 
   // toggles edit mode
@@ -41,10 +40,6 @@ export class UserProfileComponent implements OnInit {
       this.userData.Email = this.user.Email;
       this.userData.Birthday = this.user.Birthday;
     });
-  }
-
-  // fetches the user's favorite movies
-  getFavorites(): void {
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
       const movies = resp;
       movies.forEach((movie: any) => {
