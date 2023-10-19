@@ -99,7 +99,6 @@ export class MovieCardComponent {
   // opens dialog with movie director details
   openDirectorDialog(name: string, bio: string): void {
     const dialogRef = this.dialog.open(MovieDetailsComponent, {
-      width: '250px',
       data: {
         title: name,
         content: bio,
@@ -113,7 +112,6 @@ export class MovieCardComponent {
   // opens dialog with movie genre details
   openGenreDialog(name: string, description: string): void {
     const dialogRef = this.dialog.open(MovieDetailsComponent, {
-      width: '250px',
       data: {
         title: name,
         content: description,
@@ -127,7 +125,6 @@ export class MovieCardComponent {
   // opens dialog with movie synopsis details
   openSynopsisDialog(description: string): void {
     const dialogRef = this.dialog.open(MovieDetailsComponent, {
-      width: '250px',
       data: {
         title: 'Synopsis',
         content: description,
