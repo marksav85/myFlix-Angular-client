@@ -27,7 +27,7 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUser();
-    /* this.getFavorite(); */
+    this.getFavorites();
   }
 
   // toggles edit mode
@@ -36,55 +36,56 @@ export class UserProfileComponent implements OnInit {
   }
 
   // displays the user's info
-
   getUser(): void {
     this.fetchApiData.getUser().subscribe((response: any) => {
-      console.log(response);
       this.user = response;
       this.userData.Username = this.user.Username;
       this.userData.Email = this.user.Email;
-      this.userData.Birthday =
-        this.user.Birthday; /* formatDate(this.user.Birthday, 'yyyy-MM-dd', 'en-US', 'UTC+0'); */
+      this.userData.Birthday = this.user.Birthday;
+    });
+  }
 
-      this.fetchApiData.getAllMovies().subscribe((resp: any) => {
-        const movies = resp;
-        movies.forEach((movie: any) => {
-          if (this.user.FavoriteMovies.includes(movie._id)) {
-            this.favorites.push(movie);
-          }
-        });
+  // fetches the user's favorite movies
+  getFavorites(): void {
+    this.fetchApiData.getAllMovies().subscribe((resp: any) => {
+      const movies = resp;
+      movies.forEach((movie: any) => {
+        if (this.user.FavoriteMovies.includes(movie._id)) {
+          this.favorites.push(movie);
+        }
       });
     });
   }
 
   // updates user info
-
   editUser(form: any): void {
     // form validation logic
     if (form.valid) {
       console.log('Form submitted successfully:', form.value);
       this.fetchApiData.editUser(this.userData).subscribe(
-        (data) => {
-          localStorage.setItem('user', JSON.stringify(data));
-          localStorage.setItem('Username', data.Username);
-          console.log(data);
-          console.log(this.userData);
+        (result) => {
+          localStorage.setItem('user', JSON.stringify(result));
+          localStorage.setItem('Username', result.Username);
           this.snackBar.open('User has been updated', 'OK', {
             duration: 2000,
           });
-          window.location.reload();
+          // refreshes user info
+          this.getUser();
         },
-        (result) => {
-          this.snackBar.open(result, 'OK', {
-            duration: 2000,
-          });
+        (error) => {
+          this.snackBar.open(
+            'User could not be updated. Please try again',
+            'OK',
+            {
+              duration: 2000,
+            }
+          );
         }
       );
     }
   }
 
-  // deletes user
-
+  // deletes user account
   deleteUser(): void {
     if (confirm('Are you sure?')) {
       this.router.navigate(['welcome']).then(() => {
@@ -98,12 +99,4 @@ export class UserProfileComponent implements OnInit {
       });
     }
   }
-
-  /* getFavorite(): void {
-    this.fetchApiData.getFavoriteMovies().subscribe((resp: any) => {
-      this.favorites = resp;
-      console.log(this.favorites);
-      return this.favorites;
-    });
-  } */
 }
