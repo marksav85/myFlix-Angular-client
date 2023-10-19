@@ -1,0 +1,16 @@
+mat-card-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5vh;
+  background-color: #0f40a9;
+  color: #ffaa09;
+  border-radius: 5px;
+  padding: 2px;
+  margin-bottom: 10px;
+}
+
+mat-card-title {
+  font-size: 3vh;
+  padding: 5px;
+}

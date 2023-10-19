@@ -21,3 +21,17 @@ mat-toolbar {
 button {
   margin: 10px;
 }
+
+@media screen and (max-width: 500px) {
+  mat-toolbar {
+    padding: 5px;
+  }
+
+  .navbar-brand {
+    font-size: 2rem;
+  }
+
+  button {
+    margin: 5px;
+  }
+}
