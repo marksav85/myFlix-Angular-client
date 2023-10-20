@@ -4,6 +4,13 @@ mat-toolbar {
   height: 15vh;
 }
 
+.navbar-image {
+  height: 10vh;
+  width: auto;
+  margin: 0 10px;
+  display: none;
+}
+
 .navbar-brand {
   font-size: 3rem;
   font-weight: bold;
@@ -27,8 +34,16 @@ button {
     padding: 5px;
   }
 
+  .navbar-image {
+    display: flex;
+    height: 10vh;
+    width: auto;
+    margin: 0 5px;
+  }
+
   .navbar-brand {
     font-size: 2rem;
+    display: none;
   }
 
   button {
