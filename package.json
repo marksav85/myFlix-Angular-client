@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "format": "prettier --write 'src/**/*.html'",
-    "deploy": "ng deploy --base-href=/myFlix-Angular-client/"
+    "deploy": "ng deploy --base-href=/myFlix-Angular-client/",
+    "typedoc": "typedoc --options typedoc.json"
   },
   "private": true,
   "dependencies": {

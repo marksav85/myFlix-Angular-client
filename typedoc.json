@@ -1,0 +1,6 @@
+{
+  "entryPointStrategy": "expand",
+  "entryPoints": ["./src/app"],
+  "exclude": ["**/*.spec.ts", "**/*.module.ts", "**/*.e2e.ts", "**/*.index.ts"],
+  "out": "./docs"
+}
