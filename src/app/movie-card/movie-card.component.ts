@@ -26,7 +26,10 @@ export class MovieCardComponent {
     this.getFavorite();
   }
 
-  // gets all movies and populates movies array
+  /**
+   * gets all movies and populates movies array
+   * @returns all movies
+   */
   getMovies(): void {
     this.fetchApiData.getAllMovies().subscribe((resp: any) => {
       this.movies = resp;
@@ -34,7 +37,10 @@ export class MovieCardComponent {
     });
   }
 
-  // gets favourtie movies and populates favorites array
+  /**
+   * gets user's favorite movies and populates favorites array
+   * @returns user's favorite movies
+   */
   getFavorite(): void {
     this.fetchApiData.getFavoriteMovies().subscribe((resp: any) => {
       this.favorites = resp;
@@ -42,7 +48,11 @@ export class MovieCardComponent {
     });
   }
 
-  // checks if movieId is in favorites list and returns boolean
+  /**
+   * checks if movieId is in favorites list and returns boolean
+   * @param movieId
+   * @returns true or false boolean
+   */
   isFavorite(movieId: string): boolean {
     if (this.favorites.includes(movieId)) {
       return true;
@@ -51,7 +61,10 @@ export class MovieCardComponent {
     }
   }
 
-  // calls addFavoriteMovie() to update both DB and favorites array
+  /**
+   * updates both database and favorites array with movieId
+   * @param movieId
+   */
   addFavorite(movieId: string): void {
     const username = localStorage.getItem('Username');
     const token = localStorage.getItem('token');
@@ -73,7 +86,10 @@ export class MovieCardComponent {
     }
   }
 
-  // calls deleteFavoriteMovie() to update both DB and favorites array
+  /**
+   * deletes movie from both database and favorites array
+   * @param movieId
+   */
   deleteFavorite(movieId: string): void {
     const username = localStorage.getItem('Username');
     const token = localStorage.getItem('token');
@@ -96,7 +112,13 @@ export class MovieCardComponent {
     }
   }
 
-  // opens dialog with movie director details
+  /**
+   * opens dialog with movie director details
+   * @param name
+   * @param bio
+   * @returns director dialog with name and bio
+   *
+   */
   openDirectorDialog(name: string, bio: string): void {
     const dialogRef = this.dialog.open(MovieDetailsComponent, {
       data: {
@@ -109,7 +131,13 @@ export class MovieCardComponent {
     });
   }
 
-  // opens dialog with movie genre details
+  /**
+   * opens dialog with movie genre details
+   * @param name
+   * @param description
+   * @returns genre dialog with name and description
+   *
+   */
   openGenreDialog(name: string, description: string): void {
     const dialogRef = this.dialog.open(MovieDetailsComponent, {
       data: {
@@ -122,7 +150,12 @@ export class MovieCardComponent {
     });
   }
 
-  // opens dialog with movie synopsis details
+  /**
+   * opens dialog with movie synopsis
+   * @param description
+   * @returns synopsis dialog with movie description
+   *
+   */
   openSynopsisDialog(description: string): void {
     const dialogRef = this.dialog.open(MovieDetailsComponent, {
       data: {
