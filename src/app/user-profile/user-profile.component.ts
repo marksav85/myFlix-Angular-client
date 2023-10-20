@@ -32,7 +32,11 @@ export class UserProfileComponent implements OnInit {
     this.editMode = !this.editMode;
   }
 
-  // displays the user's info
+  /**
+   * gets user's information and all movies, then sfilters user's favorites
+   * @returns the user's information
+   * @returns the all movies
+   */
   getUser(): void {
     this.fetchApiData.getUser().subscribe((response: any) => {
       this.user = response;
@@ -50,7 +54,11 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  // updates user info
+  /**
+   * updates user's information and refreshes user info
+   * @param userData
+   * @returns the user's information
+   */
   editUser(form: any): void {
     // form validation logic
     if (form.valid) {
@@ -78,7 +86,9 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  // deletes user account
+  /**
+   * deletes the user's account
+   */
   deleteUser(): void {
     if (confirm('Are you sure?')) {
       this.router.navigate(['welcome']).then(() => {
