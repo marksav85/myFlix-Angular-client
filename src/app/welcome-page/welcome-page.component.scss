@@ -1,3 +1,5 @@
+@import "../app.component.scss";
+
 .welcome-container {
   display: flex;
   flex-direction: column;
@@ -9,8 +11,8 @@
   justify-content: center;
   align-items: center;
   height: 20vh;
-  background-color: #213a55;
-  color: #faf7f5;
+  background-color: $mfblue;
+  color: $mfwhite;
   font-size: 1.5rem;
 }
 
@@ -68,11 +70,6 @@ mat-card-actions {
 button {
   margin: 10px;
   padding: 10px;
-}
-
-#button {
-  background-color: #213a55;
-  color: #faf7f5;
 }
 
 @media screen and (max-width: 500px) {
