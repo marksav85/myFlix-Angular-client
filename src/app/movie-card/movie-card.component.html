@@ -13,21 +13,21 @@
     <mat-card-actions>
       <button
         mat-button
-        color="primary"
+        id="button-navbar"
         (click)="openGenreDialog(movie.Genre.Name, movie.Genre.Description)"
       >
         Genre
       </button>
       <button
         mat-button
-        color="primary"
+        id="button-navbar"
         (click)="openDirectorDialog(movie.Director.Name, movie.Director.Bio)"
       >
         Director
       </button>
       <button
         mat-button
-        color="primary"
+        id="button-navbar"
         (click)="openSynopsisDialog(movie.Description)"
       >
         Synopsis
@@ -36,7 +36,7 @@
       <button
         *ngIf="!isFavorite(movie._id)"
         mat-icon-button
-        color="primary"
+        id="button-navbar"
         (click)="addFavorite(movie._id)"
       >
         <mat-icon>favorite_border</mat-icon>

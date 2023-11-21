@@ -3,12 +3,14 @@
   <img class="navbar-image" src="assets/logo.png" alt="logo" />
   <span class="navbar-brand">myFlix</span>
   <span class="spacer"></span>
-  <button mat-raised-button color="accent" [routerLink]="['/movies']">
+  <button id="button-navbar" mat-raised-button [routerLink]="['/movies']">
     <span>Movies</span>
   </button>
 
-  <button mat-raised-button color="accent" [routerLink]="['/profile']">
+  <button id="button-navbar" mat-raised-button [routerLink]="['/profile']">
     Profile
   </button>
-  <button mat-raised-button (click)="toLogout()" color="accent">Logout</button>
+  <button id="button-navbar" mat-raised-button (click)="toLogout()">
+    Logout
+  </button>
 </mat-toolbar>
