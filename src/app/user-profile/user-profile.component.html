@@ -64,29 +64,31 @@
           </mat-form-field>
 
           <br />
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="form.invalid"
-          >
-            Save
-          </button>
-          <button
-            *ngIf="editMode"
-            mat-raised-button
-            color="primary"
-            (click)="toggleEditMode()"
-          >
-            Cancel
-          </button>
+          <div class="edit-profile-buttons">
+            <button
+              mat-raised-button
+              id="button"
+              type="submit"
+              [disabled]="form.invalid"
+            >
+              Save
+            </button>
+            <button
+              *ngIf="editMode"
+              mat-raised-button
+              id="button-navbar"
+              (click)="toggleEditMode()"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
       <button
         class="edit-button"
         *ngIf="!editMode"
         mat-raised-button
-        color="primary"
+        id="button"
         (click)="toggleEditMode()"
       >
         Edit Profile
@@ -97,7 +99,7 @@
       <button
         class="delete-button"
         mat-raised-button
-        color="warn"
+        id="button-navbar"
         (click)="deleteUser()"
       >
         Delete
