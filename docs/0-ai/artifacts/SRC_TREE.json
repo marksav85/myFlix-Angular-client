@@ -1,0 +1,198 @@
+{
+  "generatedAt": "2026-09-26T22:22:20Z",
+  "root": "src",
+  "summary": {
+    "totalFiles": 12,
+    "totalDirectories": 8
+  },
+  "tree": [
+    {
+      "type": "directory",
+      "name": "app",
+      "relativePath": "src/app",
+      "children": [
+        {
+          "type": "file",
+          "name": "app-routing.module.ts",
+          "relativePath": "src/app/app-routing.module.ts",
+          "extension": ".ts",
+          "sizeKB": 0.2,
+          "isComponent": false,
+          "imports": []
+        },
+        {
+          "type": "file",
+          "name": "app.component.ts",
+          "relativePath": "src/app/app.component.ts",
+          "extension": ".ts",
+          "sizeKB": 0.2,
+          "isComponent": true,
+          "imports": []
+        },
+        {
+          "type": "file",
+          "name": "app.module.ts",
+          "relativePath": "src/app/app.module.ts",
+          "extension": ".ts",
+          "sizeKB": 2.5,
+          "isComponent": false,
+          "imports": [
+            "src/app/app-routing.module.ts",
+            "src/app/app.component.ts",
+            "src/app/user-registration-form/user-registration-form.component.ts",
+            "src/app/user-login-form/user-login-form.component.ts",
+            "src/app/movie-card/movie-card.component.ts",
+            "src/app/welcome-page/welcome-page.component.ts",
+            "src/app/user-profile/user-profile.component.ts",
+            "src/app/navigation-bar/navigation-bar.component.ts",
+            "src/app/movie-details/movie-details.component.ts"
+          ]
+        },
+        {
+          "type": "file",
+          "name": "fetch-api-data.service.ts",
+          "relativePath": "src/app/fetch-api-data.service.ts",
+          "extension": ".ts",
+          "sizeKB": 7.1,
+          "isComponent": false,
+          "imports": []
+        },
+        {
+          "type": "directory",
+          "name": "movie-card",
+          "relativePath": "src/app/movie-card",
+          "children": [
+            {
+              "type": "file",
+              "name": "movie-card.component.ts",
+              "relativePath": "src/app/movie-card/movie-card.component.ts",
+              "extension": ".ts",
+              "sizeKB": 4.4,
+              "isComponent": true,
+              "imports": [
+                "src/app/fetch-api-data.service.ts",
+                "src/app/movie-details/movie-details.component.ts"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "movie-details",
+          "relativePath": "src/app/movie-details",
+          "children": [
+            {
+              "type": "file",
+              "name": "movie-details.component.ts",
+              "relativePath": "src/app/movie-details/movie-details.component.ts",
+              "extension": ".ts",
+              "sizeKB": 0.4,
+              "isComponent": true,
+              "imports": []
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "navigation-bar",
+          "relativePath": "src/app/navigation-bar",
+          "children": [
+            {
+              "type": "file",
+              "name": "navigation-bar.component.ts",
+              "relativePath": "src/app/navigation-bar/navigation-bar.component.ts",
+              "extension": ".ts",
+              "sizeKB": 0.4,
+              "isComponent": true,
+              "imports": []
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "user-login-form",
+          "relativePath": "src/app/user-login-form",
+          "children": [
+            {
+              "type": "file",
+              "name": "user-login-form.component.ts",
+              "relativePath": "src/app/user-login-form/user-login-form.component.ts",
+              "extension": ".ts",
+              "sizeKB": 1.8,
+              "isComponent": true,
+              "imports": [
+                "src/app/fetch-api-data.service.ts"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "user-profile",
+          "relativePath": "src/app/user-profile",
+          "children": [
+            {
+              "type": "file",
+              "name": "user-profile.component.ts",
+              "relativePath": "src/app/user-profile/user-profile.component.ts",
+              "extension": ".ts",
+              "sizeKB": 2.8,
+              "isComponent": true,
+              "imports": [
+                "src/app/fetch-api-data.service.ts"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "user-registration-form",
+          "relativePath": "src/app/user-registration-form",
+          "children": [
+            {
+              "type": "file",
+              "name": "user-registration-form.component.ts",
+              "relativePath": "src/app/user-registration-form/user-registration-form.component.ts",
+              "extension": ".ts",
+              "sizeKB": 1.6,
+              "isComponent": true,
+              "imports": [
+                "src/app/fetch-api-data.service.ts"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "directory",
+          "name": "welcome-page",
+          "relativePath": "src/app/welcome-page",
+          "children": [
+            {
+              "type": "file",
+              "name": "welcome-page.component.ts",
+              "relativePath": "src/app/welcome-page/welcome-page.component.ts",
+              "extension": ".ts",
+              "sizeKB": 0.8,
+              "isComponent": true,
+              "imports": [
+                "src/app/user-login-form/user-login-form.component.ts",
+                "src/app/user-registration-form/user-registration-form.component.ts"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file",
+      "name": "main.ts",
+      "relativePath": "src/main.ts",
+      "extension": ".ts",
+      "sizeKB": 0.2,
+      "isComponent": false,
+      "imports": [
+        "src/app/app.module.ts"
+      ]
+    }
+  ]
+}

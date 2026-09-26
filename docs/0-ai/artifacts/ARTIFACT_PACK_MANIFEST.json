@@ -1,0 +1,27 @@
+{
+  "packId": "2026-09-26T22:22:20Z",
+  "runMode": "controller",
+  "generatedAt": "2026-09-26T22:22:20Z",
+  "verifiedAt": "2026-09-26T22:22:20Z",
+  "repoBranch": "refactor/portfolio-update",
+  "repoHead": "b3c5624c35df7fdfcec11cc82ac51133a0a69aa8",
+  "scopeHeads": {
+    "docsHead": "5368b66140968ae10b55afa4555740052697c9b9",
+    "srcHead": "c1335e9058de04e64889071a9e0e36a4081ad905",
+    "depsHead": "0555f840663ae14159c2cacb236aa1b2d977794e"
+  },
+  "dirtyWorkingTree": false,
+  "stalenessSummary": {
+    "counts": {"flagged": 6, "regenerated": 5, "acknowledged": 0, "verified": 0},
+    "scopeChanges": {"docs": false, "src": false, "deps": false},
+    "baseline": "No previous manifest existed; all artifacts were generated as the initial pack."
+  },
+  "artifacts": [
+    {"artifactId": "SRC_TREE", "path": "docs/0-ai/artifacts/SRC_TREE.json", "generatedAt": "2026-09-26T22:22:20Z", "verifiedAt": "2026-09-26T22:22:20Z", "status": "regenerated", "sizeBytes": 6062, "contentHash": "0a61fcc79725d7386d60802c0eae02e72af3b1b74e2ee7472b1436f6b07053d4", "dependsOnScopes": ["src"], "scopeHeadsAtVerify": {"srcHead": "c1335e9058de04e64889071a9e0e36a4081ad905"}},
+    {"artifactId": "DOCS_TREE", "path": "docs/0-ai/artifacts/DOCS_TREE.json", "generatedAt": "2026-09-26T22:22:20Z", "verifiedAt": "2026-09-26T22:22:20Z", "status": "regenerated", "sizeBytes": 2039, "contentHash": "2451360df7163da4cbed88eca3b66a4749d601586732fa26bc56ce331f36b7fd", "dependsOnScopes": ["docs"], "scopeHeadsAtVerify": {"docsHead": "5368b66140968ae10b55afa4555740052697c9b9"}},
+    {"artifactId": "PROJECT_OVERVIEW", "path": "docs/0-ai/artifacts/PROJECT_OVERVIEW.json", "generatedAt": "2026-09-26T22:22:20Z", "verifiedAt": "2026-09-26T22:22:20Z", "status": "regenerated", "sizeBytes": 6146, "contentHash": "cf2f3122c35a2ba973fc846fca43de9b6a679725cddb2de2c426ee14aa3ec533", "dependsOnScopes": ["docs", "deps"], "scopeHeadsAtVerify": {"docsHead": "5368b66140968ae10b55afa4555740052697c9b9", "depsHead": "0555f840663ae14159c2cacb236aa1b2d977794e"}},
+    {"artifactId": "CONTEXT_SUMMARY", "path": "docs/0-ai/artifacts/CONTEXT_SUMMARY.md", "generatedAt": "2026-09-26T22:22:20Z", "verifiedAt": "2026-09-26T22:22:20Z", "status": "regenerated", "sizeBytes": 2816, "contentHash": "e5927484d28dad80bf3f487cd3ac825a134526f9f24e57dafbcbc308b7e49961", "dependsOnScopes": ["src"], "scopeHeadsAtVerify": {"srcHead": "c1335e9058de04e64889071a9e0e36a4081ad905"}},
+    {"artifactId": "SRC_SNAPSHOT_1", "path": "docs/0-ai/artifacts/SRC_SNAPSHOT_1.tsx", "generatedAt": "2026-09-26T22:22:20Z", "verifiedAt": "2026-09-26T22:22:20Z", "status": "regenerated", "sizeBytes": 40007, "contentHash": "31ab52fc9d02336e950fbeddcddac7ee15da02ea4fc0c0807cd33a3374e4b739", "dependsOnScopes": ["src"], "scopeHeadsAtVerify": {"srcHead": "c1335e9058de04e64889071a9e0e36a4081ad905"}},
+    {"artifactId": "ARTIFACT_PACK_MANIFEST", "path": "docs/0-ai/artifacts/ARTIFACT_PACK_MANIFEST.json", "generatedAt": "2026-09-26T22:22:20Z", "verifiedAt": "2026-09-26T22:22:20Z", "status": "regenerated", "sizeBytes": null, "contentHash": null, "dependsOnScopes": ["docs", "src", "deps"], "scopeHeadsAtVerify": {"docsHead": "5368b66140968ae10b55afa4555740052697c9b9", "srcHead": "c1335e9058de04e64889071a9e0e36a4081ad905", "depsHead": "0555f840663ae14159c2cacb236aa1b2d977794e"}, "warnings": ["Self-referential hash and size intentionally omitted."]}
+  ]
+}
