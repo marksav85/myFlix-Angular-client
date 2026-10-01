@@ -9,10 +9,8 @@ import { Router } from '@angular/router';
 export class NavigationBarComponent {
   constructor(private router: Router) {}
 
-  ngOnInit(): void {}
-
   toLogout(): void {
     this.router.navigate(['welcome']);
-    localStorage.clear();
+    ['user', 'token', 'Username'].forEach(key => localStorage.removeItem(key));
   }
 }

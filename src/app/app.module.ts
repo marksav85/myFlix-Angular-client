@@ -20,21 +20,12 @@ import { FormsModule } from '@angular/forms';
 import { UserLoginFormComponent } from './user-login-form/user-login-form.component';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
-// routing
-import { RouterModule, Routes } from '@angular/router';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 
 // navigation bar
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
-
-const appRoutes: Routes = [
-  { path: 'welcome', component: WelcomePageComponent },
-  { path: 'movies', component: MovieCardComponent },
-  { path: 'profile', component: UserProfileComponent },
-  { path: '', redirectTo: 'welcome', pathMatch: 'prefix' },
-];
 
 @NgModule({
   declarations: [
@@ -60,7 +51,6 @@ const appRoutes: Routes = [
     MatSnackBarModule,
     MatIconModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes),
     MatToolbarModule,
   ],
   providers: [],

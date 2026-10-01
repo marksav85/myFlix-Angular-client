@@ -1,235 +1,82 @@
 import { Injectable } from '@angular/core';
-import { catchError, map } from 'rxjs/operators';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpErrorResponse,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { environment } from '../environments/environment';
+import { LoginPayload, LoginResponse, Movie, ProfileUpdatePayload, RegistrationPayload, User } from './api-models';
 
-//Declaring the api url that will provide data for the client app
-const apiUrl = 'https://movie-api-mreb.onrender.com/';
-@Injectable({
-  providedIn: 'root',
-})
-export class UserRegistrationService {
-  // Inject the HttpClient module to the constructor params
-  // This will provide HttpClient to the entire class, making it available via this.http
+@Injectable({ providedIn: 'root' })
+export class FetchApiDataService {
+  private readonly apiUrl = environment.apiUrl.replace(/\/+$/, '');
+
   constructor(private http: HttpClient) {}
 
-  /**
-   * make the api call for the user registration endpoint
-   * @param userDetails - username, password, email, birthday
-   * @returns a user that has been registered in the database
-   * used in user-registration-form component
-   */
-  public userRegistration(userDetails: any): Observable<any> {
-    return this.http
-      .post(apiUrl + 'users', userDetails)
-      .pipe(catchError(this.handleError));
+  userRegistration(details: RegistrationPayload): Observable<User> {
+    return this.http.post<User>(this.url('users'), details).pipe(catchError(this.handleError));
   }
 
-  /**
-   * direct users to the login page
-   * @param userDetails - username, password
-   * @returns will login the user with a token and user info in the local storage
-   * used in user-login-form component
-   */
-  public userLogin(userDetails: any): Observable<any> {
-    return this.http
-      .post(apiUrl + 'login', userDetails)
-      .pipe(catchError(this.handleError));
+  userLogin(details: LoginPayload): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(this.url('login'), details).pipe(catchError(this.handleError));
   }
 
-  /**
-   * gets all of the movies in the database
-   * @returns all of the movies in the database
-   * used in the movie-card component
-   */
-  getAllMovies(): Observable<any> {
-    const token = localStorage.getItem('token');
-    return this.http
-      .get(apiUrl + 'movies', {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + token,
-        }),
-      })
-      .pipe(map(this.extractResponseData), catchError(this.handleError));
+  getAllMovies(): Observable<Movie[]> {
+    return this.http.get<Movie[]>(this.url('movies'), this.authOptions()).pipe(catchError(this.handleError));
   }
 
-  /**
-   * gets one movie by title
-   * @param Title - movie title
-   * @returns a movie title for the user
-   */
-  getMovie(): Observable<any> {
-    const token = localStorage.getItem('token');
-    return this.http
-      .get(apiUrl + 'movies/:Title', {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + token,
-        }),
-      })
-      .pipe(map(this.extractResponseData), catchError(this.handleError));
+  getMovie(title: string): Observable<Movie> {
+    return this.http.get<Movie>(this.url('movies/' + encodeURIComponent(title)), this.authOptions()).pipe(catchError(this.handleError));
   }
 
-  /**
-   * gets one director by name
-   * @param Director.Name - director name
-   * @returns the director by name
-   * used in the movie-card component
-   */
-  getDirector(): Observable<any> {
-    const token = localStorage.getItem('token');
-    return this.http
-      .get(apiUrl + 'movies/director/:Name', {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + token,
-        }),
-      })
-      .pipe(map(this.extractResponseData), catchError(this.handleError));
+  // The backend returns movie collections for director and genre searches.
+  getDirector(name: string): Observable<Movie[]> {
+    return this.http.get<Movie[]>(this.url('movies/director/' + encodeURIComponent(name)), this.authOptions()).pipe(catchError(this.handleError));
   }
 
-  /**
-   * gets one genre by name
-   * @param Genre.Name - genre name
-   * @returns the genre by name
-   * used in the movie-card component
-   */
-  getGenre(): Observable<any> {
-    const token = localStorage.getItem('token');
-    return this.http
-      .get(apiUrl + 'movies/genre/:Name', {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + token,
-        }),
-      })
-      .pipe(map(this.extractResponseData), catchError(this.handleError));
+  getGenre(name: string): Observable<Movie[]> {
+    return this.http.get<Movie[]>(this.url('movies/genre/' + encodeURIComponent(name)), this.authOptions()).pipe(catchError(this.handleError));
   }
 
-  /**
-   * get one of the users
-   * @param username
-   * @returns the user on the user-profile component
-   */
-  getUser(): Observable<any> {
+  getUser(): Observable<User> {
+    return this.http.get<User>(this.userUrl(), this.authOptions()).pipe(catchError(this.handleError));
+  }
+
+  getFavoriteMovies(): Observable<string[]> {
+    return this.getUser().pipe(map(user => user.FavoriteMovies));
+  }
+
+  addFavoriteMovie(movieId: string): Observable<User> {
+    return this.http.post<User>(this.userUrl() + '/movies/' + encodeURIComponent(movieId), {}, this.authOptions()).pipe(catchError(this.handleError));
+  }
+
+  deleteFavoriteMovie(movieId: string): Observable<User> {
+    return this.http.delete<User>(this.userUrl() + '/movies/' + encodeURIComponent(movieId), this.authOptions()).pipe(catchError(this.handleError));
+  }
+
+  editUser(details: ProfileUpdatePayload): Observable<User> {
+    return this.http.put<User>(this.userUrl(), details, this.authOptions()).pipe(catchError(this.handleError));
+  }
+
+  deleteUser(): Observable<string> {
+    return this.http.delete(this.userUrl(), { ...this.authOptions(), responseType: 'text' }).pipe(catchError(this.handleError));
+  }
+
+  private url(path: string): string {
+    return this.apiUrl + '/' + path;
+  }
+
+  private userUrl(): string {
+    // The finalized backend requires this selector and verifies ownership using JWT.
+    // Username is refreshed from successful login/profile responses, never supplied by callers.
     const username = localStorage.getItem('Username');
-    const token = localStorage.getItem('token');
-    return this.http
-      .get(apiUrl + 'users/' + username, {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + token,
-        }),
-      })
-      .pipe(map(this.extractResponseData), catchError(this.handleError));
+    if (!username) throw new Error('Please log in before accessing your account.');
+    return this.url('users/' + encodeURIComponent(username));
   }
 
-  /**
-   * get the users favorite movies
-   * @param username
-   * @returns the users array of favorite movies
-   */
-  getFavoriteMovies(): Observable<any> {
-    const token = localStorage.getItem('token');
-    const username = localStorage.getItem('Username');
-    return this.http
-      .get(apiUrl + 'users/' + username, {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + token,
-        }),
-      })
-      .pipe(
-        map(this.extractResponseData),
-        map((data) => data.FavoriteMovies),
-        catchError(this.handleError)
-      );
+  private authOptions(): { headers: HttpHeaders } {
+    return { headers: new HttpHeaders({ Authorization: 'Bearer ' + localStorage.getItem('token') }) };
   }
 
-  /**
-   * add a movie to the users favorite movies array
-   * @param userName
-   * @param movieId - unique movie id
-   * @returns a movie added to the users favorite movies array
-   * used in the movie-card component
-   */
-  addFavoriteMovie(username: string, MovieID: string): Observable<any> {
-    const token = localStorage.getItem('token');
-    const requestMovie = { movie_id: MovieID };
-    return this.http
-      .post(apiUrl + 'users/' + username + '/movies/' + MovieID, requestMovie, {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + token,
-        }),
-      })
-      .pipe(map(this.extractResponseData), catchError(this.handleError));
-  }
-
-  /**
-   * update the users info in the database
-   * @param username
-   * @param updatedUser - username, password, email, birthday
-   * @returns the updated user info from the database to display in the user-profile component
-   */
-  editUser(updateUser: any): Observable<any> {
-    const token = localStorage.getItem('token');
-    const username = localStorage.getItem('Username');
-    return this.http
-      .put(apiUrl + 'users/' + username, updateUser, {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + token,
-        }),
-      })
-      .pipe(map(this.extractResponseData), catchError(this.handleError));
-  }
-
-  /**
-   * delete the users account
-   * @param username
-   */
-  deleteUser(): Observable<any> {
-    const token = localStorage.getItem('token');
-    const username = localStorage.getItem('Username');
-    return this.http
-      .delete(apiUrl + 'users/' + username, {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + token,
-        }),
-      })
-      .pipe(map(this.extractResponseData), catchError(this.handleError));
-  }
-
-  /**
-   * delete a movie from the users favorite movies array
-   * @param username
-   * @param movieId - unique movie id
-   * @returns deletes the movie from the users favorite movies array
-   * used in the movie-card component and the user-profile component
-   */
-  deleteFavoriteMovie(username: string, MovieID: string): Observable<any> {
-    const token = localStorage.getItem('token');
-    return this.http
-      .delete(apiUrl + 'users/' + username + '/movies/' + MovieID, {
-        headers: new HttpHeaders({
-          Authorization: 'Bearer ' + token,
-        }),
-      })
-      .pipe(map(this.extractResponseData), catchError(this.handleError));
-  }
-
-  private handleError(error: HttpErrorResponse): any {
-    if (error.error instanceof ErrorEvent) {
-      console.error('Some error occurred:', error.error.message);
-    } else {
-      console.error(
-        `Error Status code ${error.status}, ` + `Error body is: ${error.error}`
-      );
-    }
-    return throwError('Something bad happened; please try again later.');
-  }
-
-  // Non-typed response extraction
-  private extractResponseData(res: any): any {
-    const body = res;
-    return body || {};
+  private handleError(): Observable<never> {
+    return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 }

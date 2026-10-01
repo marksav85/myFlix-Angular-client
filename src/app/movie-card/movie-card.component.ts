@@ -1,6 +1,7 @@
+import { Movie } from '../api-models';
 // src/app/movie-card/movie-card.component.ts
 import { Component, OnInit } from '@angular/core';
-import { UserRegistrationService } from '../fetch-api-data.service';
+import { FetchApiDataService } from '../fetch-api-data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MovieDetailsComponent } from '../movie-details/movie-details.component';
@@ -10,13 +11,13 @@ import { MovieDetailsComponent } from '../movie-details/movie-details.component'
   templateUrl: './movie-card.component.html',
   styleUrls: ['./movie-card.component.scss'],
 })
-export class MovieCardComponent {
+export class MovieCardComponent implements OnInit {
   // arrays to hold movie and favorites data
-  movies: any[] = [];
-  favorites: any[] = [];
+  movies: Movie[] = [];
+  favorites: string[] = [];
 
   constructor(
-    public fetchApiData: UserRegistrationService,
+    public fetchApiData: FetchApiDataService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog
   ) {}
@@ -31,7 +32,7 @@ export class MovieCardComponent {
    * @returns all movies
    */
   getMovies(): void {
-    this.fetchApiData.getAllMovies().subscribe((resp: any) => {
+    this.fetchApiData.getAllMovies().subscribe((resp) => {
       this.movies = resp;
       return this.movies;
     });
@@ -42,7 +43,7 @@ export class MovieCardComponent {
    * @returns user's favorite movies
    */
   getFavorite(): void {
-    this.fetchApiData.getFavoriteMovies().subscribe((resp: any) => {
+    this.fetchApiData.getFavoriteMovies().subscribe((resp) => {
       this.favorites = resp;
       return this.favorites;
     });
@@ -66,18 +67,17 @@ export class MovieCardComponent {
    * @param movieId
    */
   addFavorite(movieId: string): void {
-    const username = localStorage.getItem('Username');
     const token = localStorage.getItem('token');
 
-    if (username && token) {
-      this.fetchApiData.addFavoriteMovie(username, movieId).subscribe(
+    if (token) {
+      this.fetchApiData.addFavoriteMovie(movieId).subscribe(
         (response) => {
-          this.favorites.push(movieId); // updates favorites array
+          this.favorites = response.FavoriteMovies;
           this.snackBar.open('Movie added to favorites', 'OK', {
             duration: 2000,
           });
         },
-        (error) => {
+        () => {
           this.snackBar.open('Failed to add movie to favorites', 'OK', {
             duration: 2000,
           });
@@ -91,19 +91,18 @@ export class MovieCardComponent {
    * @param movieId
    */
   deleteFavorite(movieId: string): void {
-    const username = localStorage.getItem('Username');
     const token = localStorage.getItem('token');
 
-    if (username && token) {
-      this.fetchApiData.deleteFavoriteMovie(username, movieId).subscribe(
+    if (token) {
+      this.fetchApiData.deleteFavoriteMovie(movieId).subscribe(
         (response) => {
           // updates favorites array
-          this.favorites = this.favorites.filter((movie) => movie !== movieId);
+          this.favorites = response.FavoriteMovies;
           this.snackBar.open('Movie deleted from favorites', 'OK', {
             duration: 2000,
           });
         },
-        (error) => {
+        () => {
           this.snackBar.open('Failed to delete movie from favorites', 'OK', {
             duration: 2000,
           });
@@ -126,7 +125,7 @@ export class MovieCardComponent {
         content: bio,
       },
     });
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(() => {
       console.log('Director dialog was closed');
     });
   }
@@ -145,7 +144,7 @@ export class MovieCardComponent {
         content: description,
       },
     });
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(() => {
       console.log('Genre dialog was closed');
     });
   }
@@ -163,7 +162,7 @@ export class MovieCardComponent {
         content: description,
       },
     });
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(() => {
       console.log('Synopsis dialog was closed');
     });
   }

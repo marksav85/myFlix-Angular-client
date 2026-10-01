@@ -25,3 +25,18 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+### API configuration
+
+The production build (`npm run build`) uses `src/environments/environment.ts`.
+Set its `apiUrl` to the deployed backend origin before deployment. Development
+builds (`npm run build -- --configuration development`) and the development server
+use `src/environments/environment.development.ts`, currently `http://localhost:8080`.
+Change that value if the local backend uses another port. No URL belongs in the API
+service; trailing slashes are normalized there.
+
+The finalized backend retains `/users/:Username` and
+`/users/:Username/movies/:MovieID` as self-only routes. The username selects the
+resource; the backend authorizes it against the Bearer JWT. There is no `/users/me`
+route or user-list request. Login and successful profile responses keep the local
+username selector current, including after a rename.
