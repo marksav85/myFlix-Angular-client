@@ -40,3 +40,19 @@ The finalized backend retains `/users/:Username` and
 resource; the backend authorizes it against the Bearer JWT. There is no `/users/me`
 route or user-list request. Login and successful profile responses keep the local
 username selector current, including after a rename.
+
+### Local backend integration validation
+
+`npm run test:integration` exercises the real sibling `../movie-api` backend with
+an isolated temporary MongoDB database, then runs the normal unit suite and the
+opt-in Angular HTTP integration spec in one non-watch/headless Chrome session.
+It never reads the backend `.env`, contacts Render, or uses an existing database.
+Disposable credentials are generated in memory; accounts and the database are
+removed after validation. The runner uses localhost port 8080 and must be able to
+start local processes/listeners. It refuses to reuse an existing listener.
+
+Both repositories must already have their locked dependencies installed. The
+backend's cached MongoDB binary is required; runtime downloads are disabled.
+`MYFLIX_BACKEND_PATH` can select another local backend checkout, and
+`MYFLIX_MONGOD_BINARY` can select an existing MongoDB executable. Normal `npm test`
+continues to run only the unit specs and does not require the backend.
