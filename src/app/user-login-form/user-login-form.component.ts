@@ -1,17 +1,9 @@
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { LoginPayload } from '../api-models';
-// src/app/user-login-form/user-login-form.component.ts
-import { Component, Input } from '@angular/core';
-
-// You'll use this import to close the dialog on success
-import { MatDialogRef } from '@angular/material/dialog';
-
-// This import brings in the API calls we created in 6.2
 import { FetchApiDataService } from '../fetch-api-data.service';
-
-// This import is used to display notifications back to the user
-import { MatSnackBar } from '@angular/material/snack-bar';
-
-// routing
 import { Router } from '@angular/router';
 
 @Component({
@@ -19,41 +11,42 @@ import { Router } from '@angular/router';
   templateUrl: './user-login-form.component.html',
   styleUrls: ['./user-login-form.component.scss'],
 })
-export class UserLoginFormComponent {
+export class UserLoginFormComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('pageHeading') pageHeading?: ElementRef<HTMLHeadingElement>;
   @Input() userData: LoginPayload = { Username: '', Password: '' };
+  isSubmitting = false;
+  error = '';
 
-  constructor(
-    public fetchApiData: FetchApiDataService,
-    public dialogRef: MatDialogRef<UserLoginFormComponent>,
-    public snackBar: MatSnackBar,
-    private router: Router
-  ) {}
+  private readonly destroyed = new Subject<void>();
 
+  constructor(private fetchApiData: FetchApiDataService, private router: Router) {}
 
-  /**
-   * updates user's information and refreshes user info
-   * @param userData
-   * @returns the user's information
-   * @returns the user's token
-   */
-  loginUser(): void {
-    this.fetchApiData.userLogin(this.userData).subscribe(
-      (result) => {
-        // Logic for a successful user login goes here!
-        localStorage.setItem('user', JSON.stringify(result.user));
-        localStorage.setItem('token', result.token);
-        localStorage.setItem('Username', result.user.Username);
-        this.dialogRef.close(); // This will close the modal on success!
-        this.snackBar.open('Login successful', 'OK', {
-          duration: 2000,
-        });
-        this.router.navigate(['movies']);
-      },
-      () => {
-        this.snackBar.open('Login unsuccessful. Please try again.', 'OK', {
-          duration: 2000,
-        });
-      }
-    );
+  ngAfterViewInit(): void {
+    this.pageHeading?.nativeElement.focus();
+  }
+
+  loginUser(form: Pick<NgForm, 'valid'>): void {
+    if (!form.valid || this.isSubmitting) return;
+    this.error = '';
+    this.isSubmitting = true;
+    this.fetchApiData.userLogin({ ...this.userData })
+      .pipe(takeUntil(this.destroyed)).subscribe({
+        next: result => {
+          localStorage.setItem('user', JSON.stringify(result.user));
+          localStorage.setItem('token', result.token);
+          localStorage.setItem('Username', result.user.Username);
+          this.isSubmitting = false;
+          this.router.navigate(['movies']);
+        },
+        error: () => {
+          this.isSubmitting = false;
+          this.error = 'Login unsuccessful. Please try again.';
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
   }
 }

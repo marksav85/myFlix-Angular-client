@@ -1,0 +1,13 @@
+<div [attr.aria-busy]="isDeleting">
+  <h2 mat-dialog-title #heading tabindex="-1" id="delete-account-title">Delete Account</h2>
+  <mat-dialog-content>
+    <p id="delete-account-description">Delete your account and favorites permanently? This action cannot be undone.</p>
+    <p *ngIf="error" id="delete-account-error" class="feedback" role="alert">{{ error }}</p>
+    <p *ngIf="isDeleting" role="status">Deleting your account...</p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button type="button" class="button button-secondary delete-cancel" [disabled]="isDeleting" (click)="cancel()">Cancel</button>
+    <button type="button" class="button button-danger" [disabled]="isDeleting" (click)="deleteAccount()"
+      [attr.aria-describedby]="error ? 'delete-account-error' : null">{{ isDeleting ? 'Deleting...' : 'Delete Account' }}</button>
+  </mat-dialog-actions>
+</div>

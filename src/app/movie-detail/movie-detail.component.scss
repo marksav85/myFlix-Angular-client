@@ -1,0 +1,20 @@
+:host { display: block; min-width: 0; }
+.detail-content > .feedback, section > .feedback { margin-block: var(--space-4); }
+.detail-back { margin-bottom: var(--space-5); }
+.movie-detail { display: grid; align-items: start; overflow: hidden; }
+.detail-poster { display: block; width: 100%; max-width: 320px; margin-inline: auto; aspect-ratio: 2 / 3; object-fit: cover; }
+.detail-placeholder { display: flex; align-items: center; justify-content: center; padding: var(--space-4); background: var(--color-surface-2); }
+.detail-content { min-width: 0; padding: var(--space-5); overflow-wrap: anywhere; }
+.detail-synopsis { margin-block: var(--space-5); font-size: 16px; line-height: 26px; white-space: pre-line; color: var(--color-text-secondary); }
+.detail-metadata { margin: 0 0 var(--space-5); }
+.detail-metadata div { margin-bottom: var(--space-4); }
+.detail-metadata dt { font-weight: 600; color: var(--color-text-secondary); }
+.detail-metadata dd { margin: var(--space-1) 0 0; font-size: 16px; line-height: 26px; }
+.detail-supplement { margin-bottom: var(--space-5); }
+.detail-supplement h2 { margin: 0 0 var(--space-3); font-size: 18px; line-height: 26px; font-weight: 600; }
+.detail-supplement p { margin: 0; white-space: pre-line; color: var(--color-text-secondary); }
+@media (min-width: 768px) {
+  .movie-detail { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); }
+  .detail-poster { max-width: 420px; }
+  .detail-content { padding: var(--space-6); }
+}

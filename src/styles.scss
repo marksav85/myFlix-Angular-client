@@ -1,39 +1,205 @@
-
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
+@use 'sass:map';
 @use '@angular/material' as mat;
-// Plus imports for other components in your app.
+@use './design-tokens' as tokens;
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat.core();
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$myFlix-Angular-client-primary: mat.define-palette(mat.$indigo-palette);
-$myFlix-Angular-client-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-
-// The warn palette is optional (defaults to red).
-$myFlix-Angular-client-warn: mat.define-palette(mat.$red-palette);
-
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
-$myFlix-Angular-client-theme: mat.define-light-theme((
+// Material 16 palettes use semantic rest, subtle and hover colors from one source.
+@function semantic-palette($base, $subtle, $hover, $on) {
+  @return mat.define-palette((
+    100: map.get(tokens.$colors, $subtle),
+    500: map.get(tokens.$colors, $base),
+    700: map.get(tokens.$colors, $hover),
+    contrast: (100: map.get(tokens.$colors, text-primary),
+      500: map.get(tokens.$colors, $on), 700: map.get(tokens.$colors, $on))
+  ), 500, 100, 700);
+}
+$typography: mat.define-typography-config(
+  $font-family: tokens.$font-family,
+  $headline-5: mat.define-typography-level(32px, 40px, 700),
+  $headline-6: mat.define-typography-level(24px, 32px, 600),
+  $subtitle-1: mat.define-typography-level(18px, 26px, 600),
+  $body-1: mat.define-typography-level(16px, 26px, 400),
+  $body-2: mat.define-typography-level(14px, 22px, 400),
+  $caption: mat.define-typography-level(13px, 18px, 400),
+  $button: mat.define-typography-level(14px, 20px, 600)
+);
+$theme: mat.define-light-theme((
   color: (
-    primary: $myFlix-Angular-client-primary,
-    accent: $myFlix-Angular-client-accent,
-    warn: $myFlix-Angular-client-warn,
-  )
+    primary: semantic-palette(primary, primary-subtle, primary-hover, on-primary),
+    accent: semantic-palette(secondary, secondary-subtle, secondary, on-primary),
+    warn: semantic-palette(danger, danger-subtle, danger-hover, on-danger)
+  ),
+  typography: $typography,
+  density: 0
 ));
+@include mat.all-component-themes($theme);
+@include mat.typography-hierarchy($typography);
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($myFlix-Angular-client-theme);
+:root {
+  @each $role, $value in tokens.$colors { --color-#{$role}: #{$value}; }
+  @each $step, $value in tokens.$spacing { --space-#{$step}: #{$value}; }
+  @each $size, $value in tokens.$radii { --radius-#{$size}: #{$value}; }
+  --font-family: #{tokens.$font-family};
+  --shadow-subtle: 0 2px 8px rgb(43 33 29 / 8%);
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { min-height: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 22px;
+  overflow-wrap: anywhere;
+}
+app-root { display: block; min-height: 100vh; }
+button, input, select, textarea { font-family: var(--font-family); }
+a { color: var(--color-primary); text-underline-offset: 4px; }
+a:hover { color: var(--color-primary-hover); }
+.page-container {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+  min-width: 0;
+}
+.application-main { padding-block: var(--space-5); }
+.surface, .surface-elevated, .feedback {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-default);
+  background: var(--color-surface-1);
+  color: var(--color-text-primary);
+}
+.surface-elevated {
+  background: var(--color-surface-elevated);
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-subtle);
+}
+.feedback { padding: var(--space-4); background: var(--color-surface-2); }
+.button, .nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 0;
+  max-width: 100%;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-default);
+  font: 600 14px/20px var(--font-family);
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 180ms, border-color 180ms, color 180ms;
+}
+.button-primary { background: var(--color-primary); color: var(--color-on-primary); }
+.button-primary:hover:not(:disabled), .button-primary:active:not(:disabled) {
+  background: var(--color-primary-hover); color: var(--color-on-primary);
+}
+.button-secondary {
+  background: var(--color-surface-1);
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+.button-secondary:hover:not(:disabled) { background: var(--color-surface-2); color: var(--color-text-primary); }
+.button-secondary:active:not(:disabled) { background: var(--color-surface-elevated); }
+.button-danger { background: var(--color-danger); color: var(--color-on-danger); }
+.button-danger:hover:not(:disabled), .button-danger:active:not(:disabled) {
+  background: var(--color-danger-hover); color: var(--color-on-danger);
+}
+.button:disabled { cursor: not-allowed; opacity: 0.6; }
+.nav-link { color: var(--color-text-secondary); }
+.nav-link:hover { background: var(--color-surface-2); color: var(--color-text-primary); }
+.nav-link:active { background: var(--color-surface-elevated); }
+.nav-link[aria-current='page'] {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-subtle);
+  text-decoration: underline;
+}
+.form-label { display: block; margin-bottom: var(--space-2); font-weight: 600; }
+.form-input {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: var(--space-3);
+  border: 1px solid var(--color-text-muted);
+  border-radius: var(--radius-default);
+  background: var(--color-surface-2);
+  color: var(--color-text-primary);
+  font-size: 14px;
+  line-height: 22px;
+}
+.form-input:hover:not(:disabled) { border-color: var(--color-text-secondary); }
+.form-input:focus-visible { border-color: var(--color-focus); }
+.form-input[aria-invalid='true'] { border-color: var(--color-danger); }
+.form-input:disabled { cursor: not-allowed; opacity: 0.6; }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 4px; }
+.skip-link {
+  position: fixed;
+  top: var(--space-4);
+  left: var(--space-4);
+  z-index: 1000;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-default);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  transform: translateY(calc(-100% - 24px));
+}
+.skip-link:focus { transform: translateY(0); color: var(--color-on-primary); }
+@media (min-width: 640px) { .page-container { padding-inline: var(--space-6); } }
+@media (min-width: 1024px) { .page-container { padding-inline: 48px; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
-/* You can add global styles to this file, and also import other style files */
+// Shared routed authentication composition.
+.auth-layout { display: flex; justify-content: center; padding-block: var(--space-4); }
+.auth-panel { width: 100%; max-width: 448px; min-width: 0; padding: var(--space-5); }
+.mat-typography .auth-heading {
+  margin: 0 0 var(--space-5);
+  font-size: 26px;
+  line-height: 34px;
+  font-weight: 700;
+}
+.auth-form { display: flex; flex-direction: column; gap: var(--space-4); }
+.auth-submit { width: 100%; }
+.auth-help, .auth-field-error { margin: var(--space-2) 0 0; font-size: 13px; line-height: 18px; }
+.auth-help { color: var(--color-text-secondary); }
+.form-requirements { margin: 0 0 var(--space-4); }
+.auth-field-error { color: var(--color-danger-hover); }
+.auth-feedback { margin: var(--space-4) 0 0; }
+.auth-alternative { margin: var(--space-5) 0 0; color: var(--color-text-secondary); }
+.auth-link { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; border-radius: var(--radius-default); }
+@media (min-width: 640px) {
+  .auth-layout { padding-block: var(--space-6); }
+  .auth-panel { padding: var(--space-6); }
+  .mat-typography .auth-heading { font-size: 32px; line-height: 40px; }
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// Shared movie presentation for Library and Profile favorites.
+.mat-typography .page-heading { margin: 0; font-size: 26px; line-height: 34px; font-weight: 700; }
+.movie-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+@media (min-width: 480px) { .movie-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 768px) { .movie-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1024px) {
+  .movie-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (min-width: 640px) { .mat-typography .page-heading { font-size: 32px; line-height: 40px; } }
+
+// Only the account confirmation overlay uses this elevated treatment.
+.warm-delete-dialog {
+  --mdc-dialog-container-color: var(--color-surface-elevated);
+  --mdc-dialog-container-shape: var(--radius-default);
+}

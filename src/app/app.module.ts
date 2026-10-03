@@ -8,24 +8,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserRegistrationFormComponent } from './user-registration-form/user-registration-form.component';
 
-//  material design imports
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { UserLoginFormComponent } from './user-login-form/user-login-form.component';
 import { MovieCardComponent } from './movie-card/movie-card.component';
-import { WelcomePageComponent } from './welcome-page/welcome-page.component';
+import { MovieLibraryComponent } from './movie-library/movie-library.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 
-// navigation bar
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MovieDetailsComponent } from './movie-details/movie-details.component';
+import { DeleteAccountDialogComponent } from './delete-account-dialog/delete-account-dialog.component';
+import { MovieDetailComponent } from './movie-detail/movie-detail.component';
 
 @NgModule({
   declarations: [
@@ -33,25 +25,19 @@ import { MovieDetailsComponent } from './movie-details/movie-details.component';
     UserRegistrationFormComponent,
     UserLoginFormComponent,
     MovieCardComponent,
-    WelcomePageComponent,
+    MovieLibraryComponent,
     UserProfileComponent,
+    DeleteAccountDialogComponent,
     NavigationBarComponent,
-    MovieDetailsComponent,
+    MovieDetailComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule, // Import HttpClientModule after BrowserModule
+    HttpClientModule,
     BrowserAnimationsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule,
     MatDialogModule,
-    MatSnackBarModule,
-    MatIconModule,
     FormsModule,
-    MatToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

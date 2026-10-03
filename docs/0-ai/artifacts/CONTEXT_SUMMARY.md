@@ -1,40 +1,79 @@
 ---
 artifactId: CONTEXT_SUMMARY
-packId: "2026-09-26T22:22:20Z"
-generatedAt: "2026-09-26T22:22:20Z"
+packId: "2026-10-03T13:01:52Z"
+generatedAt: "2026-10-03T13:01:52Z"
 generator: "prompt--artifact--generate-context-summary.md"
 ---
 
-# myFlix Angular client context
+# Angular myFlix — Warm Editorial
 
-## Project type
+## Structure
 
-An existing Angular 16 browser client for browsing movies and managing an authenticated user's profile and favourites. It is an NgModule-based application, bootstrapped from `src/main.ts` with `AppModule`.
+Angular 16 NgModule browser application, TypeScript, RxJS, template-driven forms,
+HttpClient, Sass, Angular Material dialog, and Karma/Jasmine. SRC_TREE inventories
+37 non-test source files across 13 directories below src/.
+Angular templates/styles are included; static assets and specs are excluded.
 
-## Routing model
+## Routing and shell
 
-Routes are registered directly in `AppModule` with `RouterModule.forRoot`. The application has routes for `/welcome`, `/movies`, and `/profile`; the empty path redirects to `/welcome`. `AppRoutingModule` is imported but its own route array is empty.
+AppRoutingModule defines five pages: /login, /signup, /movies,
+/movies/:movieId, and /profile. Root and /welcome redirect to /login.
+AppComponent owns the shared header/navigation, skip link, and single main
+landmark. Navigation changes with local token/username presence; the backend
+remains the authorization boundary. The guest wordmark and Logout lead to Login.
+Every routed page receives heading focus; loading responses preserve search focus.
 
-## Source scope
+## Authentication and API
 
-The source root is `src/`. The generated source tree includes 12 non-test TypeScript files in 8 directories. Component HTML, SCSS, tests, and static assets are present in the repository but excluded from `SRC_TREE.json` by the generator's file-scope rule.
+FetchApiDataService centralizes typed requests and safe errors. Environment files
+select localhost:8080 in development and the existing Render API in production.
+Login stores user, token, and Username in localStorage and routes to /movies.
+Signup has required username/password/email, optional Birthday, persistent success,
+and no automatic login. The backend authorizes self-only /users/:Username routes
+with the Bearer JWT. Username is a selector; JWT identity remains valid on rename.
 
-## Application structure
+## Movie pages and favorites
 
-`AppComponent` is only a router outlet. `WelcomePageComponent` opens Angular Material dialogs for registration and login. `MovieCardComponent` renders the movie collection, shows movie detail dialogs, and adds or removes favourites. `UserProfileComponent` reads, updates, and deletes the current user. `NavigationBarComponent` provides movies, profile, and logout navigation. `MovieDetailsComponent` is the reusable dialog body.
+MovieLibraryComponent loads catalog and membership independently, filters titles
+locally, and renders reusable MovieCard components. Cards contain real metadata,
+poster fallback, two-line title/three-line excerpt, routed View Details, and favorite
+pressed/busy controls. MovieDetailComponent resolves catalog IDs, cancels replaced
+route requests, and displays full synopsis, optional genre description and director
+biography inline. Loading, failure, not-found, and membership states remain distinct.
 
-## API and authentication
+MovieFavoritesService is provided per page, loads fresh membership, serializes
+mutations, persists authoritative returned users, and exposes userChanges to Profile.
+It is not global state. Failure preserves membership and provides safe inline retry
+feedback; leaving a page cancels its subscriptions.
 
-`UserRegistrationService` centralizes HTTP calls to `https://movie-api-mreb.onrender.com/`. It implements registration, login, movie listing, user retrieval and update, account deletion, and favourite add/remove requests. Login writes `user`, `token`, and `Username` to browser local storage. Protected requests build a `Bearer` authorization header from `token`.
+## Profile and deletion
 
-## UI and styling
+UserProfileComponent shows semantic account data, an always-visible update form,
+shared h3 favorite cards, then Danger Zone. Catalog failure does not hide account
+information. Missing Birthday is omitted; unresolved movie IDs have explicit feedback.
+Password remains required for every update with a five-character minimum. Successful
+updates persist the returned user/username, retain token, reset the draft/password,
+and reset submitted validation. Favorite responses preserve unsaved drafts.
+Account actions and favorite mutations avoid overlapping full-user responses.
 
-The application uses Angular Material components, template-driven forms (`FormsModule`), SCSS component styles, a global Material theme, and Google-hosted Roboto and Material Icons. There is no application state-management library; components keep local arrays and call the service directly.
+DeleteAccountDialogComponent uses Material naming/description, Cancel-first focus,
+focus trapping/restoration, safe Escape cancellation, pending guards, and safe retry
+feedback. Only successful deletion clears session keys and navigates to /login.
+Native confirmation and old movie-detail dialogs are removed.
 
-## Tooling and deployment
+## Visual system and supporting configuration
 
-Angular CLI provides serve and browser builds. The project uses Karma/Jasmine tests, angular-eslint linting, Prettier for HTML, TypeDoc output in `docs/`, and `angular-cli-ghpages` deployment with base href `/myFlix-Angular-client/`.
+_design-tokens.scss and styles.scss define the Warm Editorial palette, shared
+surfaces/forms/actions, visible focus, and reduced-motion rules. Plus Jakarta Sans
+is declared with system fallbacks; no fonts are bundled/downloaded. Content caps at
+1440px with gutters 16/32/48px at 640/1024px. Grid columns are 1/2/3/4 at
+480/768/1024px; Detail columns start at 768px and Profile account columns at 1024px.
 
-## Confirmed limitations to preserve during refactoring planning
+The runtime icon is src/favicon.svg. docs/design/DESIGN.md is visual authority;
+docs/design/assets/myflix-icon-source.png is unchanged reference artwork.
+Historical TypeDoc output/tooling is retired. angular.json defaults to production
+builds with base href /; npm run deploy retains /myFlix-Angular-client/ for static
+GitHub Pages deployment. dist is ignored. Local integration validation is opt-in,
+uses disposable backend state, and is separate from the normal unit suite.
 
-The client has no environment-file configuration; the API URL is hard-coded in the service. API payloads are typed as `any`. Route definitions are duplicated structurally between `AppModule` and an otherwise empty `AppRoutingModule`. The committed TypeDoc HTML references an older source commit, so it should not be treated as current implementation documentation.
+This pack describes the uncommitted working tree, not a deployed or committed build.

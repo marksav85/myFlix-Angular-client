@@ -1,0 +1,41 @@
+<a class="button button-secondary detail-back" routerLink="/movies">Back to Movies</a>
+<section *ngIf="isLoading || error || !movie" aria-labelledby="movie-detail-state-title">
+  <h1 #pageHeading id="movie-detail-state-title" tabindex="-1" class="page-heading">{{ !isLoading && !error ? 'Movie not found.' : 'Movie Detail' }}</h1>
+  <p *ngIf="isLoading" class="feedback" role="status">Loading movie details...</p>
+  <p *ngIf="error" class="feedback" role="alert">{{ error }}</p>
+  <a *ngIf="error && !favoriteState.hasSession" class="auth-link" routerLink="/login">Login</a>
+  <p *ngIf="!isLoading && !error" class="feedback" role="status">This movie is not available in the current catalog.</p>
+</section>
+<article *ngIf="!isLoading && !error && movie as item" class="movie-detail surface" aria-labelledby="movie-detail-title">
+  <img *ngIf="item.ImagePath && !posterUnavailable; else missingPoster" class="detail-poster"
+    [src]="item.ImagePath" [alt]="item.Title + ' poster'" (error)="posterUnavailable = true" />
+  <ng-template #missingPoster>
+    <div class="detail-poster detail-placeholder" role="img" [attr.aria-label]="'Poster unavailable for ' + item.Title">Poster unavailable</div>
+  </ng-template>
+  <div class="detail-content">
+    <h1 #pageHeading id="movie-detail-title" tabindex="-1" class="page-heading">{{ item.Title }}</h1>
+    <p class="detail-synopsis">{{ item.Description }}</p>
+    <dl class="detail-metadata">
+      <div><dt>Genre</dt><dd>{{ genreName }}</dd></div>
+      <div><dt>Director</dt><dd>{{ directorName }}</dd></div>
+    </dl>
+    <section *ngIf="genreDescription" aria-labelledby="genre-description-title" class="detail-supplement">
+      <h2 id="genre-description-title">About the Genre</h2>
+      <p>{{ genreDescription }}</p>
+    </section>
+    <section *ngIf="directorBiography" aria-labelledby="director-biography-title" class="detail-supplement">
+      <h2 id="director-biography-title">Director Biography</h2>
+      <p>{{ directorBiography }}</p>
+    </section>
+    <p *ngIf="favoriteState.isLoadingFavorites" class="feedback" role="status">Loading favorites...</p>
+    <p *ngIf="favoriteState.favoriteLoadError" class="feedback" role="alert">{{ favoriteState.favoriteLoadError }}</p>
+    <button type="button" class="button button-primary" (click)="favoriteState.toggleFavorite(item._id)"
+      [disabled]="favoriteState.favoriteControlsDisabled || favoriteState.pendingFavorites.has(item._id)"
+      [attr.aria-label]="favoriteLabel" [attr.aria-pressed]="favoriteState.isFavorite(item._id)"
+      [attr.aria-busy]="favoriteState.pendingFavorites.has(item._id)"
+      [attr.aria-describedby]="favoriteState.favoriteErrors[item._id] ? 'detail-favorite-error' : null">
+      {{ favoriteState.pendingFavorites.has(item._id) ? 'Updating...' : favoriteState.isFavorite(item._id) ? 'Remove from Favorites' : 'Add to Favorites' }}
+    </button>
+    <p *ngIf="favoriteState.favoriteErrors[item._id]" id="detail-favorite-error" class="feedback" role="alert">{{ favoriteState.favoriteErrors[item._id] }}</p>
+  </div>
+</article>

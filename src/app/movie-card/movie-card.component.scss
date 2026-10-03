@@ -1,64 +1,13 @@
-@import "../app.component.scss";
-
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
-  margin: 10px;
-  border: 1px solid black;
-  border-radius: 5px;
-  background-color: #f5f5f5;
-  box-shadow: 0 0 10px black;
-}
-
-mat-card {
-  width: 300px;
-  height: 600px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 10px;
-  padding: 10px;
-  background-color: $mfpink;
-  color: $mfwhite;
-}
-
-mat-card-header {
-  display: flex;
-  flex-direction: start;
-  align-items: center;
-  width: 90%;
-  background-color: $mfblue;
-  color: $mfwhite;
-  border-radius: 5px;
-}
-
-mat-card-title {
-  height: 50px;
-  font-size: 1.2em;
-  font-weight: bold;
-  margin: 10px;
-}
-
-mat-card-subtitle {
-  font-size: 0.8em;
-  margin: 10px;
-  color: $mfwhite;
-}
-
-img {
-  height: 400px;
-  width: 300px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
-
-mat-card-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 300px;
-  color: #f5f5f5;
-}
+:host { display: flex; min-width: 0; }
+.movie-card { display: flex; flex-direction: column; width: 100%; min-width: 0; overflow: hidden; transition: border-color 180ms, box-shadow 180ms; }
+.movie-card:hover { border-color: var(--color-border-strong); box-shadow: var(--shadow-subtle); }
+.movie-poster { display: block; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; }
+.poster-placeholder { display: flex; align-items: center; justify-content: center; padding: var(--space-4); background: var(--color-surface-2); color: var(--color-text-secondary); }
+.movie-card-content { display: flex; flex: 1; flex-direction: column; min-width: 0; padding: var(--space-4); }
+.movie-card-title { font-size: 18px; line-height: 26px; font-weight: 600; min-height: 52px; margin: 0 0 var(--space-3); }
+.movie-card-title, .movie-excerpt { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.movie-card-title { -webkit-line-clamp: 2; }
+.movie-metadata { margin: 0 0 var(--space-2); font-size: 13px; line-height: 18px; color: var(--color-text-secondary); }
+.movie-excerpt { -webkit-line-clamp: 3; margin: 0 0 var(--space-5); font-size: 14px; line-height: 22px; color: var(--color-text-secondary); }
+.movie-card-actions { display: flex; flex-direction: column; gap: var(--space-2); margin-top: auto; }
+.movie-favorite-error { margin: 0; font-size: 13px; line-height: 18px; color: var(--color-text-secondary); }

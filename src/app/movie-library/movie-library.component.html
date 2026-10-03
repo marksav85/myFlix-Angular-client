@@ -1,0 +1,26 @@
+<section aria-labelledby="movie-library-title">
+  <h1 #pageHeading tabindex="-1" id="movie-library-title" class="page-heading">Movie Library</h1>
+  <div role="search" aria-label="Movie library" class="library-search">
+    <label for="movie-search" class="form-label">Search movies</label>
+    <input id="movie-search" name="movieSearch" type="search" class="form-input"
+      placeholder="Search by title..." [(ngModel)]="search" />
+  </div>
+  <p *ngIf="isLoading" class="feedback" role="status">Loading movies...</p>
+  <div *ngIf="!isLoading && error" class="feedback" role="alert">
+    <p>{{ error }}</p>
+    <a *ngIf="!hasSession" class="auth-link" routerLink="/login">Login</a>
+  </div>
+  <ng-container *ngIf="!isLoading && !error">
+    <p *ngIf="favoriteState.isLoadingFavorites" class="feedback library-account-status" role="status">Loading favorites...</p>
+    <p *ngIf="favoriteState.favoriteLoadError" class="feedback library-account-status" role="alert">{{ favoriteState.favoriteLoadError }}</p>
+    <p *ngIf="movies.length === 0" class="feedback" role="status">No movies are available.</p>
+    <p *ngIf="movies.length > 0 && filteredMovies.length === 0" class="feedback" role="status">No movies match your search. Try another title.</p>
+    <div class="movie-grid" *ngIf="filteredMovies.length > 0">
+      <app-movie-card *ngFor="let movie of filteredMovies; trackBy: trackMovie" [movie]="movie"
+        [isFavorite]="favoriteState.isFavorite(movie._id)" [isPending]="favoriteState.pendingFavorites.has(movie._id)"
+        [favoriteDisabled]="favoriteState.favoriteControlsDisabled" [favoriteError]="favoriteState.favoriteErrors[movie._id] || ''"
+        (favoriteToggle)="favoriteState.toggleFavorite(movie._id)">
+      </app-movie-card>
+    </div>
+  </ng-container>
+</section>

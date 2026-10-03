@@ -1,57 +1,54 @@
-<!-- src/app/user-registration-form/user-registration-form.component.html -->
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Sign Up!</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <form>
-      <mat-form-field>
-        <input
-          matInput
-          [(ngModel)]="userData.Username"
-          placeholder="Username"
-          type="text"
-          name="Username"
-          required
-          minlength="5"
-        />
-      </mat-form-field>
-      <mat-form-field>
-        <input
-          matInput
-          [(ngModel)]="userData.Password"
-          type="password"
-          placeholder="Password"
-          name="Password"
-          required
-          minlength="5"
-        />
-      </mat-form-field>
-      <mat-form-field>
-        <input
-          matInput
-          [(ngModel)]="userData.Email"
-          type="email"
-          placeholder="Email"
-          name="Email"
-          required
-          email
-        />
-      </mat-form-field>
-      <mat-form-field>
-        <input
-          matInput
-          [(ngModel)]="userData.Birthday"
-          type="date"
-          placeholder="Birthday"
-          name="Birthday"
-        />
-      </mat-form-field>
+<div class="auth-layout">
+  <section class="auth-panel surface" aria-labelledby="signup-title">
+    <h1 #pageHeading id="signup-title" tabindex="-1" class="auth-heading">Signup</h1>
+      <p class="auth-help form-requirements">All fields are required except Birthday.</p>
+    <form #form="ngForm" (ngSubmit)="registerUser(form)" class="auth-form"
+      [attr.aria-busy]="isSubmitting" [attr.aria-describedby]="error ? 'signup-feedback' : registrationSucceeded ? 'signup-success' : null">
+      <div>
+        <label class="form-label" for="signup-username">Username</label>
+        <input id="signup-username" class="form-input" name="Username" type="text" autocomplete="username"
+          [(ngModel)]="userData.Username" #username="ngModel" required minlength="5" pattern="[a-zA-Z0-9]+"
+          [readonly]="isSubmitting || registrationSucceeded"
+          [attr.aria-invalid]="(username.invalid && (username.touched || form.submitted)) ? 'true' : null"
+          [attr.aria-describedby]="(username.invalid && (username.touched || form.submitted)) ? 'signup-username-help signup-username-error' : 'signup-username-help'" />
+        <p id="signup-username-help" class="auth-help">At least 5 characters. Use letters and numbers only.</p>
+        <p *ngIf="username.invalid && (username.touched || form.submitted)" id="signup-username-error" class="auth-field-error">{{ username.hasError('required') ? 'Username is required.' : 'Use at least 5 characters with letters and numbers only.' }}</p>
+      </div>
+      <div>
+        <label class="form-label" for="signup-password">Password</label>
+        <input id="signup-password" class="form-input" name="Password" type="password" autocomplete="new-password"
+          [(ngModel)]="userData.Password" #password="ngModel" required minlength="5"
+          [readonly]="isSubmitting || registrationSucceeded"
+          [attr.aria-invalid]="(password.invalid && (password.touched || form.submitted)) ? 'true' : null"
+          [attr.aria-describedby]="(password.invalid && (password.touched || form.submitted)) ? 'signup-password-error' : null" />
+        <p *ngIf="password.invalid && (password.touched || form.submitted)" id="signup-password-error" class="auth-field-error">{{ password.hasError('required') ? 'Password is required.' : 'Use at least 5 characters.' }}</p>
+      </div>
+      <div>
+        <label class="form-label" for="signup-email">Email</label>
+        <input id="signup-email" class="form-input" name="Email" type="email" autocomplete="email"
+          [(ngModel)]="userData.Email" #email="ngModel" required email
+          [readonly]="isSubmitting || registrationSucceeded"
+          [attr.aria-invalid]="(email.invalid && (email.touched || form.submitted)) ? 'true' : null"
+          [attr.aria-describedby]="(email.invalid && (email.touched || form.submitted)) ? 'signup-email-error' : null" />
+        <p *ngIf="email.invalid && (email.touched || form.submitted)" id="signup-email-error" class="auth-field-error">{{ email.hasError('required') ? 'Email is required.' : 'Enter a valid email address.' }}</p>
+      </div>
+      <div>
+        <label class="form-label" for="signup-birthday">Birthday (optional)</label>
+        <input id="signup-birthday" class="form-input" name="Birthday" type="date" autocomplete="bday"
+          [(ngModel)]="userData.Birthday" #birthday="ngModel"
+          [readonly]="isSubmitting || registrationSucceeded"
+          [attr.aria-invalid]="(birthday.invalid && (birthday.touched || form.submitted)) ? 'true' : null"
+          [attr.aria-describedby]="'signup-birthday-help'" />
+        <p id="signup-birthday-help" class="auth-help">You can leave this blank.</p>
+      </div>
+      <button type="submit" class="button button-primary auth-submit" [disabled]="isSubmitting || registrationSucceeded">
+        {{ isSubmitting ? 'Creating account...' : 'Signup' }}
+      </button>
     </form>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button (click)="registerUser()" id="button">
-      Sign Up
-    </button>
-  </mat-card-actions>
-</mat-card>
+    <p *ngIf="error" id="signup-feedback" class="feedback auth-feedback" role="alert">{{ error }}</p>
+    <p *ngIf="registrationSucceeded" id="signup-success" class="feedback auth-feedback" role="status">Registration successful. Please login.</p>
+    <p class="auth-alternative">Already have an account?
+      <a class="auth-link" routerLink="/login">Login</a>
+    </p>
+  </section>
+</div>

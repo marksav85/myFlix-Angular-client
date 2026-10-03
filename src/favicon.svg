@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+<title id="title">myFlix</title>
+<defs>
+<linearGradient id="burgundy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#741724"/><stop offset=".55" stop-color="#8F1D2C"/><stop offset="1" stop-color="#A92840"/></linearGradient>
+<linearGradient id="fold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#741724"/><stop offset="1" stop-color="#8F1D2C"/></linearGradient>
+</defs>
+<rect width="64" height="64" rx="12" fill="#F8F3E9"/>
+<path d="M12 49V15L32 34L52 15V49H43V35L32 46L21 35V49Z" fill="url(#burgundy)"/>
+<path d="M12 15L32 34L22.3 24.8L12 30.8Z" fill="#C9364F" opacity=".48"/>
+<path d="M32 34L42 43.5L32 46Z" fill="url(#fold)" opacity=".72"/>
+</svg>

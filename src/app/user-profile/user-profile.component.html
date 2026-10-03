@@ -1,121 +1,81 @@
-<app-navigation-bar></app-navigation-bar>
-
-<div class="container">
-  <div class="user-info">
-    <div class="profile-container">
-      <div class="profile-info">
-        <h2>Profile Information</h2>
-        <p><strong>Username: </strong>{{ user.Username }}</p>
-        <p><strong>Email: </strong>{{ user.Email }}</p>
-      </div>
-
-      <div class="edit-profile" *ngIf="editMode">
-        <form #form="ngForm" (submit)="editUser(form)">
-          <h2>Update Profile</h2>
-
-          <br />
-
-          <mat-form-field>
-            <mat-label> Username </mat-label>
-            <input
-              matInput
-              [(ngModel)]="userData.Username"
-              type="text"
-              name="Username"
-              required
-              minlength="5"
-            />
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Password</mat-label>
-            <input
-              matInput
-              [(ngModel)]="userData.Password"
-              type="password"
-              placeholder="Password"
-              name="Password"
-              required
-              minlength="5"
-            />
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Email</mat-label>
-            <input
-              matInput
-              [(ngModel)]="userData.Email"
-              type="email"
-              name="Email"
-              required
-              email
-            />
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Birthday</mat-label>
-            <input
-              matInput
-              [(ngModel)]="userData.Birthday"
-              type="date"
-              name="Birthday"
-              required
-            />
-          </mat-form-field>
-
-          <br />
-          <div class="edit-profile-buttons">
-            <button
-              mat-raised-button
-              id="button"
-              type="submit"
-              [disabled]="form.invalid"
-            >
-              Save
-            </button>
-            <button
-              *ngIf="editMode"
-              mat-raised-button
-              id="button-navbar"
-              (click)="toggleEditMode()"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-      <button
-        class="edit-button"
-        *ngIf="!editMode"
-        mat-raised-button
-        id="button"
-        (click)="toggleEditMode()"
-      >
-        Edit Profile
-      </button>
-    </div>
-    <div class="delete-profile">
-      <h2>Delete Account</h2>
-      <button
-        class="delete-button"
-        mat-raised-button
-        id="button-navbar"
-        (click)="deleteUser()"
-      >
-        Delete
-      </button>
-    </div>
+<div class="profile-page">
+  <h1 #pageHeading tabindex="-1" class="page-heading">Profile</h1>
+  <div class="account-grid">
+    <section class="profile-panel surface" aria-labelledby="account-title" [attr.aria-busy]="favoriteState.isLoadingFavorites">
+      <h2 id="account-title">Account Information</h2>
+      <p *ngIf="favoriteState.isLoadingFavorites" role="status">Loading account information...</p>
+      <p *ngIf="accountError" role="alert" class="feedback">Account information could not be loaded. Please try again later.</p>
+      <dl *ngIf="accountReady">
+        <div><dt>Username</dt><dd>{{ user.Username }}</dd></div>
+        <div><dt>Email</dt><dd>{{ user.Email }}</dd></div>
+        <div *ngIf="birthday"><dt>Birthday</dt><dd><time [attr.datetime]="birthday">{{ birthday }}</time></dd></div>
+      </dl>
+    </section>
+    <section class="profile-panel surface" aria-labelledby="update-title">
+      <h2 id="update-title">Update Account</h2>
+      <p class="auth-help form-requirements">All fields are required to save changes.</p>
+      <form #form="ngForm" (ngSubmit)="editUser(form)" class="auth-form" [attr.aria-busy]="isSaving"
+        [attr.aria-describedby]="updateError ? 'profile-update-error' : null">
+        <div>
+          <label class="form-label" for="profile-username">Username</label>
+          <input id="profile-username" class="form-input" name="Username" type="text" autocomplete="username"
+            [(ngModel)]="userData.Username" #username="ngModel" required minlength="5" [readonly]="accountActionsDisabled"
+            [attr.aria-invalid]="username.invalid && (username.touched || form.submitted) ? 'true' : null"
+            [attr.aria-describedby]="username.invalid && (username.touched || form.submitted) ? 'profile-username-error' : null" />
+          <p *ngIf="username.invalid && (username.touched || form.submitted)" id="profile-username-error" class="auth-field-error">Enter a username with at least 5 characters.</p>
+        </div>
+        <div>
+          <label class="form-label" for="profile-email">Email</label>
+          <input id="profile-email" class="form-input" name="Email" type="email" autocomplete="email"
+            [(ngModel)]="userData.Email" #email="ngModel" required email [readonly]="accountActionsDisabled"
+            [attr.aria-invalid]="email.invalid && (email.touched || form.submitted) ? 'true' : null"
+            [attr.aria-describedby]="email.invalid && (email.touched || form.submitted) ? 'profile-email-error' : null" />
+          <p *ngIf="email.invalid && (email.touched || form.submitted)" id="profile-email-error" class="auth-field-error">Enter a valid email address.</p>
+        </div>
+        <div>
+          <label class="form-label" for="profile-birthday">Birthday</label>
+          <input id="profile-birthday" class="form-input" name="Birthday" type="date" autocomplete="bday"
+            [(ngModel)]="userData.Birthday" #birthdayField="ngModel" required [readonly]="accountActionsDisabled"
+            [attr.aria-invalid]="birthdayField.invalid && (birthdayField.touched || form.submitted) ? 'true' : null"
+            [attr.aria-describedby]="birthdayField.invalid && (birthdayField.touched || form.submitted) ? 'profile-birthday-error' : null" />
+          <p *ngIf="birthdayField.invalid && (birthdayField.touched || form.submitted)" id="profile-birthday-error" class="auth-field-error">Enter your birthday.</p>
+        </div>
+        <div>
+          <label class="form-label" for="profile-password">Password (required to save changes)</label>
+          <input id="profile-password" class="form-input" name="Password" type="password" autocomplete="new-password"
+            [(ngModel)]="userData.Password" #password="ngModel" required minlength="5" [readonly]="accountActionsDisabled"
+            [attr.aria-invalid]="password.invalid && (password.touched || form.submitted) ? 'true' : null"
+            [attr.aria-describedby]="password.invalid && (password.touched || form.submitted) ? 'profile-password-help profile-password-error' : 'profile-password-help'" />
+          <p id="profile-password-help" class="auth-help">Every update requires a password of at least 5 characters. Enter your current password to keep it, or a new password to replace it.</p>
+          <p *ngIf="password.invalid && (password.touched || form.submitted)" id="profile-password-error" class="auth-field-error">Enter a password with at least 5 characters.</p>
+        </div>
+        <button type="submit" class="button button-primary" [disabled]="accountActionsDisabled">{{ isSaving ? 'Saving...' : 'Save Changes' }}</button>
+      </form>
+      <p *ngIf="updateSuccess" role="status" class="feedback auth-feedback">{{ updateSuccess }}</p>
+      <p *ngIf="updateError" id="profile-update-error" role="alert" class="feedback auth-feedback">{{ updateError }}</p>
+    </section>
   </div>
-  <div class="favorites">
-    <h2>Favourite Movies:</h2>
-    <div class="card-container">
-      <mat-card *ngFor="let favorite of favorites">
-        <mat-card-header>
-          <mat-card-title>{{ favorite.Title }}</mat-card-title>
-        </mat-card-header>
-
-        <img src="{{ favorite.ImagePath }}" alt="{{ favorite.Title }}" />
-      </mat-card>
-    </div>
-  </div>
+  <section aria-labelledby="favorites-title" [attr.aria-busy]="favoriteState.isLoadingFavorites || isLoadingCatalog">
+    <h2 id="favorites-title">Favorite Movies</h2>
+    <p *ngIf="favoriteState.isLoadingFavorites || isLoadingCatalog" class="feedback" role="status">Loading favorite movies...</p>
+    <ng-container *ngIf="!favoriteState.isLoadingFavorites && !isLoadingCatalog">
+      <p *ngIf="accountError" class="feedback" role="alert">Favorite membership could not be loaded. Please try again later.</p>
+      <p *ngIf="!accountError && catalogError" class="feedback" role="alert">{{ catalogError }}</p>
+      <ng-container *ngIf="!accountError && !catalogError">
+        <p *ngIf="!favoriteState.favorites.length" class="feedback" role="status">You haven't added any favorite movies yet.</p>
+        <p *ngIf="unresolvedFavorites" class="feedback" role="status">{{ favorites.length ? 'Some favorite movies are not available in the current catalog.' : 'Your favorite movies are not available in the current catalog.' }}</p>
+        <div *ngIf="favorites.length" class="movie-grid">
+          <app-movie-card *ngFor="let movie of favorites" [movie]="movie" [headingLevel]="3" [isFavorite]="true"
+            [isPending]="favoriteState.pendingFavorites.has(movie._id)"
+            [favoriteDisabled]="favoriteState.favoriteControlsDisabled || isSaving || dialogOpen"
+            [favoriteError]="favoriteState.favoriteErrors[movie._id] || ''" (favoriteToggle)="toggleFavorite(movie._id)"></app-movie-card>
+        </div>
+      </ng-container>
+    </ng-container>
+  </section>
+  <section class="profile-panel danger-zone" aria-labelledby="danger-title">
+    <h2 id="danger-title">Danger Zone</h2>
+    <p>Deleting your account permanently removes your account information and favorites.</p>
+    <button type="button" class="button button-danger" [disabled]="!accountReady || isSaving || favoriteState.pendingFavorites.size > 0" (click)="deleteUser()">Delete Account</button>
+  </section>
 </div>

@@ -1,1 +1,5 @@
-<router-outlet></router-outlet>
+<a class="skip-link" href="#main-content" (click)="focusMain(mainContent, $event)">Skip to main content</a>
+<app-navigation-bar></app-navigation-bar>
+<main #mainContent id="main-content" tabindex="-1" class="page-container application-main">
+  <router-outlet></router-outlet>
+</main>

@@ -1,0 +1,12 @@
+// Shared source for runtime tokens and Angular Material's compile-time palettes.
+$font-family: '"Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+$colors: (
+  canvas: #EDE4D3, surface-1: #F8F3E9, surface-2: #FFFDF8, surface-elevated: #FFFFFF,
+  border-subtle: #D8CCB8, border-strong: #BFAF98,
+  text-primary: #2B211D, text-secondary: #62554D, text-muted: #81736A,
+  primary: #8F1D2C, primary-hover: #741724, primary-subtle: #F2DDE0, on-primary: #FFFFFF,
+  secondary: #496F6A, secondary-subtle: #DDE9E5, focus: #496F6A,
+  danger: #C9364F, danger-hover: #A92840, danger-subtle: #FBE7EA, on-danger: #FFFFFF
+);
+$spacing: (1: 4px, 2: 8px, 3: 12px, 4: 16px, 5: 24px, 6: 32px, 7: 40px, 8: 56px, 9: 72px);
+$radii: (small: 4px, default: 8px, medium: 12px, large: 16px, full: 9999px);

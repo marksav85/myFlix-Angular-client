@@ -1,58 +1,95 @@
-# MyFlixAngularClient
+# myFlix — Angular client
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.6.
+An Angular movie-library portfolio application for the sibling `movie-api`
+backend. It shares a product structure with the React myFlix client and uses
+the Warm Editorial theme: parchment canvas, ivory surfaces, burgundy actions,
+and a separate destructive color treatment.
 
-## Development server
+Built with Angular 16, TypeScript, Angular Router, template-driven forms,
+HttpClient, RxJS, Sass, and Angular Material's accessible confirmation dialog.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Application
 
-## Code scaffolding
+- `/login` and `/signup`: routed authentication forms with reciprocal links.
+  `/` and the historical `/welcome` URL redirect to `/login`.
+- `/movies`: responsive movie cards and client-side, case-insensitive title search.
+- `/movies/:movieId`: catalog-resolved detail page with full synopsis, genre,
+  director, and optional inline genre description/director biography.
+- `/profile`: account information, integrated update form, shared favorite cards,
+  and a final Danger Zone with account-deletion confirmation.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Login persists the returned user, username selector, and Bearer JWT in
+localStorage. Signup does not automatically log in. Logout clears application
+session keys and returns to `/login`. The backend remains responsible for
+JWT authorization and self-only account access; client session checks are not
+an authorization boundary.
 
-## Build
+Favorites use server-returned membership and persist the returned user.
+Mutations are guarded and serialized within each page; entering Library,
+Detail, or Profile loads fresh account state. Profile updates require a
+Password of at least 5 characters, including when only other fields change.
+Entering the current password keeps it; entering a new password replaces it.
+A returned username change updates the local selector without forcing logout.
+Only successful account deletion clears the session and navigates to Login;
+failure retains the account/session and permits retry.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Local setup
 
-## Running unit tests
+Install locked dependencies with `npm ci`, start the local `movie-api` backend,
+and run `npm start`. The Angular development server uses `http://localhost:4200`.
+The backend must allow the frontend origin through its CORS configuration.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+The root package does not declare Node/npm engines. The locked Angular CLI
+metadata declares Node `^16.14.0 || >=18.10.0` and npm
+`^6.11.0 || ^7.5.6 || >=8.0.0`; final validation used Node 22.23.2 / npm 10.9.8.
+These are tool metadata and the tested local versions, not an Angular upgrade.
 
-## Running end-to-end tests
+API origins are environment-configured:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+| Mode | Configuration | API origin |
+| --- | --- | --- |
+| Development | `src/environments/environment.development.ts` | `http://localhost:8080` |
+| Production | `src/environments/environment.ts` | `https://movie-api-mreb.onrender.com` |
 
-## Further help
+Development serving/builds use the Angular file replacement. The API service
+normalizes trailing slashes and adds the current Bearer token. The backend
+retains `/users/:Username` and `/users/:Username/movies/:MovieID` as self-only
+routes; there is no `/users/me` or user-list request. No backend credentials
+belong in this public client.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Commands
 
-### API configuration
+| Command | Purpose |
+| --- | --- |
+| `npm start` | Development server |
+| `npm run lint` | Angular/TypeScript/template lint |
+| `npm test -- --watch=false --browsers=ChromeHeadless` | Complete Karma/Jasmine unit suite; requires Chrome |
+| `npm run build` | Production build into `dist/my-flix-angular-client/` |
+| `npm run build -- --configuration development` | Development build |
+| `npm run test:integration` | Opt-in disposable local backend HTTP validation |
+| `npm run deploy` | Existing GitHub Pages deployment command with subpath base href |
 
-The production build (`npm run build`) uses `src/environments/environment.ts`.
-Set its `apiUrl` to the deployed backend origin before deployment. Development
-builds (`npm run build -- --configuration development`) and the development server
-use `src/environments/environment.development.ts`, currently `http://localhost:8080`.
-Change that value if the local backend uses another port. No URL belongs in the API
-service; trailing slashes are normalized there.
+The integration runner uses the sibling `../movie-api` with an isolated temporary
+MongoDB database on localhost port 8080. Both repositories need their locked
+dependencies installed and an existing cached MongoDB binary; downloads are
+disabled. It does not read the backend `.env`, contact Render, or reuse an
+existing database/listener. `MYFLIX_BACKEND_PATH` and `MYFLIX_MONGOD_BINARY` may
+select another backend checkout or existing binary. Ordinary unit tests do
+not require the backend. See [the runner](scripts/validate-integration.cjs).
 
-The finalized backend retains `/users/:Username` and
-`/users/:Username/movies/:MovieID` as self-only routes. The username selects the
-resource; the backend authorizes it against the Bearer JWT. There is no `/users/me`
-route or user-list request. Login and successful profile responses keep the local
-username selector current, including after a rename.
+## Design and deployment
 
-### Local backend integration validation
+The durable visual specification is [docs/design/DESIGN.md](docs/design/DESIGN.md).
+The canonical favicon is `src/favicon.svg`; unchanged reference artwork lives
+at `docs/design/assets/myflix-icon-source.png`. Runtime typography declares
+Plus Jakarta Sans with system fallbacks; no font files are bundled/downloaded.
+The canonical AI context pack lives under `docs/0-ai/artifacts/` and is generated
+through the repository playbook artifact controller. Historical TypeDoc output
+and tooling were retired because they were stale and had no active workflow.
 
-`npm run test:integration` exercises the real sibling `../movie-api` backend with
-an isolated temporary MongoDB database, then runs the normal unit suite and the
-opt-in Angular HTTP integration spec in one non-watch/headless Chrome session.
-It never reads the backend `.env`, contacts Render, or uses an existing database.
-Disposable credentials are generated in memory; accounts and the database are
-removed after validation. The runner uses localhost port 8080 and must be able to
-start local processes/listeners. It refuses to reuse an existing listener.
-
-Both repositories must already have their locked dependencies installed. The
-backend's cached MongoDB binary is required; runtime downloads are disabled.
-`MYFLIX_BACKEND_PATH` can select another local backend checkout, and
-`MYFLIX_MONGOD_BINARY` can select an existing MongoDB executable. Normal `npm test`
-continues to run only the unit specs and does not require the backend.
+The default production build has base href `/`. The existing deployment script
+sets `/myFlix-Angular-client/` for GitHub Pages; the relative favicon URL resolves
+under either base. Static hosting must support Angular route fallback to the
+application entry page. API hosting and authorization remain separate from
+frontend static hosting. This describes repository configuration, not a claim
+that the current working tree has been deployed.
