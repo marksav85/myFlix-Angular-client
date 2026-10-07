@@ -88,14 +88,16 @@ describe('FetchApiDataService API contracts', () => {
 
   it('puts profile details including Birthday to the current user endpoint', () => {
     const details = { Username: 'renamed-user', Password: 'new-password', Email: 'new@example.com', Birthday: '1991-02-03' };
+    const updatedUser = { ...user, Username: details.Username, Email: details.Email, Birthday: '1991-02-03T00:00:00.000Z' };
     const next = jasmine.createSpy('next');
     service.editUser(details).subscribe(next);
     const request = http.expectOne(base + 'users/' + user.Username);
     expect(request.request.method).toBe('PUT');
     expect(request.request.body).toEqual(details);
     expect(request.request.headers.get('Authorization')).toBe('Bearer phase1-token');
-    request.flush(details);
-    expect(next).toHaveBeenCalledOnceWith(details);
+    request.flush(updatedUser);
+    expect(next).toHaveBeenCalledOnceWith(updatedUser);
+    expect(Object.prototype.hasOwnProperty.call(next.calls.mostRecent().args[0], 'Password')).toBeFalse();
   });
 
   it('posts a favourite for the current user and supplied movie ID', () => {

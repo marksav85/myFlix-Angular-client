@@ -90,9 +90,23 @@ describe('Warm Editorial Profile', () => {
   it('omits unavailable birthday and never invents account data', fakeAsync(() => {
     api.getUser.and.returnValue(of({ ...user, Birthday: null })); start(); expect(query('time')).toBeNull(); expect(component.userData.Birthday).toBe('');
   }));
-  it('rejects short username/password, invalid email and missing birthday', fakeAsync(() => {
+  it('saves other valid changes for an account without a birthday', fakeAsync(() => {
+    const withoutBirthday = { ...user, Birthday: null };
+    api.getUser.and.returnValue(of(withoutBirthday));
+    api.editUser.and.returnValue(of({ ...withoutBirthday, Email: 'updated@example.com' }));
+    start();
+    expect(query<HTMLInputElement>('#profile-birthday').required).toBeFalse();
+    expect(text()).toContain('Birthday is optional.');
+    input('profile-email', 'updated@example.com'); input('profile-password', 'valid-password'); submit();
+    expect(api.editUser).toHaveBeenCalledOnceWith({ Username: user.Username, Email: 'updated@example.com', Birthday: '', Password: 'valid-password' });
+    expect(component.user.Email).toBe('updated@example.com');
+    expect(component.userData.Birthday).toBe('');
+    expect(text()).toContain('Your account has been updated');
+    expect(query('#profile-birthday-error')).toBeNull();
+  }));
+  it('rejects short username/password and invalid email', fakeAsync(() => {
     start(); input('profile-password', 'valid-password');
-    const invalid: [string, string, string][] = [['profile-username', 'a', user.Username], ['profile-password', 'a', 'valid-password'], ['profile-email', 'bad', user.Email], ['profile-birthday', '', '1990-01-02']];
+    const invalid: [string, string, string][] = [['profile-username', 'a', user.Username], ['profile-password', 'a', 'valid-password'], ['profile-email', 'bad', user.Email]];
     invalid.forEach(([id, value, valid]) => { input(id, value); submit(); expect(api.editUser).not.toHaveBeenCalled(); input(id, valid); });
   }));
   it('guards pending updates and persists authoritative returned user without changing token', fakeAsync(() => {
