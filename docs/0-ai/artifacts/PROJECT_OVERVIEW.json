@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-09T14:02:02Z",
+  "generatedAt": "2026-10-09T14:47:13Z",
   "meta": {
     "artifactId": "PROJECT_OVERVIEW",
-    "packId": "2026-10-09T14:02:02Z",
-    "generatedAt": "2026-10-09T14:02:02Z",
+    "packId": "2026-10-09T14:47:13Z",
+    "generatedAt": "2026-10-09T14:47:13Z",
     "generator": "prompt--artifact--generate-project-overview.md"
   },
   "rootTree": {
@@ -91,6 +91,7 @@
         "zone.js": "~0.13.0"
       },
       "devDependencies": {
+        "@angular-devkit/architect": "0.1602.6",
         "@angular-devkit/build-angular": "^16.2.6",
         "@angular-eslint/builder": "16.2.0",
         "@angular-eslint/eslint-plugin": "16.2.0",
@@ -141,6 +142,7 @@
         "zone.js": "~0.13.0"
       },
       "devDependencies": {
+        "@angular-devkit/architect": "0.1602.6",
         "@angular-devkit/build-angular": "^16.2.6",
         "@angular-eslint/builder": "16.2.0",
         "@angular-eslint/eslint-plugin": "16.2.0",
@@ -192,6 +194,7 @@
         "eslint"
       ],
       "buildTools": [
+        "@angular-devkit/architect",
         "@angular-devkit/build-angular",
         "@angular/cli",
         "@angular/compiler-cli"
@@ -239,7 +242,9 @@
   },
   "cleanup": {
     "githubPagesTooling": "Removed npm deploy script, Angular deploy builder and angular-cli-ghpages dependency",
-    "formattingTooling": "Removed npm format script and root prettierrc.json; .editorconfig and ESLint retained"
+    "formattingTooling": "Removed npm format script and root prettierrc.json; .editorconfig and ESLint retained",
+    "obsoleteAssets": "Removed unreferenced src/assets/logo.png; retained src/favicon.svg and docs/design/assets/myflix-icon-source.png",
+    "lintDependency": "Direct exact devDependency @angular-devkit/architect 0.1602.6 makes Architect resolvable by the Angular ESLint builder through @nx/devkit; matches existing CLI/build packages"
   },
   "documentation": {
     "readme": "README.md",

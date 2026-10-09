@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-09T14:02:02Z",
+  "generatedAt": "2026-10-09T14:47:13Z",
   "meta": {
     "artifactId": "DOCS_TREE",
-    "packId": "2026-10-09T14:02:02Z",
-    "generatedAt": "2026-10-09T14:02:02Z",
+    "packId": "2026-10-09T14:47:13Z",
+    "generatedAt": "2026-10-09T14:47:13Z",
     "generator": "prompt--artifact--generate-docs-tree.md"
   },
   "root": "docs",
@@ -32,7 +32,7 @@
               "name": "ARTIFACT_PACK_MANIFEST.json",
               "relativePath": "docs/0-ai/artifacts/ARTIFACT_PACK_MANIFEST.json",
               "extension": ".json",
-              "sizeKB": 4.3,
+              "sizeKB": 5.2,
               "tier": "core",
               "riskIfMissing": "medium",
               "tags": [
@@ -70,7 +70,7 @@
               "name": "PROJECT_OVERVIEW.json",
               "relativePath": "docs/0-ai/artifacts/PROJECT_OVERVIEW.json",
               "extension": ".json",
-              "sizeKB": 8.4,
+              "sizeKB": 8.8,
               "tier": "core",
               "riskIfMissing": "medium",
               "tags": [

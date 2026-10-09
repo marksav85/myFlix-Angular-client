@@ -1,25 +1,26 @@
 {
-  "packId": "2026-10-09T14:02:02Z",
+  "packId": "2026-10-09T14:47:13Z",
   "runMode": "controller",
-  "generatedAt": "2026-10-09T14:02:02Z",
-  "verifiedAt": "2026-10-09T14:02:02Z",
+  "generatedAt": "2026-10-09T14:47:13Z",
+  "verifiedAt": "2026-10-09T14:47:13Z",
   "repoBranch": "refactor/portfolio-update",
-  "repoHead": "2b40d964d70031fa2fbff0525fe8998624b3ed0c",
+  "repoHead": "9cad9d33a4ff9d47a4e07dbdc2c8223beacf58f9",
   "scopeHeads": {
-    "docsHead": "88c47dc42b60f419086146326ed84fcb17f52f11",
-    "srcHead": "e67ba2565008f77e49fedc2139bd5f65149fd413",
-    "depsHead": "2b40d964d70031fa2fbff0525fe8998624b3ed0c"
+    "docsHead": "9fcdce31c163207a888e58a29e465faac7bb0e44",
+    "srcHead": "9cad9d33a4ff9d47a4e07dbdc2c8223beacf58f9",
+    "depsHead": "9cad9d33a4ff9d47a4e07dbdc2c8223beacf58f9"
   },
   "dirtyWorkingTree": false,
   "warnings": [
     "Exact Cloudflare SPA fallback configuration remains unverified. Deployment settings are owner-verified facts from README.md, not production checks in this run.",
-    "Application tests and security checks were not run during artifact generation."
+    "Application tests and security checks were not run during artifact generation.",
+    "Acknowledged source artifacts retain their original generation timestamps and pack IDs; their source coverage and bytes were checked against current HEAD."
   ],
   "stalenessSummary": {
     "counts": {
       "flagged": 5,
-      "regenerated": 6,
-      "acknowledged": 0,
+      "regenerated": 3,
+      "acknowledged": 3,
       "verified": 0
     },
     "scopeChanges": {
@@ -27,91 +28,100 @@
       "src": true,
       "deps": true
     },
-    "reason": "User approved APPLY ALL after controller preflight; clean committed input baseline includes hosting and tooling cleanup."
+    "reason": "Approved minimum refresh: regenerate DOCS_TREE and PROJECT_OVERVIEW; acknowledge unchanged SRC_TREE, CONTEXT_SUMMARY and SRC_SNAPSHOT_1. Source change removes an excluded asset; dependency change adds exact Architect. Docs scope reflects the previous pack commit."
   },
   "artifacts": [
     {
       "artifactId": "SRC_TREE",
       "path": "docs/0-ai/artifacts/SRC_TREE.json",
       "generatedAt": "2026-10-09T14:02:02Z",
-      "verifiedAt": "2026-10-09T14:02:02Z",
-      "status": "regenerated",
+      "verifiedAt": "2026-10-09T14:47:13Z",
+      "status": "acknowledged",
       "sizeBytes": 15330,
       "contentHash": "6b03a08b608b7738b9db615169eb87b72c310c88f76743b1edd80f0a99203daf",
       "dependsOnScopes": [
         "src"
       ],
       "scopeHeadsAtVerify": {
-        "srcHead": "e67ba2565008f77e49fedc2139bd5f65149fd413"
-      }
+        "srcHead": "9cad9d33a4ff9d47a4e07dbdc2c8223beacf58f9"
+      },
+      "warnings": [
+        "Scope change is deletion of an excluded static asset. Included source, inventory and architecture are unchanged; original artifact metadata and bytes retained by explicit approval."
+      ]
     },
     {
       "artifactId": "DOCS_TREE",
       "path": "docs/0-ai/artifacts/DOCS_TREE.json",
-      "generatedAt": "2026-10-09T14:02:02Z",
-      "verifiedAt": "2026-10-09T14:02:02Z",
+      "generatedAt": "2026-10-09T14:47:13Z",
+      "verifiedAt": "2026-10-09T14:47:13Z",
       "status": "regenerated",
       "sizeBytes": 3869,
-      "contentHash": "57d87666bb3855b079828217b00ae1324b9e6075c80b97b5bd2154e4eb6a5e54",
+      "contentHash": "c89297525503f8ce72a89272833e37f0e3188f000204143d97de474d14500124",
       "dependsOnScopes": [
         "docs"
       ],
       "scopeHeadsAtVerify": {
-        "docsHead": "88c47dc42b60f419086146326ed84fcb17f52f11"
+        "docsHead": "9fcdce31c163207a888e58a29e465faac7bb0e44"
       }
     },
     {
       "artifactId": "PROJECT_OVERVIEW",
       "path": "docs/0-ai/artifacts/PROJECT_OVERVIEW.json",
-      "generatedAt": "2026-10-09T14:02:02Z",
-      "verifiedAt": "2026-10-09T14:02:02Z",
+      "generatedAt": "2026-10-09T14:47:13Z",
+      "verifiedAt": "2026-10-09T14:47:13Z",
       "status": "regenerated",
-      "sizeBytes": 8570,
-      "contentHash": "b4546d00ceba82b47b3051dd75f5397af03eac2d9929cc0d77bd70def0271aec",
+      "sizeBytes": 9043,
+      "contentHash": "7e11cf703f50c2a3882f7d539f57eb88c78d79a7cccdccadb60101f085de963f",
       "dependsOnScopes": [
         "docs",
         "deps"
       ],
       "scopeHeadsAtVerify": {
-        "docsHead": "88c47dc42b60f419086146326ed84fcb17f52f11",
-        "depsHead": "2b40d964d70031fa2fbff0525fe8998624b3ed0c"
+        "docsHead": "9fcdce31c163207a888e58a29e465faac7bb0e44",
+        "depsHead": "9cad9d33a4ff9d47a4e07dbdc2c8223beacf58f9"
       }
     },
     {
       "artifactId": "CONTEXT_SUMMARY",
       "path": "docs/0-ai/artifacts/CONTEXT_SUMMARY.md",
       "generatedAt": "2026-10-09T14:02:02Z",
-      "verifiedAt": "2026-10-09T14:02:02Z",
-      "status": "regenerated",
+      "verifiedAt": "2026-10-09T14:47:13Z",
+      "status": "acknowledged",
       "sizeBytes": 5882,
       "contentHash": "a79ecd7d54b092c42254afe93949461b0e067f86ea4aa429de17cdb908505756",
       "dependsOnScopes": [
         "src"
       ],
       "scopeHeadsAtVerify": {
-        "srcHead": "e67ba2565008f77e49fedc2139bd5f65149fd413"
-      }
+        "srcHead": "9cad9d33a4ff9d47a4e07dbdc2c8223beacf58f9"
+      },
+      "warnings": [
+        "Scope change is deletion of an excluded static asset. Included source, inventory and architecture are unchanged; original artifact metadata and bytes retained by explicit approval."
+      ]
     },
     {
       "artifactId": "SRC_SNAPSHOT_1",
       "path": "docs/0-ai/artifacts/SRC_SNAPSHOT_1.tsx",
       "generatedAt": "2026-10-09T14:02:02Z",
-      "verifiedAt": "2026-10-09T14:02:02Z",
-      "status": "regenerated",
+      "verifiedAt": "2026-10-09T14:47:13Z",
+      "status": "acknowledged",
       "sizeBytes": 68572,
       "contentHash": "b799b9a12dc83245f452094843f9f26b611c9118464be853bcb9fc2e10d0dcd5",
       "dependsOnScopes": [
         "src"
       ],
       "scopeHeadsAtVerify": {
-        "srcHead": "e67ba2565008f77e49fedc2139bd5f65149fd413"
-      }
+        "srcHead": "9cad9d33a4ff9d47a4e07dbdc2c8223beacf58f9"
+      },
+      "warnings": [
+        "Scope change is deletion of an excluded static asset. Included source, inventory and architecture are unchanged; original artifact metadata and bytes retained by explicit approval."
+      ]
     },
     {
       "artifactId": "ARTIFACT_PACK_MANIFEST",
       "path": "docs/0-ai/artifacts/ARTIFACT_PACK_MANIFEST.json",
-      "generatedAt": "2026-10-09T14:02:02Z",
-      "verifiedAt": "2026-10-09T14:02:02Z",
+      "generatedAt": "2026-10-09T14:47:13Z",
+      "verifiedAt": "2026-10-09T14:47:13Z",
       "status": "regenerated",
       "sizeBytes": null,
       "contentHash": null,
@@ -121,9 +131,9 @@
         "deps"
       ],
       "scopeHeadsAtVerify": {
-        "docsHead": "88c47dc42b60f419086146326ed84fcb17f52f11",
-        "srcHead": "e67ba2565008f77e49fedc2139bd5f65149fd413",
-        "depsHead": "2b40d964d70031fa2fbff0525fe8998624b3ed0c"
+        "docsHead": "9fcdce31c163207a888e58a29e465faac7bb0e44",
+        "srcHead": "9cad9d33a4ff9d47a4e07dbdc2c8223beacf58f9",
+        "depsHead": "9cad9d33a4ff9d47a4e07dbdc2c8223beacf58f9"
       },
       "warnings": [
         "Self-referential hash and size intentionally omitted."
