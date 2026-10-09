@@ -9,8 +9,7 @@
     "test": "ng test",
     "test:integration": "node scripts/validate-integration.cjs",
     "lint": "ng lint",
-    "format": "prettier --write 'src/**/*.html'",
-    "deploy": "ng deploy --base-href=/myFlix-Angular-client/"
+    "format": "prettier --write 'src/**/*.html'"
   },
   "private": true,
   "dependencies": {
@@ -40,7 +39,6 @@
     "@types/jasmine": "~4.3.0",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
-    "angular-cli-ghpages": "^1.0.7",
     "eslint": "^8.57.1",
     "jasmine-core": "~4.6.1",
     "karma": "~6.4.4",

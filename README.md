@@ -99,10 +99,6 @@ belong in this public client.
 | `npm run test:integration` | Opt-in disposable local backend HTTP validation |
 | `npm run format` | Format source HTML with Prettier |
 
-The existing `npm run deploy` script is legacy GitHub Pages tooling and should
-not be used for Cloudflare Workers. Its script, builder, and dependency remain
-in the repository pending separate cleanup.
-
 Unit tests use Karma/Jasmine and cover components, routing, session behavior,
 and API-service requests. Linting checks TypeScript and Angular templates,
 including template accessibility rules. `npm run build` uses the default
