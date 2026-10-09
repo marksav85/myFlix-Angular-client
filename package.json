@@ -8,8 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:integration": "node scripts/validate-integration.cjs",
-    "lint": "ng lint",
-    "format": "prettier --write 'src/**/*.html'"
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {

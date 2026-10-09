@@ -97,7 +97,6 @@ belong in this public client.
 | `npm run build` | Production build into `dist/my-flix-angular-client/` |
 | `npm run build -- --configuration development` | Development build |
 | `npm run test:integration` | Opt-in disposable local backend HTTP validation |
-| `npm run format` | Format source HTML with Prettier |
 
 Unit tests use Karma/Jasmine and cover components, routing, session behavior,
 and API-service requests. Linting checks TypeScript and Angular templates,
