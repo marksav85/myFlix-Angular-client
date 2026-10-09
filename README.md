@@ -139,7 +139,7 @@ The following settings are dashboard-verified:
 | --- | --- |
 | Worker | `myflix-angular` |
 | GitHub repository | [marksav85/myFlix-Angular-client](https://github.com/marksav85/myFlix-Angular-client) |
-| Production branch | `refactor/portfolio-update` |
+| Production branch | `master` |
 | Root directory | `/` |
 | Build command | `npm ci && npm run build -- --configuration production` |
 | Asset output | `dist/my-flix-angular-client/` |
