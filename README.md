@@ -129,9 +129,11 @@ and tooling were retired because they were stale and had no active workflow.
 ## Cloudflare Workers deployment
 
 The Angular client is deployed to Worker **`myflix-angular`**, serving the custom
-domain and Workers URL linked above. The Cloudflare dashboard manages deployment
-configuration; no application-owned Wrangler configuration is tracked in this
-repository.
+domain and Workers URL linked above. Cloudflare Workers Builds manages the build
+and deployment workflow. The tracked [wrangler.jsonc](wrangler.jsonc) configures
+Worker `myflix-angular`, compatibility date `2026-10-08`, static assets directory
+`./dist/my-flix-angular-client`, and
+`assets.not_found_handling: "single-page-application"`.
 
 The following settings are dashboard-verified:
 
@@ -161,6 +163,9 @@ installation because the build command installs locked dependencies with
 
 The production build uses base href `/` and publishes the generated static
 assets from `dist/my-flix-angular-client/`. Angular Router uses browser paths,
-so direct visits and refreshes on routes such as `/profile` and
-`/movies/:movieId` require SPA fallback to `index.html`. The exact Cloudflare
-fallback configuration has not been verified.
+so SPA fallback serves `index.html` for unmatched paths, allowing Angular to
+resolve routes such as `/login`, `/signup`, `/profile`, and `/movies/:movieId`
+on direct navigation and browser refresh. Cloudflare Workers Builds successfully
+deployed this configuration from `master`; browser refreshes on application
+routes have been verified working in production. Existing static assets continue
+to be served normally, and API requests use the separate API origin.
