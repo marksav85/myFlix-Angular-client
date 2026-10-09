@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-10-03T13:01:52Z",
+  "generatedAt": "2026-10-09T14:02:02Z",
   "meta": {
     "artifactId": "SRC_TREE",
-    "packId": "2026-10-03T13:01:52Z",
-    "generatedAt": "2026-10-03T13:01:52Z",
+    "packId": "2026-10-09T14:02:02Z",
+    "generatedAt": "2026-10-09T14:02:02Z",
     "generator": "prompt--artifact--generate-src-tree.md"
   },
   "root": "src",
   "summary": {
     "totalFiles": 37,
-    "totalDirectories": 13
+    "totalDirectories": 11
   },
   "tree": [
     {
@@ -211,12 +211,6 @@
           ]
         },
         {
-          "type": "directory",
-          "name": "movie-details",
-          "relativePath": "src/app/movie-details",
-          "children": []
-        },
-        {
           "type": "file",
           "name": "movie-favorites.service.ts",
           "relativePath": "src/app/movie-favorites.service.ts",
@@ -347,7 +341,7 @@
               "name": "user-profile.component.html",
               "relativePath": "src/app/user-profile/user-profile.component.html",
               "extension": ".html",
-              "sizeKB": 6.7,
+              "sizeKB": 6.8,
               "isComponent": false,
               "imports": []
             },
@@ -412,12 +406,6 @@
               ]
             }
           ]
-        },
-        {
-          "type": "directory",
-          "name": "welcome-page",
-          "relativePath": "src/app/welcome-page",
-          "children": []
         }
       ]
     },
@@ -479,7 +467,9 @@
       "extension": ".scss",
       "sizeKB": 8.0,
       "isComponent": false,
-      "imports": []
+      "imports": [
+        "src/_design-tokens.scss"
+      ]
     }
   ]
 }

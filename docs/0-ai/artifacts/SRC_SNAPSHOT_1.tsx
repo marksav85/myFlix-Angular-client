@@ -1,4 +1,4 @@
-// ARTIFACT_META: {"artifactId":"SRC_SNAPSHOT_1","packId":"2026-10-03T13:01:52Z","generatedAt":"2026-10-03T13:01:52Z","generator":"prompt--artifact--generate-snapshot.md"}
+// ARTIFACT_META: {"artifactId":"SRC_SNAPSHOT_1","packId":"2026-10-09T14:02:02Z","generatedAt":"2026-10-09T14:02:02Z","generator":"prompt--artifact--generate-snapshot.md"}
 
 // ===== FILE: src/app/api-models.ts =====
 export interface User {
@@ -899,7 +899,7 @@ export class UserLoginFormComponent implements AfterViewInit, OnDestroy {
     </section>
     <section class="profile-panel surface" aria-labelledby="update-title">
       <h2 id="update-title">Update Account</h2>
-      <p class="auth-help form-requirements">All fields are required to save changes.</p>
+      <p class="auth-help form-requirements">Username, email and password are required to save changes. Birthday is optional.</p>
       <form #form="ngForm" (ngSubmit)="editUser(form)" class="auth-form" [attr.aria-busy]="isSaving"
         [attr.aria-describedby]="updateError ? 'profile-update-error' : null">
         <div>
@@ -919,12 +919,12 @@ export class UserLoginFormComponent implements AfterViewInit, OnDestroy {
           <p *ngIf="email.invalid && (email.touched || form.submitted)" id="profile-email-error" class="auth-field-error">Enter a valid email address.</p>
         </div>
         <div>
-          <label class="form-label" for="profile-birthday">Birthday</label>
+          <label class="form-label" for="profile-birthday">Birthday (optional)</label>
           <input id="profile-birthday" class="form-input" name="Birthday" type="date" autocomplete="bday"
-            [(ngModel)]="userData.Birthday" #birthdayField="ngModel" required [readonly]="accountActionsDisabled"
+            [(ngModel)]="userData.Birthday" #birthdayField="ngModel" [readonly]="accountActionsDisabled"
             [attr.aria-invalid]="birthdayField.invalid && (birthdayField.touched || form.submitted) ? 'true' : null"
             [attr.aria-describedby]="birthdayField.invalid && (birthdayField.touched || form.submitted) ? 'profile-birthday-error' : null" />
-          <p *ngIf="birthdayField.invalid && (birthdayField.touched || form.submitted)" id="profile-birthday-error" class="auth-field-error">Enter your birthday.</p>
+          <p *ngIf="birthdayField.invalid && (birthdayField.touched || form.submitted)" id="profile-birthday-error" class="auth-field-error">Enter a valid birthday or leave it blank.</p>
         </div>
         <div>
           <label class="form-label" for="profile-password">Password (required to save changes)</label>
@@ -1239,7 +1239,7 @@ export const environment = {
 // ===== FILE: src/environments/environment.ts =====
 export const environment = {
   production: true,
-  apiUrl: 'https://movie-api-mreb.onrender.com',
+  apiUrl: 'https://api.myflix.marksavilledesigns.com',
 };
 
 // ===== FILE: src/index.html =====

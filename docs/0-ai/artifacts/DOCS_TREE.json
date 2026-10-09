@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-03T13:01:52Z",
+  "generatedAt": "2026-10-09T14:02:02Z",
   "meta": {
     "artifactId": "DOCS_TREE",
-    "packId": "2026-10-03T13:01:52Z",
-    "generatedAt": "2026-10-03T13:01:52Z",
+    "packId": "2026-10-09T14:02:02Z",
+    "generatedAt": "2026-10-09T14:02:02Z",
     "generator": "prompt--artifact--generate-docs-tree.md"
   },
   "root": "docs",
@@ -44,7 +44,7 @@
               "name": "CONTEXT_SUMMARY.md",
               "relativePath": "docs/0-ai/artifacts/CONTEXT_SUMMARY.md",
               "extension": ".md",
-              "sizeKB": 4.2,
+              "sizeKB": 5.7,
               "tier": "core",
               "riskIfMissing": "medium",
               "tags": [
@@ -70,7 +70,7 @@
               "name": "PROJECT_OVERVIEW.json",
               "relativePath": "docs/0-ai/artifacts/PROJECT_OVERVIEW.json",
               "extension": ".json",
-              "sizeKB": 6.6,
+              "sizeKB": 8.4,
               "tier": "core",
               "riskIfMissing": "medium",
               "tags": [
@@ -83,7 +83,7 @@
               "name": "SRC_SNAPSHOT_1.tsx",
               "relativePath": "docs/0-ai/artifacts/SRC_SNAPSHOT_1.tsx",
               "extension": ".tsx",
-              "sizeKB": 66.9,
+              "sizeKB": 67.0,
               "tier": "core",
               "riskIfMissing": "medium",
               "tags": [
@@ -95,7 +95,7 @@
               "name": "SRC_TREE.json",
               "relativePath": "docs/0-ai/artifacts/SRC_TREE.json",
               "extension": ".json",
-              "sizeKB": 15.2,
+              "sizeKB": 15.0,
               "tier": "core",
               "riskIfMissing": "medium",
               "tags": [

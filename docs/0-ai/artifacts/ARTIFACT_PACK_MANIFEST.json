@@ -1,23 +1,24 @@
 {
-  "packId": "2026-10-03T13:01:52Z",
+  "packId": "2026-10-09T14:02:02Z",
   "runMode": "controller",
-  "generatedAt": "2026-10-03T13:01:52Z",
-  "verifiedAt": "2026-10-03T13:01:52Z",
+  "generatedAt": "2026-10-09T14:02:02Z",
+  "verifiedAt": "2026-10-09T14:02:02Z",
   "repoBranch": "refactor/portfolio-update",
-  "repoHead": "acde63232924cc805742e30e87202ce0ed528323",
+  "repoHead": "2b40d964d70031fa2fbff0525fe8998624b3ed0c",
   "scopeHeads": {
-    "docsHead": "73dd61ee9074368e9278202ad2b40eac253e391a",
-    "srcHead": "7e62c5244ae4df8c27f7f815b806b2e4c2a982dd",
-    "depsHead": "acde63232924cc805742e30e87202ce0ed528323"
+    "docsHead": "88c47dc42b60f419086146326ed84fcb17f52f11",
+    "srcHead": "e67ba2565008f77e49fedc2139bd5f65149fd413",
+    "depsHead": "2b40d964d70031fa2fbff0525fe8998624b3ed0c"
   },
-  "dirtyWorkingTree": true,
+  "dirtyWorkingTree": false,
   "warnings": [
-    "Uncommitted changes detected; commit-based staleness detection may miss local changes. Full pack regenerated from final working-tree bytes."
+    "Exact Cloudflare SPA fallback configuration remains unverified. Deployment settings are owner-verified facts from README.md, not production checks in this run.",
+    "Application tests and security checks were not run during artifact generation."
   ],
   "stalenessSummary": {
     "counts": {
       "flagged": 5,
-      "regenerated": 5,
+      "regenerated": 6,
       "acknowledged": 0,
       "verified": 0
     },
@@ -26,96 +27,91 @@
       "src": true,
       "deps": true
     },
-    "workingTreeChanges": {
-      "docs": true,
-      "src": true,
-      "deps": true
-    },
-    "reason": "Committed and uncommitted source, docs, and tooling changes since prior pack; explicit request authorizes regeneration of all artifacts."
+    "reason": "User approved APPLY ALL after controller preflight; clean committed input baseline includes hosting and tooling cleanup."
   },
   "artifacts": [
     {
       "artifactId": "SRC_TREE",
       "path": "docs/0-ai/artifacts/SRC_TREE.json",
-      "generatedAt": "2026-10-03T13:01:52Z",
-      "verifiedAt": "2026-10-03T13:01:52Z",
+      "generatedAt": "2026-10-09T14:02:02Z",
+      "verifiedAt": "2026-10-09T14:02:02Z",
       "status": "regenerated",
-      "sizeBytes": 15613,
-      "contentHash": "ec7a6fdb25deb28b24bf967b7bda929491242d541ec0b26714bb9e800c8d6488",
+      "sizeBytes": 15330,
+      "contentHash": "6b03a08b608b7738b9db615169eb87b72c310c88f76743b1edd80f0a99203daf",
       "dependsOnScopes": [
         "src"
       ],
       "scopeHeadsAtVerify": {
-        "srcHead": "7e62c5244ae4df8c27f7f815b806b2e4c2a982dd"
+        "srcHead": "e67ba2565008f77e49fedc2139bd5f65149fd413"
       }
     },
     {
       "artifactId": "DOCS_TREE",
       "path": "docs/0-ai/artifacts/DOCS_TREE.json",
-      "generatedAt": "2026-10-03T13:01:52Z",
-      "verifiedAt": "2026-10-03T13:01:52Z",
+      "generatedAt": "2026-10-09T14:02:02Z",
+      "verifiedAt": "2026-10-09T14:02:02Z",
       "status": "regenerated",
       "sizeBytes": 3869,
-      "contentHash": "5c34bb45bb727c70bb918d71c83765f251138f7f4766bd983d05244d00c2914d",
+      "contentHash": "57d87666bb3855b079828217b00ae1324b9e6075c80b97b5bd2154e4eb6a5e54",
       "dependsOnScopes": [
         "docs"
       ],
       "scopeHeadsAtVerify": {
-        "docsHead": "73dd61ee9074368e9278202ad2b40eac253e391a"
+        "docsHead": "88c47dc42b60f419086146326ed84fcb17f52f11"
       }
     },
     {
       "artifactId": "PROJECT_OVERVIEW",
       "path": "docs/0-ai/artifacts/PROJECT_OVERVIEW.json",
-      "generatedAt": "2026-10-03T13:01:52Z",
-      "verifiedAt": "2026-10-03T13:01:52Z",
+      "generatedAt": "2026-10-09T14:02:02Z",
+      "verifiedAt": "2026-10-09T14:02:02Z",
       "status": "regenerated",
-      "sizeBytes": 6736,
-      "contentHash": "26ad76b6ce0ffa9c9c1a6cb5bb57e19e123a3b9b373623786dd491b4ce88e017",
+      "sizeBytes": 8570,
+      "contentHash": "b4546d00ceba82b47b3051dd75f5397af03eac2d9929cc0d77bd70def0271aec",
       "dependsOnScopes": [
         "docs",
         "deps"
       ],
       "scopeHeadsAtVerify": {
-        "docsHead": "73dd61ee9074368e9278202ad2b40eac253e391a",
-        "depsHead": "acde63232924cc805742e30e87202ce0ed528323"
+        "docsHead": "88c47dc42b60f419086146326ed84fcb17f52f11",
+        "depsHead": "2b40d964d70031fa2fbff0525fe8998624b3ed0c"
       }
     },
     {
       "artifactId": "CONTEXT_SUMMARY",
       "path": "docs/0-ai/artifacts/CONTEXT_SUMMARY.md",
-      "generatedAt": "2026-10-03T13:01:52Z",
-      "verifiedAt": "2026-10-03T13:01:52Z",
+      "generatedAt": "2026-10-09T14:02:02Z",
+      "verifiedAt": "2026-10-09T14:02:02Z",
       "status": "regenerated",
-      "sizeBytes": 4262,
-      "contentHash": "f284360e25d71cfd0f105e8feccfa6d93d882a83b14148b4a8d08ff0fbce1651",
+      "sizeBytes": 5882,
+      "contentHash": "a79ecd7d54b092c42254afe93949461b0e067f86ea4aa429de17cdb908505756",
       "dependsOnScopes": [
         "src"
       ],
       "scopeHeadsAtVerify": {
-        "srcHead": "7e62c5244ae4df8c27f7f815b806b2e4c2a982dd"
+        "srcHead": "e67ba2565008f77e49fedc2139bd5f65149fd413"
       }
     },
     {
       "artifactId": "SRC_SNAPSHOT_1",
       "path": "docs/0-ai/artifacts/SRC_SNAPSHOT_1.tsx",
-      "generatedAt": "2026-10-03T13:01:52Z",
-      "verifiedAt": "2026-10-03T13:01:52Z",
+      "generatedAt": "2026-10-09T14:02:02Z",
+      "verifiedAt": "2026-10-09T14:02:02Z",
       "status": "regenerated",
-      "sizeBytes": 68503,
-      "contentHash": "6bdf50de720eb50c6011ee1765913ce14fb0ec34aca68e34d81eab2c6caab90c",
+      "sizeBytes": 68572,
+      "contentHash": "b799b9a12dc83245f452094843f9f26b611c9118464be853bcb9fc2e10d0dcd5",
       "dependsOnScopes": [
         "src"
       ],
       "scopeHeadsAtVerify": {
-        "srcHead": "7e62c5244ae4df8c27f7f815b806b2e4c2a982dd"
+        "srcHead": "e67ba2565008f77e49fedc2139bd5f65149fd413"
       }
     },
     {
       "artifactId": "ARTIFACT_PACK_MANIFEST",
       "path": "docs/0-ai/artifacts/ARTIFACT_PACK_MANIFEST.json",
-      "generatedAt": "2026-10-03T13:01:52Z",
-      "verifiedAt": "2026-10-03T13:01:52Z",
+      "generatedAt": "2026-10-09T14:02:02Z",
+      "verifiedAt": "2026-10-09T14:02:02Z",
       "status": "regenerated",
       "sizeBytes": null,
       "contentHash": null,
@@ -125,9 +121,9 @@
         "deps"
       ],
       "scopeHeadsAtVerify": {
-        "docsHead": "73dd61ee9074368e9278202ad2b40eac253e391a",
-        "srcHead": "7e62c5244ae4df8c27f7f815b806b2e4c2a982dd",
-        "depsHead": "acde63232924cc805742e30e87202ce0ed528323"
+        "docsHead": "88c47dc42b60f419086146326ed84fcb17f52f11",
+        "srcHead": "e67ba2565008f77e49fedc2139bd5f65149fd413",
+        "depsHead": "2b40d964d70031fa2fbff0525fe8998624b3ed0c"
       },
       "warnings": [
         "Self-referential hash and size intentionally omitted."

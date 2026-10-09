@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-03T13:01:52Z",
+  "generatedAt": "2026-10-09T14:02:02Z",
   "meta": {
     "artifactId": "PROJECT_OVERVIEW",
-    "packId": "2026-10-03T13:01:52Z",
-    "generatedAt": "2026-10-03T13:01:52Z",
+    "packId": "2026-10-09T14:02:02Z",
+    "generatedAt": "2026-10-09T14:02:02Z",
     "generator": "prompt--artifact--generate-project-overview.md"
   },
   "rootTree": {
@@ -16,7 +16,6 @@
       "angular.json",
       "package-lock.json",
       "package.json",
-      "prettierrc.json",
       "tsconfig.app.json",
       "tsconfig.integration.json",
       "tsconfig.json",
@@ -44,6 +43,7 @@
     ]
   },
   "configFiles": [
+    ".editorconfig",
     ".eslintrc.json",
     ".gitignore",
     ".gitmodules",
@@ -57,9 +57,9 @@
     "framework": "Angular 16 NgModule application",
     "nextRouterType": "not-applicable",
     "tailwind": null,
-    "routing": "Angular Router in src/app/app-routing.module.ts; five routed pages plus root/welcome redirects",
-    "styling": "Sass semantic tokens and shared styles; Material dialog theme",
-    "sourceScopeAdaptation": "Includes Angular HTML/Sass templates/styles; detects @Component decorators rather than JSX."
+    "routing": "Angular Router in src/app/app-routing.module.ts; five routed pages plus root/welcome redirects; component-level session checks, no route guards",
+    "styling": "SCSS semantic tokens and shared Warm Editorial styles; Angular Material dialog theme",
+    "sourceScopeAdaptation": "Includes Angular HTML/SCSS templates/styles; detects @Component decorators rather than JSX. Excludes tests and static assets."
   },
   "packageJson": {
     "raw": {
@@ -72,9 +72,7 @@
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
         "test:integration": "node scripts/validate-integration.cjs",
-        "lint": "ng lint",
-        "format": "prettier --write 'src/**/*.html'",
-        "deploy": "ng deploy --base-href=/myFlix-Angular-client/"
+        "lint": "ng lint"
       },
       "private": true,
       "dependencies": {
@@ -104,7 +102,6 @@
         "@types/jasmine": "~4.3.0",
         "@typescript-eslint/eslint-plugin": "5.62.0",
         "@typescript-eslint/parser": "5.62.0",
-        "angular-cli-ghpages": "^1.0.7",
         "eslint": "^8.57.1",
         "jasmine-core": "~4.6.1",
         "karma": "~6.4.4",
@@ -126,9 +123,7 @@
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
         "test:integration": "node scripts/validate-integration.cjs",
-        "lint": "ng lint",
-        "format": "prettier --write 'src/**/*.html'",
-        "deploy": "ng deploy --base-href=/myFlix-Angular-client/"
+        "lint": "ng lint"
       },
       "dependencies": {
         "@angular/animations": "^16.2.0",
@@ -157,7 +152,6 @@
         "@types/jasmine": "~4.3.0",
         "@typescript-eslint/eslint-plugin": "5.62.0",
         "@typescript-eslint/parser": "5.62.0",
-        "angular-cli-ghpages": "^1.0.7",
         "eslint": "^8.57.1",
         "jasmine-core": "~4.6.1",
         "karma": "~6.4.4",
@@ -202,9 +196,7 @@
         "@angular/cli",
         "@angular/compiler-cli"
       ],
-      "deployment": [
-        "angular-cli-ghpages"
-      ],
+      "deployment": [],
       "dataContent": [
         "rxjs"
       ],
@@ -219,5 +211,40 @@
         "zone.js"
       ]
     }
-  }
+  },
+  "deployment": {
+    "provider": "Cloudflare Workers static assets",
+    "configurationSource": "Dashboard-verified settings supplied by the owner and documented in README.md; no application-owned Wrangler configuration tracked",
+    "settings": {
+      "Worker": "myflix-angular",
+      "Production branch": "refactor/portfolio-update",
+      "Root directory": "/",
+      "Build command": "npm ci && npm run build -- --configuration production",
+      "Asset output": "dist/my-flix-angular-client/",
+      "Build Node.js": "18.20.8",
+      "Build npm": "10.9.2",
+      "SKIP_DEPENDENCY_INSTALL": "1",
+      "Compatibility date": "2026-10-08"
+    },
+    "githubRepository": "marksav85/myFlix-Angular-client",
+    "deployCommand": "npm exec --yes --package=node@22 --package=wrangler@4 -- wrangler deploy --assets ./dist/my-flix-angular-client --name myflix-angular --compatibility-date 2026-10-08",
+    "angularUrl": "https://angular.myflix.marksavilledesigns.com",
+    "workersUrl": "https://myflix-angular.marksav85.workers.dev",
+    "reactUrl": "https://react.myflix.marksavilledesigns.com",
+    "apiUrl": "https://api.myflix.marksavilledesigns.com",
+    "apiArchitecture": "Browser communicates with Express REST API on Contabo using Docker/Caddy and MongoDB Atlas",
+    "baseHref": "/",
+    "spaFallback": "Browser routes require fallback to index.html; exact Cloudflare fallback configuration remains unverified",
+    "runtimeSplit": "Build Node 18.20.8 / npm 10.9.2; deployment command explicitly selects Node 22 for Wrangler 4"
+  },
+  "cleanup": {
+    "githubPagesTooling": "Removed npm deploy script, Angular deploy builder and angular-cli-ghpages dependency",
+    "formattingTooling": "Removed npm format script and root prettierrc.json; .editorconfig and ESLint retained"
+  },
+  "documentation": {
+    "readme": "README.md",
+    "design": "docs/design/DESIGN.md",
+    "referenceArtwork": "docs/design/assets/myflix-icon-source.png"
+  },
+  "validationScope": "Artifact generation validates repository content only; no new application test, security or production checks were run."
 }
