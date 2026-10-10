@@ -1,3 +1,5 @@
+import { HttpErrorResponse } from '@angular/common/http';
+import { RegistrationValidationDirective } from './registration-validation.directive';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -29,6 +31,7 @@ describe('UserRegistrationFormComponent routed form', () => {
   const fillValid = async () => {
     await fill('Username', account.Username);
     await fill('Password', 'password');
+    await fill('ConfirmPassword', 'password');
     await fill('Email', account.Email);
   };
   const submit = () => { form().requestSubmit(button()); fixture.detectChanges(); };
@@ -42,7 +45,7 @@ describe('UserRegistrationFormComponent routed form', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule, RouterTestingModule],
       providers: [{ provide: FetchApiDataService, useValue: api }],
-      declarations: [UserRegistrationFormComponent],
+      declarations: [UserRegistrationFormComponent, RegistrationValidationDirective],
     });
     router = TestBed.inject(Router);
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
@@ -85,7 +88,7 @@ describe('UserRegistrationFormComponent routed form', () => {
     await fillValid();
     submit();
     expect(api.userRegistration).toHaveBeenCalledTimes(1);
-    expect(api.userRegistration).toHaveBeenCalledWith({ Username: account.Username, Password: 'password', Email: account.Email, Birthday: '' });
+    expect(api.userRegistration).toHaveBeenCalledWith({ Username: account.Username, Password: 'password', Email: account.Email });
     expect(form().getAttribute('aria-busy')).toBe('true');
     expect(button().disabled).toBeTrue();
     expect(button().textContent).toContain('Creating account...');
@@ -131,6 +134,7 @@ describe('UserRegistrationFormComponent routed form', () => {
     submit();
     expect(api.userRegistration).not.toHaveBeenCalled();
     await fill('Password', 'password');
+    await fill('ConfirmPassword', 'password');
     await fill('Email', 'not-an-email');
     submit();
     expect(api.userRegistration).not.toHaveBeenCalled();
@@ -169,4 +173,57 @@ describe('UserRegistrationFormComponent routed form', () => {
     keys.forEach(key => expect(localStorage.getItem(key)).toBeNull());
     expect(router.navigate).not.toHaveBeenCalled();
   });
+  it('requires matching passwords and revalidates confirmation when the password changes', async () => {
+    await fillValid();
+    await fill('ConfirmPassword', 'different'); submit();
+    expect(api.userRegistration).not.toHaveBeenCalled();
+    expect(root().querySelector('#signup-confirm-password-error')?.textContent).toContain('match');
+    await fill('ConfirmPassword', 'password');
+    await fill('Password', 'changed-password'); submit();
+    expect(api.userRegistration).not.toHaveBeenCalled();
+    await fill('ConfirmPassword', 'changed-password'); submit();
+    expect(api.userRegistration).toHaveBeenCalledTimes(1);
+    expect(Object.keys(api.userRegistration.calls.mostRecent().args[0])).not.toContain('ConfirmPassword');
+  });
+
+  it('enforces the UTF-8 byte limit without password complexity rules', async () => {
+    await fillValid();
+    for (const value of ['a'.repeat(73), 'é'.repeat(37), '😀'.repeat(19), '1234567', '😀'.repeat(4)]) {
+      await fill('Password', value); await fill('ConfirmPassword', value); submit();
+      expect(api.userRegistration).not.toHaveBeenCalled();
+    }
+    await fill('Password', 'é'.repeat(36)); await fill('ConfirmPassword', 'é'.repeat(36)); submit();
+    expect(api.userRegistration).toHaveBeenCalledTimes(1);
+  });
+
+  it('rejects future birthdays and accepts leap-day birthdays without an age restriction', async () => {
+    await fillValid(); await fill('Birthday', '2999-01-01'); submit();
+    expect(api.userRegistration).not.toHaveBeenCalled();
+    expect(root().querySelector('#signup-birthday-error')?.textContent).toContain('not in the future');
+    await fill('Birthday', '2024-02-29'); submit();
+    expect(api.userRegistration.calls.mostRecent().args[0].Birthday).toBe('2024-02-29');
+  });
+
+  it('maps backend validation messages to their fields without displaying rejected values', async () => {
+    await fillValid(); submit();
+    response.error(new HttpErrorResponse({ status: 422, error: { errors: [
+      { path: 'Email', msg: 'Enter a valid email address.', value: 'private value' },
+      { param: 'Birthday', msg: 'Birthday must not be in the future.' },
+    ] } })); fixture.detectChanges();
+    expect(root().querySelector('#signup-email-server-error')?.textContent).toContain('valid email');
+    expect(input('Email').getAttribute('aria-invalid')).toBe('true');
+    expect(root().querySelector('#signup-birthday-server-error')?.textContent).toContain('future');
+    expect(root().textContent).not.toContain('private value');
+    await fill('Email', 'new@example.com');
+    expect(root().querySelector('#signup-email-server-error')).toBeNull();
+  });
+
+  it('shows plain-text duplicate username responses beside the username field', async () => {
+    await fillValid(); submit();
+    response.error(new HttpErrorResponse({ status: 400, error: 'testuser already exists' })); fixture.detectChanges();
+    expect(root().querySelector('#signup-username-server-error')?.textContent).toContain('already taken');
+    expect(input('Username').getAttribute('aria-describedby')).toContain('signup-username-server-error');
+    expect(button().disabled).toBeFalse();
+  });
+
 });

@@ -1,3 +1,4 @@
+import { RegistrationValidationDirective } from './user-registration-form/registration-validation.directive';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -22,6 +23,7 @@ import { MovieDetailComponent } from './movie-detail/movie-detail.component';
 @NgModule({
   declarations: [
     AppComponent,
+    RegistrationValidationDirective,
     UserRegistrationFormComponent,
     UserLoginFormComponent,
     MovieCardComponent,

@@ -168,4 +168,15 @@ describe('FetchApiDataService API contracts', () => {
     });
   });
 
+  [422, 400].forEach(status => {
+    it('preserves registration error details for status ' + status, () => {
+      const error = jasmine.createSpy('error');
+      service.userRegistration({ Username: 'testuser', Password: 'password', Email: 'user@example.com' }).subscribe({ error });
+      const body = status === 422 ? { errors: [{ path: 'Email', msg: 'Invalid email' }] } : 'testuser already exists';
+      http.expectOne(base + 'users').flush(body, { status, statusText: 'Invalid registration' });
+      expect(error.calls.mostRecent().args[0].status).toBe(status);
+      expect(error.calls.mostRecent().args[0].error).toEqual(body);
+    });
+  });
+
 });

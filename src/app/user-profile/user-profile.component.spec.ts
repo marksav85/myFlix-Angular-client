@@ -112,6 +112,7 @@ describe('Warm Editorial Profile', () => {
   it('guards pending updates and persists authoritative returned user without changing token', fakeAsync(() => {
     const response = new Subject<User>(); api.editUser.and.returnValue(response); start();
     input('profile-password', 'valid-password'); input('profile-username', 'draft-rename'); submit(); submit();
+    expect(api.editUser.calls.mostRecent().args[0].Birthday).toBe('1990-01-02');
     expect(api.editUser).toHaveBeenCalledTimes(1); expect(query('form').getAttribute('aria-busy')).toBe('true');
     expect(navigate).not.toHaveBeenCalled(); expect(component.user.Username).toBe(user.Username);
     const returned = { ...user, Username: 'server-rename', FavoriteMovies: [] }; response.next(returned); response.complete(); render();

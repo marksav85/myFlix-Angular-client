@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../environments/environment';
@@ -12,7 +12,10 @@ export class FetchApiDataService {
   constructor(private http: HttpClient) {}
 
   userRegistration(details: RegistrationPayload): Observable<User> {
-    return this.http.post<User>(this.url('users'), details).pipe(catchError(this.handleError));
+    return this.http.post<User>(this.url('users'), details).pipe(catchError(error =>
+      error instanceof HttpErrorResponse && (error.status === 422 || error.status === 400)
+        ? throwError(() => error) : this.handleError(),
+    ));
   }
 
   userLogin(details: LoginPayload): Observable<LoginResponse> {

@@ -13,7 +13,7 @@ export interface LoginPayload {
 
 export interface RegistrationPayload extends LoginPayload {
   Email: string;
-  Birthday: string;
+  Birthday?: string;
 }
 
 export type ProfileUpdatePayload = RegistrationPayload;
