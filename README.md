@@ -46,6 +46,22 @@ an authorization boundary. Library, Detail, and Profile use component-level
 checks for stored session values; there are no route guards. API `401`/`403`
 responses do not automatically clear the session or trigger session recovery.
 
+Signup validation has been verified in production. All fields are required
+except date of birth:
+
+- Username: at least 5 ASCII alphanumeric characters (`A–Z`, `a–z`, `0–9`),
+  with no spaces or symbols.
+- Password: at least 8 characters and at most 72 UTF-8 bytes, with no complexity
+  requirements.
+- Confirm password: required and must match; used only for client-side validation
+  and never sent to the API.
+- Email: a valid email address.
+- Birthday: optional, a valid `YYYY-MM-DD` date that is not in the future;
+  omitted from registration requests when blank.
+
+Backend validation errors, including duplicate usernames, appear beside the
+relevant fields.
+
 Favorites use server-returned membership and persist the returned user.
 Mutations are guarded and serialized within each page; entering Library,
 Detail, or Profile loads fresh account state. Profile updates require a
