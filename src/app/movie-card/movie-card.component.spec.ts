@@ -109,6 +109,6 @@ describe('MovieCardComponent reusable presentation', () => {
     expect(root().querySelector('img')).toBeNull();
     fixture.componentRef.setInput('movie', { ...movie, ImagePath: undefined });
     fixture.detectChanges();
-    expect(root().querySelector('[role="img"]')?.textContent).toBe('Poster unavailable');
+    expect(root().querySelector('[role="img"]')?.textContent?.trim()).toBe('Poster unavailable');
   });
 });

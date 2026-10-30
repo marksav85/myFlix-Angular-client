@@ -103,7 +103,7 @@ describe('MovieDetailComponent routed screen', () => {
     expect(root().querySelector('a')?.getAttribute('href')).toBe('/movies');
     load();
     expect(root().querySelectorAll('h1').length).toBe(1);
-    expect(root().querySelector('h1')?.textContent).toBe(movie.Title);
+    expect(root().querySelector('h1')?.textContent?.trim()).toBe(movie.Title);
     expect(document.activeElement).toBe(root().querySelector('h1'));
     expect(root().querySelector('img')?.getAttribute('alt')).toBe(movie.Title + ' poster');
     expect(root().querySelector('.detail-synopsis')?.textContent).toBe(movie.Description);
@@ -127,7 +127,7 @@ describe('MovieDetailComponent routed screen', () => {
     params.next(convertToParamMap({ movieId: 'unknown' }));
     catalog.next([movie]);
     fixture.detectChanges();
-    expect(root().querySelector('h1')?.textContent).toBe('Movie not found.');
+    expect(root().querySelector('h1')?.textContent?.trim()).toBe('Movie not found.');
     expect(root().querySelector('article')).toBeNull();
     expect(root().querySelector('a')?.getAttribute('href')).toBe('/movies');
   });
@@ -181,7 +181,7 @@ describe('MovieDetailComponent routed screen', () => {
     expect(favorite().getAttribute('aria-pressed')).toBe('true');
     expect(favorite().disabled).toBeFalse();
     expect(favorite().getAttribute('aria-describedby')).toBe('detail-favorite-error');
-    expect(root().querySelector('[role="alert"]')?.textContent).toBe(
+    expect(root().querySelector('[role="alert"]')?.textContent?.trim()).toBe(
       'Favorites could not be updated. Please try again.'
     );
     expect(localStorage.getItem('user')).toBe(stored);
@@ -207,7 +207,7 @@ describe('MovieDetailComponent routed screen', () => {
     expect(root().querySelector('article')).toBeNull();
     nextCatalog.next([{ ...movie, _id: 'movie-2', Title: 'Second movie' }]);
     fixture.detectChanges();
-    expect(root().querySelector('h1')?.textContent).toBe('Second movie');
+    expect(root().querySelector('h1')?.textContent?.trim()).toBe('Second movie');
   });
 
   it('resolves an actual direct URL with no Library navigation state', async () => {
@@ -218,7 +218,7 @@ describe('MovieDetailComponent routed screen', () => {
     host.detectChanges();
     await TestBed.inject(NgZone).run(() => TestBed.inject(Router).navigateByUrl('/movies/movie-1'));
     host.detectChanges();
-    expect(host.nativeElement.querySelector('h1')?.textContent).toBe(movie.Title);
+    expect(host.nativeElement.querySelector('h1')?.textContent?.trim()).toBe(movie.Title);
     expect(host.nativeElement.querySelector('a')?.getAttribute('href')).toBe('/movies');
     host.destroy();
   });

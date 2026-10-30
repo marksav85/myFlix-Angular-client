@@ -122,7 +122,7 @@ describe('MovieLibraryComponent data and interactions', () => {
     expect(root().textContent).not.toContain('No movies match your search.');
     catalog.next([movie]);
     fixture.detectChanges();
-    expect(root().querySelector('[role="status"]')?.textContent).toBe(
+    expect(root().querySelector('[role="status"]')?.textContent?.trim()).toBe(
       'No movies match your search. Try another title.'
     );
   });
@@ -148,11 +148,13 @@ describe('MovieLibraryComponent data and interactions', () => {
   it('waits for favorite membership and disables mutations when that load fails', () => {
     catalog.next([movie]);
     fixture.detectChanges();
-    expect(root().querySelector('[role="status"]')?.textContent).toBe('Loading favorites...');
+    expect(root().querySelector('[role="status"]')?.textContent?.trim()).toBe(
+      'Loading favorites...'
+    );
     expect(favorite().disabled).toBeTrue();
     account.error(new Error('private error'));
     fixture.detectChanges();
-    expect(root().querySelector('[role="alert"]')?.textContent).toBe(
+    expect(root().querySelector('[role="alert"]')?.textContent?.trim()).toBe(
       'Favorites could not be loaded. Please try again later.'
     );
     expect(root().querySelectorAll('article').length).toBe(1);
@@ -195,7 +197,7 @@ describe('MovieLibraryComponent data and interactions', () => {
     fixture.detectChanges();
     expect(favorite().getAttribute('aria-pressed')).toBe('true');
     expect(localStorage.getItem('user')).toBe(stored);
-    expect(root().querySelector('[role="alert"]')?.textContent).toBe(
+    expect(root().querySelector('[role="alert"]')?.textContent?.trim()).toBe(
       'Favorites could not be updated. Please try again.'
     );
     expect(favorite().getAttribute('aria-describedby')).toBe(

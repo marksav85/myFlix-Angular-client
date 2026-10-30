@@ -117,7 +117,7 @@ describe('UserRegistrationFormComponent routed form', () => {
     submit();
     response.error(new Error('private database details'));
     fixture.detectChanges();
-    expect(root().querySelector('[role="alert"]')?.textContent).toBe(
+    expect(root().querySelector('[role="alert"]')?.textContent?.trim()).toBe(
       'Registration unsuccessful. Please try again.'
     );
     expect(form().getAttribute('aria-describedby')).toBe('signup-feedback');
@@ -171,7 +171,7 @@ describe('UserRegistrationFormComponent routed form', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(root().querySelector('[role="status"]')?.textContent).toBe(
+    expect(root().querySelector('[role="status"]')?.textContent?.trim()).toBe(
       'Registration successful. Please login.'
     );
     expect(input('Password').value).toBe('');

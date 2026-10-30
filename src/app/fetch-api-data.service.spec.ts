@@ -170,8 +170,13 @@ describe('FetchApiDataService API contracts', () => {
   });
   it('encodes the current username as a resource selector', () => {
     localStorage.setItem('Username', 'user/name');
-    service.getUser().subscribe();
-    http.expectOne(base + 'users/user%2Fname').flush(user);
+    const next = jasmine.createSpy('next');
+    service.getUser().subscribe(next);
+    const request = http.expectOne(base + 'users/user%2Fname');
+    expect(request.request.method).toBe('GET');
+    expect(request.request.headers.get('Authorization')).toBe('Bearer phase1-token');
+    request.flush(user);
+    expect(next).toHaveBeenCalledOnceWith(user);
   });
 
   [

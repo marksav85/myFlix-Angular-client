@@ -1,9 +1,10 @@
 /* Runs only against a newly created temporary database; never loads backend .env. */
 const assert = require('node:assert/strict');
 const crypto = require('node:crypto');
+const fs = require('node:fs');
 const path = require('node:path');
 const { createRequire } = require('node:module');
-const { spawn } = require('node:child_process');
+const { execFileSync, spawn } = require('node:child_process');
 const backendRoot = path.resolve(process.env.MYFLIX_BACKEND_PATH || path.join(__dirname, '../../movie-api'));
 const backendRequire = createRequire(path.join(backendRoot, 'package.json'));
 const { MongoMemoryServer } = backendRequire('mongodb-memory-server');
@@ -19,10 +20,48 @@ process.env.MONGOMS_RUNTIME_DOWNLOAD = 'false';
 const app = backendRequire('./app');
 const { Movie, User } = backendRequire('./models');
 const base = 'http://localhost:8080';
+const requiredMongoVersion = '8.2.6';
 let database;
 let server;
 let child;
 const results = [];
+
+function resolveMongoBinary() {
+  const override = process.env.MONGOMS_SYSTEM_BINARY;
+  const cacheDirectory = path.join(backendRoot, 'node_modules/.cache/mongodb-memory-server');
+  let candidates;
+
+  if (override) {
+    candidates = [path.resolve(override)];
+  } else {
+    try {
+      candidates = fs.readdirSync(cacheDirectory)
+        .filter(name => name.startsWith('mongod-') && name.endsWith('-' + requiredMongoVersion))
+        .map(name => path.join(cacheDirectory, name));
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+      candidates = [];
+    }
+  }
+
+  const compatible = candidates.filter(candidate => {
+    try {
+      fs.accessSync(candidate, fs.constants.X_OK);
+      const versionOutput = execFileSync(candidate, ['--version'], { encoding: 'utf8', timeout: 5000 });
+      return new RegExp('^db version v' + requiredMongoVersion.replaceAll('.', '\\.') + '(?:\\s|$)', 'm').test(versionOutput);
+    } catch {
+      return false;
+    }
+  });
+
+  if (compatible.length === 1) return compatible[0];
+
+  const source = override ? 'MONGOMS_SYSTEM_BINARY' : cacheDirectory;
+  const detail = compatible.length > 1
+    ? 'Multiple compatible MongoDB ' + requiredMongoVersion + ' executables were found.'
+    : 'No executable reporting MongoDB ' + requiredMongoVersion + ' was found.';
+  throw new Error(detail + ' Checked ' + source + '. Set MONGOMS_SYSTEM_BINARY to an executable MongoDB ' + requiredMongoVersion + ' binary. Runtime downloads are disabled.');
+}
 
 function checkUser(user) {
   assert.equal(typeof user._id, 'string');
@@ -126,9 +165,9 @@ async function cleanup() {
 }
 
 async function main() {
-  database = await MongoMemoryServer.create({ binary: {
-    systemBinary: process.env.MYFLIX_MONGOD_BINARY || path.join(backendRoot, 'node_modules/.cache/mongodb-memory-server/mongod-x64-ubuntu-8.2.6'),
-  } });
+  const systemBinary = resolveMongoBinary();
+  console.log('Using MongoDB ' + requiredMongoVersion + ' executable: ' + systemBinary);
+  database = await MongoMemoryServer.create({ binary: { version: requiredMongoVersion, systemBinary } });
   await mongoose.connect(database.getUri());
   const movie = await Movie.create({ Title: 'Phase 4 / & Movie', Description: 'Disposable integration fixture', Genre: { Name: 'Drama / & Test', Description: 'Test genre' }, Director: { Name: 'Director / & Test', Bio: 'Test biography' }, ImagePath: '/fixture.jpg', Featured: true });
   server = await new Promise((resolve, reject) => {

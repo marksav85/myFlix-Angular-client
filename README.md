@@ -121,12 +121,15 @@ production configuration; `npm run build -- --configuration production` selects
 it explicitly.
 
 The integration runner uses the sibling `../movie-api` with an isolated temporary
-MongoDB database on localhost port 8080. Both repositories need their locked
-dependencies installed and an existing cached MongoDB binary; downloads are
-disabled. It does not read the backend `.env`, contact production, or reuse an
-existing database/listener. `MYFLIX_BACKEND_PATH` and `MYFLIX_MONGOD_BINARY` may
-select another backend checkout or existing binary. Ordinary unit tests do
-not require the backend. See [the runner](scripts/validate-integration.cjs).
+MongoDB 8.2.6 database on localhost port 8080. The backend dependencies and a
+compatible existing `mongod` executable are required. The runner discovers a
+single compatible executable in the backend MongoDB Memory Server cache; set
+`MONGOMS_SYSTEM_BINARY` to an explicit executable path if discovery is ambiguous
+or the binary is stored elsewhere. Runtime downloads are disabled. The runner
+does not read the backend `.env`, contact production, or reuse an existing
+database/listener. `MYFLIX_BACKEND_PATH` may select another backend checkout.
+Ordinary unit tests do not require the backend. See
+[the runner](scripts/validate-integration.cjs).
 
 ## Design
 
