@@ -3,7 +3,13 @@ import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@an
 
 @Directive({
   selector: '[appRegistrationValidation]',
-  providers: [{ provide: NG_VALIDATORS, useExisting: forwardRef(() => RegistrationValidationDirective), multi: true }],
+  providers: [
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => RegistrationValidationDirective),
+      multi: true,
+    },
+  ],
 })
 export class RegistrationValidationDirective implements Validator, OnChanges {
   @Input() appRegistrationValidation: 'password' | 'confirmation' | 'birthday' = 'password';
@@ -14,7 +20,9 @@ export class RegistrationValidationDirective implements Validator, OnChanges {
     // Template-driven ngModel updates also settle asynchronously. Revalidate after bindings settle.
     Promise.resolve().then(() => this.changed?.());
   }
-  registerOnValidatorChange(fn: () => void): void { this.changed = fn; }
+  registerOnValidatorChange(fn: () => void): void {
+    this.changed = fn;
+  }
 
   validate(control: AbstractControl): ValidationErrors | null {
     const value: string = control.value ?? '';
@@ -29,7 +37,10 @@ export class RegistrationValidationDirective implements Validator, OnChanges {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return { birthday: true };
     const date = new Date(value + 'T00:00:00.000Z');
     const todayString = new Date().toISOString().slice(0, 10);
-    return !Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== value || value > todayString
-      ? { birthday: true } : null;
+    return !Number.isFinite(date.getTime()) ||
+      date.toISOString().slice(0, 10) !== value ||
+      value > todayString
+      ? { birthday: true }
+      : null;
   }
 }

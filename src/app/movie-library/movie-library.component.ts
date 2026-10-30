@@ -19,13 +19,18 @@ export class MovieLibraryComponent implements OnInit, OnDestroy {
   error = '';
   private readonly destroyed = new Subject<void>();
 
-  constructor(private api: FetchApiDataService, public favoriteState: MovieFavoritesService) {}
+  constructor(
+    private api: FetchApiDataService,
+    public favoriteState: MovieFavoritesService
+  ) {}
 
-  get hasSession(): boolean { return this.favoriteState.hasSession; }
+  get hasSession(): boolean {
+    return this.favoriteState.hasSession;
+  }
 
   get filteredMovies(): Movie[] {
     const term = this.search.trim().toLowerCase();
-    return this.movies.filter(movie => movie.Title.toLowerCase().includes(term));
+    return this.movies.filter((movie) => movie.Title.toLowerCase().includes(term));
   }
 
   ngOnInit(): void {
@@ -36,13 +41,24 @@ export class MovieLibraryComponent implements OnInit, OnDestroy {
       this.error = 'Please log in to view the Movie Library.';
       return;
     }
-    this.api.getAllMovies().pipe(takeUntil(this.destroyed)).subscribe({
-      next: movies => { this.movies = movies; this.isLoading = false; },
-      error: () => { this.error = 'Movies could not be loaded. Please try again later.'; this.isLoading = false; },
-    });
+    this.api
+      .getAllMovies()
+      .pipe(takeUntil(this.destroyed))
+      .subscribe({
+        next: (movies) => {
+          this.movies = movies;
+          this.isLoading = false;
+        },
+        error: () => {
+          this.error = 'Movies could not be loaded. Please try again later.';
+          this.isLoading = false;
+        },
+      });
   }
 
-  trackMovie(_index: number, movie: Movie): string { return movie._id; }
+  trackMovie(_index: number, movie: Movie): string {
+    return movie._id;
+  }
 
   ngOnDestroy(): void {
     this.destroyed.next();

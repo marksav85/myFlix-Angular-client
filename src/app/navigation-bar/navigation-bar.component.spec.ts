@@ -12,24 +12,29 @@ describe('NavigationBarComponent shell navigation', () => {
   const keys = ['user', 'token', 'Username'];
   let saved: (string | null)[];
   const root = () => fixture.nativeElement as HTMLElement;
-  const menu = () => (root().querySelector('.menu-toggle') as HTMLButtonElement);
+  const menu = () => root().querySelector('.menu-toggle') as HTMLButtonElement;
 
   beforeEach(() => {
-    saved = keys.map(key => localStorage.getItem(key));
-    keys.forEach(key => localStorage.removeItem(key));
+    saved = keys.map((key) => localStorage.getItem(key));
+    keys.forEach((key) => localStorage.removeItem(key));
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([
-        { path: 'movies', component: RouteStubComponent },
-        { path: 'profile', component: RouteStubComponent },
-        { path: 'login', component: RouteStubComponent },
-        { path: 'signup', component: RouteStubComponent },
-      ])],
+      imports: [
+        RouterTestingModule.withRoutes([
+          { path: 'movies', component: RouteStubComponent },
+          { path: 'profile', component: RouteStubComponent },
+          { path: 'login', component: RouteStubComponent },
+          { path: 'signup', component: RouteStubComponent },
+        ]),
+      ],
       declarations: [NavigationBarComponent, RouteStubComponent],
     });
     // Exercise disclosure focus behavior independently of the runner's desktop viewport.
-    TestBed.overrideComponent(NavigationBarComponent, { set: {
-      styleUrls: [], styles: ['.menu-toggle { display: inline-flex; }'],
-    } });
+    TestBed.overrideComponent(NavigationBarComponent, {
+      set: {
+        styleUrls: [],
+        styles: ['.menu-toggle { display: inline-flex; }'],
+      },
+    });
     fixture = TestBed.createComponent(NavigationBarComponent);
     fixture.detectChanges();
   });
@@ -46,8 +51,8 @@ describe('NavigationBarComponent shell navigation', () => {
   it('offers guest router links and a login wordmark destination', fakeAsync(() => {
     expect(root().querySelector('.wordmark')?.getAttribute('href')).toBe('/login');
     const links = Array.from(root().querySelectorAll<HTMLAnchorElement>('.nav-link'));
-    expect(links.map(link => link.textContent?.trim())).toEqual(['Login', 'Signup']);
-    expect(links.map(link => link.getAttribute('href'))).toEqual(['/login', '/signup']);
+    expect(links.map((link) => link.textContent?.trim())).toEqual(['Login', 'Signup']);
+    expect(links.map((link) => link.getAttribute('href'))).toEqual(['/login', '/signup']);
     links[0].click();
     tick();
     fixture.detectChanges();
@@ -65,7 +70,9 @@ describe('NavigationBarComponent shell navigation', () => {
     localStorage.setItem('Username', 'test-user');
     fixture.detectChanges();
     expect(root().querySelector('.wordmark')?.getAttribute('href')).toBe('/movies');
-    expect(Array.from(root().querySelectorAll('.nav-link')).map(link => link.textContent?.trim())).toEqual(['Movies', 'My Profile']);
+    expect(
+      Array.from(root().querySelectorAll('.nav-link')).map((link) => link.textContent?.trim())
+    ).toEqual(['Movies', 'My Profile']);
     expect(root().querySelector('.navigation-items button')?.textContent?.trim()).toBe('Logout');
     localStorage.removeItem('token');
     fixture.detectChanges();
@@ -110,7 +117,9 @@ describe('NavigationBarComponent shell navigation', () => {
     fixture.detectChanges();
     expect(menu().getAttribute('aria-label')).toBe('Close main menu');
     expect(menu().getAttribute('aria-controls')).toBe('main-navigation-items');
-    (root().querySelector('nav') as HTMLElement).dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    (root().querySelector('nav') as HTMLElement).dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+    );
     fixture.detectChanges();
     expect(menu().getAttribute('aria-expanded')).toBe('false');
     expect(menu().getAttribute('aria-label')).toBe('Open main menu');

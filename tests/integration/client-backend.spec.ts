@@ -16,7 +16,7 @@ async function waitFor(condition: () => boolean): Promise<void> {
   const deadline = Date.now() + 10000;
   while (!condition()) {
     if (Date.now() > deadline) throw new Error('Timed out waiting for client response handling');
-    await new Promise(resolve => setTimeout(resolve, 20));
+    await new Promise((resolve) => setTimeout(resolve, 20));
   }
 }
 
@@ -25,19 +25,26 @@ async function waitFor(condition: () => boolean): Promise<void> {
 describe('Angular client against the real disposable backend', () => {
   it('completes auth, movie, favourite, profile, logout and deletion flows over HTTP', async () => {
     const keys = ['user', 'token', 'Username'];
-    const saved = keys.map(key => localStorage.getItem(key));
+    const saved = keys.map((key) => localStorage.getItem(key));
     const savedApiUrl = environment.apiUrl;
     let api: FetchApiDataService | undefined;
     let deleted = false;
     try {
-      keys.forEach(key => localStorage.removeItem(key));
+      keys.forEach((key) => localStorage.removeItem(key));
       environment.apiUrl = development.apiUrl;
       expect(environment.apiUrl).toBe('http://localhost:8080');
       TestBed.configureTestingModule({ imports: [HttpClientModule] });
       api = TestBed.inject(FetchApiDataService);
       const username = 'angular' + crypto.randomUUID().replace(/-/g, '');
       const password = crypto.randomUUID();
-      const registered = await firstValueFrom(api.userRegistration({ Username: username, Password: password, Email: username + '@example.test', Birthday: '1990-01-02' }));
+      const registered = await firstValueFrom(
+        api.userRegistration({
+          Username: username,
+          Password: password,
+          Email: username + '@example.test',
+          Birthday: '1990-01-02',
+        })
+      );
       expect(registered.Username).toBe(username);
       expect(registered.Birthday?.slice(0, 10)).toBe('1990-01-02');
       expect(registered.FavoriteMovies).toEqual([]);
@@ -66,29 +73,43 @@ describe('Angular client against the real disposable backend', () => {
       expect((await firstValueFrom(api.getDirector(movie.Director.Name)))[0]._id).toBe(movie._id);
       expect((await firstValueFrom(api.getGenre(movie.Genre.Name)))[0]._id).toBe(movie._id);
       await firstValueFrom(api.addFavoriteMovie(movie._id));
-      expect((await firstValueFrom(api.addFavoriteMovie(movie._id))).FavoriteMovies).toEqual([movie._id]);
+      expect((await firstValueFrom(api.addFavoriteMovie(movie._id))).FavoriteMovies).toEqual([
+        movie._id,
+      ]);
       expect(await firstValueFrom(api.getFavoriteMovies())).toEqual([movie._id]);
       const closed = new Subject<boolean>();
-      const dialogRef = jasmine.createSpyObj<MatDialogRef<DeleteAccountDialogComponent, boolean>>('DialogRef', ['afterClosed', 'close']);
+      const dialogRef = jasmine.createSpyObj<MatDialogRef<DeleteAccountDialogComponent, boolean>>(
+        'DialogRef',
+        ['afterClosed', 'close']
+      );
       dialogRef.afterClosed.and.returnValue(closed);
-      dialogRef.close.and.callFake(result => { closed.next(Boolean(result)); });
+      dialogRef.close.and.callFake((result) => {
+        closed.next(Boolean(result));
+      });
       const dialog = jasmine.createSpyObj<MatDialog>('Dialog', ['open']);
       dialog.open.and.returnValue(dialogRef);
       const favoriteState = new MovieFavoritesService(api);
       const profile = new UserProfileComponent(api, favoriteState, dialog, router);
       profile.ngOnInit();
       await waitFor(() => profile.user._id === registered._id && !profile.isLoadingCatalog);
-      expect(profile.favorites.map(item => item._id)).toEqual([movie._id]);
+      expect(profile.favorites.map((item) => item._id)).toEqual([movie._id]);
       expect(profile.userData.Birthday).toBe('1990-01-02');
       expect((await firstValueFrom(api.deleteFavoriteMovie(movie._id))).FavoriteMovies).toEqual([]);
-      profile.userData = { Username: username + 'renamed', Password: password, Email: 'updated@example.test', Birthday: '1991-02-03' };
+      profile.userData = {
+        Username: username + 'renamed',
+        Password: password,
+        Email: 'updated@example.test',
+        Birthday: '1991-02-03',
+      };
       profile.editUser({ valid: true });
       await waitFor(() => localStorage.getItem('Username') === username + 'renamed');
-      await waitFor(() => profile.favorites.length === 0 && profile.userData.Birthday === '1991-02-03');
+      await waitFor(
+        () => profile.favorites.length === 0 && profile.userData.Birthday === '1991-02-03'
+      );
       expect((await firstValueFrom(api.getUser())).Username).toBe(username + 'renamed');
       expect(localStorage.getItem('token')).toBe(token);
       new NavigationBarComponent(router).toLogout();
-      keys.forEach(key => expect(localStorage.getItem(key)).toBeNull());
+      keys.forEach((key) => expect(localStorage.getItem(key)).toBeNull());
       await expectAsync(firstValueFrom(api.getAllMovies())).toBeRejected();
       login.userData = { Username: username + 'renamed', Password: password };
       const navigationCount = router.navigate.calls.count();
@@ -109,7 +130,7 @@ describe('Angular client against the real disposable backend', () => {
       deletion.deleteAccount();
       await waitFor(() => router.navigate.calls.count() === 1);
       deleted = true;
-      keys.forEach(key => expect(localStorage.getItem(key)).toBeNull());
+      keys.forEach((key) => expect(localStorage.getItem(key)).toBeNull());
       expect(router.navigate).toHaveBeenCalledWith(['/login']);
       profile.ngOnDestroy();
       favoriteState.ngOnDestroy();
@@ -118,7 +139,11 @@ describe('Angular client against the real disposable backend', () => {
       await expectAsync(firstValueFrom(api.getAllMovies())).toBeRejected();
     } finally {
       if (api && !deleted && localStorage.getItem('Username') && localStorage.getItem('token')) {
-        try { await firstValueFrom(api.deleteUser()); } catch { /* Runner destroys the entire isolated database on failure. */ }
+        try {
+          await firstValueFrom(api.deleteUser());
+        } catch {
+          /* Runner destroys the entire isolated database on failure. */
+        }
       }
       environment.apiUrl = savedApiUrl;
       keys.forEach((key, index) => {

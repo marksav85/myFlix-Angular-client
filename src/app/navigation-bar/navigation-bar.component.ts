@@ -14,7 +14,7 @@ export class NavigationBarComponent implements OnDestroy {
   private readonly navigationSubscription: Subscription;
 
   constructor(private router: Router) {
-    this.navigationSubscription = router.events.subscribe(event => {
+    this.navigationSubscription = router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) this.closeMenu();
     });
   }
@@ -47,7 +47,7 @@ export class NavigationBarComponent implements OnDestroy {
   toLogout(): void {
     if (!this.isMenuOpen) this.wordmark?.nativeElement.focus();
     this.closeMenu();
-    ['user', 'token', 'Username'].forEach(key => localStorage.removeItem(key));
+    ['user', 'token', 'Username'].forEach((key) => localStorage.removeItem(key));
     this.router.navigate(['login']);
   }
 

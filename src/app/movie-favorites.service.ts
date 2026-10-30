@@ -17,18 +17,25 @@ export class MovieFavoritesService implements OnDestroy {
 
   constructor(private api: FetchApiDataService) {
     // Each response contains full membership. Serial requests avoid stale overlapping snapshots.
-    this.favoriteRequests.pipe(
-      concatMap(movieId => defer(() => this.isFavorite(movieId)
-        ? this.api.deleteFavoriteMovie(movieId) : this.api.addFavoriteMovie(movieId)).pipe(
-        tap(user => this.setUser(user)),
-        catchError(() => {
-          this.favoriteErrors[movieId] = 'Favorites could not be updated. Please try again.';
-          return EMPTY;
-        }),
-        finalize(() => this.pendingFavorites.delete(movieId)),
-      )),
-      takeUntil(this.destroyed),
-    ).subscribe();
+    this.favoriteRequests
+      .pipe(
+        concatMap((movieId) =>
+          defer(() =>
+            this.isFavorite(movieId)
+              ? this.api.deleteFavoriteMovie(movieId)
+              : this.api.addFavoriteMovie(movieId)
+          ).pipe(
+            tap((user) => this.setUser(user)),
+            catchError(() => {
+              this.favoriteErrors[movieId] = 'Favorites could not be updated. Please try again.';
+              return EMPTY;
+            }),
+            finalize(() => this.pendingFavorites.delete(movieId))
+          )
+        ),
+        takeUntil(this.destroyed)
+      )
+      .subscribe();
   }
   get hasSession(): boolean {
     return Boolean(localStorage.getItem('token') && localStorage.getItem('Username'));
@@ -39,14 +46,23 @@ export class MovieFavoritesService implements OnDestroy {
   }
 
   load(): void {
-    if (!this.hasSession) { this.isLoadingFavorites = false; return; }
-    this.api.getUser().pipe(takeUntil(this.destroyed)).subscribe({
-      next: user => { this.setUser(user); this.isLoadingFavorites = false; },
-      error: () => {
-        this.favoriteLoadError = 'Favorites could not be loaded. Please try again later.';
-        this.isLoadingFavorites = false;
-      },
-    });
+    if (!this.hasSession) {
+      this.isLoadingFavorites = false;
+      return;
+    }
+    this.api
+      .getUser()
+      .pipe(takeUntil(this.destroyed))
+      .subscribe({
+        next: (user) => {
+          this.setUser(user);
+          this.isLoadingFavorites = false;
+        },
+        error: () => {
+          this.favoriteLoadError = 'Favorites could not be loaded. Please try again later.';
+          this.isLoadingFavorites = false;
+        },
+      });
   }
   isFavorite(movieId: string): boolean {
     return this.favorites.includes(movieId);

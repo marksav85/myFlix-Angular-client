@@ -19,7 +19,7 @@ Preserve the existing NgModule architecture, routes, API contract, session behav
 - Follow the nearby Angular and TypeScript patterns. TypeScript is strict; use typed API models and keep backend field names such as `Username`, `Birthday`, and `FavoriteMovies` as defined by the API contract.
 - Keep component templates and SCSS in their existing separate files. Angular component selectors use the `app-` prefix and kebab-case; attribute directives use the `app` prefix and camelCase, as enforced by ESLint.
 - Use two-space indentation, UTF-8, final newlines, and single quotes in TypeScript, following `.editorconfig`. Respect established imports and naming in the affected files.
-- ESLint checks TypeScript and Angular templates, including template accessibility rules. No Prettier configuration or formatting-check script is currently present; do not claim one exists or add formatter tooling without owner approval.
+- ESLint checks TypeScript and Angular templates, including template accessibility rules. Prettier is configured in `.prettierrc.json`; use `npm run format:check` to check maintained `src/` and `tests/` TypeScript, Angular HTML, and SCSS, and `npm run format` only for an approved formatting pass. Do not change formatter configuration or dependencies without owner approval.
 - Add comments only to explain non-obvious behavior, constraints, or decisions. Keep comments accurate; JSDoc is optional when it adds useful contract information.
 - Make focused changes. Do not refactor unrelated code or introduce dependencies and abstractions without a concrete need and approval where required.
 
@@ -43,8 +43,10 @@ Commands are defined in the root `package.json`:
 | `npm run build` | Create the default production build in `dist/my-flix-angular-client/`. |
 | `npm run build -- --configuration development` | Create a development build using the localhost API configuration. |
 | `npm start` | Start the Angular development server. |
+| `npm run format:check` | Check formatting in maintained `src/` and `tests/` TypeScript, Angular HTML, and SCSS without modifying files. |
+| `npm run format` | Format the same maintained source and test files; use only for an approved formatting pass. |
 
-Choose checks for the change. Prefer a focused check during implementation and consolidate broader validation. Do not run build, lint, and tests concurrently. Report checks that were not run. There is no configured format-check command.
+Choose checks for the change. Prefer a focused check during implementation and consolidate broader validation. Do not run build, lint, and tests concurrently. Report checks that were not run. Use `npm run format:check` for the configured non-modifying formatting check.
 
 Minimize CPU-intensive work: run significant Node/Angular tasks sequentially, avoid unnecessary watch processes and repeated ChromeHeadless launches, and do not start browser sessions, servers, or network operations unless the task requires them. Avoid unnecessary interactive browser or network permission prompts; do not skip essential validation silently.
 

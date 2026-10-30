@@ -4,10 +4,12 @@ import { Movie } from '../api-models';
 import { MovieCardComponent } from './movie-card.component';
 
 const movie: Movie = {
-  _id: 'movie-1', Title: 'A very long movie title with a complete supported synopsis',
+  _id: 'movie-1',
+  Title: 'A very long movie title with a complete supported synopsis',
   Description: 'This is the entire synopsis, retained even when its excerpt is visually clamped.',
   Genre: { Name: 'Drama', Description: 'A genre description' },
-  Director: { Name: 'A director', Bio: 'A complete director biography' }, ImagePath: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+  Director: { Name: 'A director', Bio: 'A complete director biography' },
+  ImagePath: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
 };
 
 describe('MovieCardComponent reusable presentation', () => {
@@ -16,7 +18,10 @@ describe('MovieCardComponent reusable presentation', () => {
   const favorite = () => root().querySelector('.button-primary') as HTMLButtonElement;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [RouterTestingModule], declarations: [MovieCardComponent] });
+    TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      declarations: [MovieCardComponent],
+    });
     fixture = TestBed.createComponent(MovieCardComponent);
     fixture.componentRef.setInput('movie', movie);
     fixture.detectChanges();
@@ -59,7 +64,10 @@ describe('MovieCardComponent reusable presentation', () => {
     fixture.componentInstance.toggleFavorite();
     expect(emitted).toHaveBeenCalledTimes(1);
     fixture.componentRef.setInput('isPending', false);
-    fixture.componentRef.setInput('favoriteError', 'Favorites could not be updated. Please try again.');
+    fixture.componentRef.setInput(
+      'favoriteError',
+      'Favorites could not be updated. Please try again.'
+    );
     fixture.detectChanges();
     const error = root().querySelector('[role="alert"]') as HTMLElement;
     expect(favorite().getAttribute('aria-describedby')).toBe(error.id);
@@ -80,7 +88,9 @@ describe('MovieCardComponent reusable presentation', () => {
 
   it('keeps missing metadata readable without empty supplemental controls', () => {
     fixture.componentRef.setInput('movie', {
-      ...movie, Genre: { Name: '', Description: '' }, Director: { Name: '', Bio: '' },
+      ...movie,
+      Genre: { Name: '', Description: '' },
+      Director: { Name: '', Bio: '' },
     });
     fixture.detectChanges();
     expect(root().querySelectorAll('.metadata-action').length).toBe(0);

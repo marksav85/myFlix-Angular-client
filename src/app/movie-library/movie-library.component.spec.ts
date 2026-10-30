@@ -8,11 +8,19 @@ import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { MovieLibraryComponent } from './movie-library.component';
 
 const movie: Movie = {
-  _id: 'movie-1', Title: 'The Matrix', Description: 'A full synopsis.', ImagePath: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+  _id: 'movie-1',
+  Title: 'The Matrix',
+  Description: 'A full synopsis.',
+  ImagePath: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
   Genre: { Name: 'Science Fiction', Description: 'Genre information.' },
   Director: { Name: 'Director', Bio: 'Director biography.' },
 };
-const user: User = { _id: 'user-1', Username: 'testuser', Email: 'user@example.com', FavoriteMovies: [] };
+const user: User = {
+  _id: 'user-1',
+  Username: 'testuser',
+  Email: 'user@example.com',
+  FavoriteMovies: [],
+};
 
 describe('MovieLibraryComponent data and interactions', () => {
   let fixture: ComponentFixture<MovieLibraryComponent>;
@@ -40,12 +48,20 @@ describe('MovieLibraryComponent data and interactions', () => {
   };
 
   beforeEach(async () => {
-    saved = keys.map(key => localStorage.getItem(key));
+    saved = keys.map((key) => localStorage.getItem(key));
     localStorage.setItem('token', 'test-token');
     localStorage.setItem('Username', user.Username);
     localStorage.removeItem('user');
-    catalog = new Subject(); account = new Subject(); add = new Subject(); remove = new Subject();
-    api = jasmine.createSpyObj('API', ['getAllMovies', 'getUser', 'addFavoriteMovie', 'deleteFavoriteMovie']);
+    catalog = new Subject();
+    account = new Subject();
+    add = new Subject();
+    remove = new Subject();
+    api = jasmine.createSpyObj('API', [
+      'getAllMovies',
+      'getUser',
+      'addFavoriteMovie',
+      'deleteFavoriteMovie',
+    ]);
     api.getAllMovies.and.returnValue(catalog.asObservable());
     api.getUser.and.returnValue(account.asObservable());
     api.addFavoriteMovie.and.returnValue(add.asObservable());
@@ -84,14 +100,17 @@ describe('MovieLibraryComponent data and interactions', () => {
 
   it('does not steal search focus when account or catalog responses arrive', () => {
     const search = root().querySelector('input') as HTMLInputElement;
-    search.focus(); load();
+    search.focus();
+    load();
     expect(document.activeElement).toBe(search);
   });
 
   it('shows a safe persistent catalog failure instead of an empty catalog', () => {
     catalog.error(new Error('private database details'));
     fixture.detectChanges();
-    expect(root().querySelector('[role="alert"]')?.textContent).toContain('Movies could not be loaded.');
+    expect(root().querySelector('[role="alert"]')?.textContent).toContain(
+      'Movies could not be loaded.'
+    );
     expect(root().textContent).not.toContain('private database');
     expect(root().textContent).not.toContain('No movies are available.');
   });
@@ -103,7 +122,9 @@ describe('MovieLibraryComponent data and interactions', () => {
     expect(root().textContent).not.toContain('No movies match your search.');
     catalog.next([movie]);
     fixture.detectChanges();
-    expect(root().querySelector('[role="status"]')?.textContent).toBe('No movies match your search. Try another title.');
+    expect(root().querySelector('[role="status"]')?.textContent).toBe(
+      'No movies match your search. Try another title.'
+    );
   });
 
   it('filters titles case-insensitively, trims whitespace and clears without refetching', async () => {
@@ -119,7 +140,9 @@ describe('MovieLibraryComponent data and interactions', () => {
 
   it('links cards to movie-specific details instead of opening dialogs', () => {
     load();
-    expect(root().querySelector('a.button-secondary')?.getAttribute('href')).toBe('/movies/movie-1');
+    expect(root().querySelector('a.button-secondary')?.getAttribute('href')).toBe(
+      '/movies/movie-1'
+    );
   });
 
   it('waits for favorite membership and disables mutations when that load fails', () => {
@@ -129,7 +152,9 @@ describe('MovieLibraryComponent data and interactions', () => {
     expect(favorite().disabled).toBeTrue();
     account.error(new Error('private error'));
     fixture.detectChanges();
-    expect(root().querySelector('[role="alert"]')?.textContent).toBe('Favorites could not be loaded. Please try again later.');
+    expect(root().querySelector('[role="alert"]')?.textContent).toBe(
+      'Favorites could not be loaded. Please try again later.'
+    );
     expect(root().querySelectorAll('article').length).toBe(1);
     fixture.componentInstance.favoriteState.toggleFavorite(movie._id);
     expect(api.addFavoriteMovie).not.toHaveBeenCalled();
@@ -143,15 +168,20 @@ describe('MovieLibraryComponent data and interactions', () => {
     expect(api.addFavoriteMovie).toHaveBeenCalledOnceWith(movie._id);
     expect(favorite().getAttribute('aria-busy')).toBe('true');
     expect(favorite().getAttribute('aria-pressed')).toBe('false');
-    add.next({ ...user, FavoriteMovies: [movie._id, 'server-only-id'] }); add.complete();
+    add.next({ ...user, FavoriteMovies: [movie._id, 'server-only-id'] });
+    add.complete();
     fixture.detectChanges();
     expect(favorite().getAttribute('aria-pressed')).toBe('true');
     expect(favorite().disabled).toBeFalse();
-    expect(JSON.parse(localStorage.getItem('user') || '{}').FavoriteMovies).toEqual([movie._id, 'server-only-id']);
+    expect(JSON.parse(localStorage.getItem('user') || '{}').FavoriteMovies).toEqual([
+      movie._id,
+      'server-only-id',
+    ]);
     expect(localStorage.getItem('token')).toBe('test-token');
     favorite().click();
     expect(api.deleteFavoriteMovie).toHaveBeenCalledOnceWith(movie._id);
-    remove.next({ ...user, FavoriteMovies: ['server-only-id'] }); remove.complete();
+    remove.next({ ...user, FavoriteMovies: ['server-only-id'] });
+    remove.complete();
     fixture.detectChanges();
     expect(favorite().getAttribute('aria-pressed')).toBe('false');
     expect(fixture.componentInstance.favoriteState.favorites).toEqual(['server-only-id']);
@@ -165,8 +195,12 @@ describe('MovieLibraryComponent data and interactions', () => {
     fixture.detectChanges();
     expect(favorite().getAttribute('aria-pressed')).toBe('true');
     expect(localStorage.getItem('user')).toBe(stored);
-    expect(root().querySelector('[role="alert"]')?.textContent).toBe('Favorites could not be updated. Please try again.');
-    expect(favorite().getAttribute('aria-describedby')).toBe(root().querySelector('[role="alert"]')?.id ?? null);
+    expect(root().querySelector('[role="alert"]')?.textContent).toBe(
+      'Favorites could not be updated. Please try again.'
+    );
+    expect(favorite().getAttribute('aria-describedby')).toBe(
+      root().querySelector('[role="alert"]')?.id ?? null
+    );
     remove = new Subject();
     api.deleteFavoriteMovie.and.returnValue(remove.asObservable());
     favorite().click();
@@ -187,7 +221,8 @@ describe('MovieLibraryComponent data and interactions', () => {
     api.addFavoriteMovie.and.returnValue(secondResponse.asObservable());
     add.complete();
     expect(api.addFavoriteMovie.calls.allArgs()).toEqual([[movie._id], [second._id]]);
-    secondResponse.next({ ...user, FavoriteMovies: [movie._id, second._id] }); secondResponse.complete();
+    secondResponse.next({ ...user, FavoriteMovies: [movie._id, second._id] });
+    secondResponse.complete();
     expect(fixture.componentInstance.favoriteState.favorites).toEqual([movie._id, second._id]);
     expect(fixture.componentInstance.favoriteState.pendingFavorites.size).toBe(0);
   });
@@ -195,7 +230,8 @@ describe('MovieLibraryComponent data and interactions', () => {
   it('does not assume a successful mutation added the requested movie', () => {
     load();
     favorite().click();
-    add.next(user); add.complete();
+    add.next(user);
+    add.complete();
     fixture.detectChanges();
     expect(favorite().getAttribute('aria-pressed')).toBe('false');
   });
@@ -218,7 +254,8 @@ describe('MovieLibraryComponent data and interactions', () => {
     const stored = localStorage.getItem('user');
     favorite().click();
     fixture.destroy();
-    add.next({ ...user, FavoriteMovies: [movie._id] }); add.complete();
+    add.next({ ...user, FavoriteMovies: [movie._id] });
+    add.complete();
     expect(localStorage.getItem('user')).toBe(stored);
   });
 });

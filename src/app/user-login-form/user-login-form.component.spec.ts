@@ -14,11 +14,18 @@ describe('UserLoginFormComponent routed form', () => {
   let router: Router;
   const keys = ['user', 'token', 'Username'];
   let saved: (string | null)[];
-  const account = { _id: 'user-1', Username: 'testuser', Email: 'user@example.com', Birthday: '1990-01-02', FavoriteMovies: [] };
+  const account = {
+    _id: 'user-1',
+    Username: 'testuser',
+    Email: 'user@example.com',
+    Birthday: '1990-01-02',
+    FavoriteMovies: [],
+  };
   const root = () => fixture.nativeElement as HTMLElement;
   const form = () => root().querySelector('form') as HTMLFormElement;
   const button = () => root().querySelector('button[type="submit"]') as HTMLButtonElement;
-  const input = (name: string) => root().querySelector('input[name="' + name + '"]') as HTMLInputElement;
+  const input = (name: string) =>
+    root().querySelector('input[name="' + name + '"]') as HTMLInputElement;
   const fill = async (name: string, value: string) => {
     input(name).value = value;
     input(name).dispatchEvent(new Event('input', { bubbles: true }));
@@ -30,11 +37,14 @@ describe('UserLoginFormComponent routed form', () => {
     await fill('Username', account.Username);
     await fill('Password', 'password');
   };
-  const submit = () => { form().requestSubmit(button()); fixture.detectChanges(); };
+  const submit = () => {
+    form().requestSubmit(button());
+    fixture.detectChanges();
+  };
 
   beforeEach(async () => {
-    saved = keys.map(key => localStorage.getItem(key));
-    keys.forEach(key => localStorage.removeItem(key));
+    saved = keys.map((key) => localStorage.getItem(key));
+    keys.forEach((key) => localStorage.removeItem(key));
     response = new Subject();
     api = jasmine.createSpyObj('API', ['userLogin']);
     api.userLogin.and.returnValue(response.asObservable());
@@ -84,7 +94,10 @@ describe('UserLoginFormComponent routed form', () => {
     await fillValid();
     submit();
     expect(api.userLogin).toHaveBeenCalledTimes(1);
-    expect(api.userLogin).toHaveBeenCalledWith({ Username: account.Username, Password: 'password' });
+    expect(api.userLogin).toHaveBeenCalledWith({
+      Username: account.Username,
+      Password: 'password',
+    });
     expect(form().getAttribute('aria-busy')).toBe('true');
     expect(button().disabled).toBeTrue();
     expect(button().textContent).toContain('Signing in...');
@@ -94,18 +107,20 @@ describe('UserLoginFormComponent routed form', () => {
   });
 
   it('keeps request failures inline, preserves values and stored session, and permits retry', async () => {
-    keys.forEach(key => localStorage.setItem(key, 'existing-' + key));
+    keys.forEach((key) => localStorage.setItem(key, 'existing-' + key));
     await fillValid();
     submit();
     response.error(new Error('private database details'));
     fixture.detectChanges();
-    expect(root().querySelector('[role="alert"]')?.textContent).toBe('Login unsuccessful. Please try again.');
+    expect(root().querySelector('[role="alert"]')?.textContent).toBe(
+      'Login unsuccessful. Please try again.'
+    );
     expect(form().getAttribute('aria-describedby')).toBe('login-feedback');
     expect(form().getAttribute('aria-busy')).toBe('false');
     expect(button().disabled).toBeFalse();
     expect(input('Username').value).toBe(account.Username);
     expect(root().textContent).not.toContain('private database');
-    keys.forEach(key => expect(localStorage.getItem(key)).toBe('existing-' + key));
+    keys.forEach((key) => expect(localStorage.getItem(key)).toBe('existing-' + key));
     expect(router.navigate).not.toHaveBeenCalled();
     response = new Subject();
     api.userLogin.and.returnValue(response.asObservable());
@@ -117,7 +132,7 @@ describe('UserLoginFormComponent routed form', () => {
   it('stores the existing session contract and navigates only on successful login', async () => {
     await fillValid();
     submit();
-    keys.forEach(key => expect(localStorage.getItem(key)).toBeNull());
+    keys.forEach((key) => expect(localStorage.getItem(key)).toBeNull());
     expect(router.navigate).not.toHaveBeenCalled();
     response.next({ user: account, token: 'issued-token' });
     fixture.detectChanges();
@@ -132,7 +147,7 @@ describe('UserLoginFormComponent routed form', () => {
     submit();
     fixture.destroy();
     response.next({ user: account, token: 'late-token' });
-    keys.forEach(key => expect(localStorage.getItem(key)).toBeNull());
+    keys.forEach((key) => expect(localStorage.getItem(key)).toBeNull());
     expect(router.navigate).not.toHaveBeenCalled();
   });
 });

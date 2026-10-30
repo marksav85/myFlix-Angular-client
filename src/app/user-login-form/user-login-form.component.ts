@@ -19,7 +19,10 @@ export class UserLoginFormComponent implements AfterViewInit, OnDestroy {
 
   private readonly destroyed = new Subject<void>();
 
-  constructor(private fetchApiData: FetchApiDataService, private router: Router) {}
+  constructor(
+    private fetchApiData: FetchApiDataService,
+    private router: Router
+  ) {}
 
   ngAfterViewInit(): void {
     this.pageHeading?.nativeElement.focus();
@@ -29,9 +32,11 @@ export class UserLoginFormComponent implements AfterViewInit, OnDestroy {
     if (!form.valid || this.isSubmitting) return;
     this.error = '';
     this.isSubmitting = true;
-    this.fetchApiData.userLogin({ ...this.userData })
-      .pipe(takeUntil(this.destroyed)).subscribe({
-        next: result => {
+    this.fetchApiData
+      .userLogin({ ...this.userData })
+      .pipe(takeUntil(this.destroyed))
+      .subscribe({
+        next: (result) => {
           localStorage.setItem('user', JSON.stringify(result.user));
           localStorage.setItem('token', result.token);
           localStorage.setItem('Username', result.user.Username);

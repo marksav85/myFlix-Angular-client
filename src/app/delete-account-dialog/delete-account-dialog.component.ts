@@ -16,7 +16,10 @@ export class DeleteAccountDialogComponent implements OnDestroy {
   private deletionSucceeded = false;
   private readonly destroyed = new Subject<void>();
 
-  constructor(private api: FetchApiDataService, private dialogRef: MatDialogRef<DeleteAccountDialogComponent, boolean>) {}
+  constructor(
+    private api: FetchApiDataService,
+    private dialogRef: MatDialogRef<DeleteAccountDialogComponent, boolean>
+  ) {}
 
   deleteAccount(): void {
     if (this.isDeleting) return;
@@ -24,18 +27,32 @@ export class DeleteAccountDialogComponent implements OnDestroy {
     this.error = '';
     this.dialogRef.disableClose = true;
     this.heading?.nativeElement.focus();
-    this.api.deleteUser().pipe(takeUntil(this.destroyed), finalize(() => {
-      if (!this.deletionSucceeded) {
-        this.isDeleting = false;
-        this.dialogRef.disableClose = false;
-      }
-    })).subscribe({
-      next: () => { this.deletionSucceeded = true; this.dialogRef.close(true); },
-      error: () => this.error = 'Your account could not be deleted. Please try again.',
-    });
+    this.api
+      .deleteUser()
+      .pipe(
+        takeUntil(this.destroyed),
+        finalize(() => {
+          if (!this.deletionSucceeded) {
+            this.isDeleting = false;
+            this.dialogRef.disableClose = false;
+          }
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.deletionSucceeded = true;
+          this.dialogRef.close(true);
+        },
+        error: () => (this.error = 'Your account could not be deleted. Please try again.'),
+      });
   }
 
-  cancel(): void { if (!this.isDeleting) this.dialogRef.close(false); }
+  cancel(): void {
+    if (!this.isDeleting) this.dialogRef.close(false);
+  }
 
-  ngOnDestroy(): void { this.destroyed.next(); this.destroyed.complete(); }
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
+  }
 }

@@ -23,36 +23,66 @@ export class MovieDetailComponent implements OnInit, OnDestroy {
     heading?.nativeElement.focus();
   }
 
-  constructor(private route: ActivatedRoute, private api: FetchApiDataService,
-    public favoriteState: MovieFavoritesService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private api: FetchApiDataService,
+    public favoriteState: MovieFavoritesService
+  ) {}
 
-  get genreName(): string { return this.movie?.Genre?.Name || 'Unknown'; }
-  get directorName(): string { return this.movie?.Director?.Name || 'Unknown'; }
-  get genreDescription(): string { return this.movie?.Genre?.Description || ''; }
-  get directorBiography(): string { return this.movie?.Director?.Bio || ''; }
+  get genreName(): string {
+    return this.movie?.Genre?.Name || 'Unknown';
+  }
+  get directorName(): string {
+    return this.movie?.Director?.Name || 'Unknown';
+  }
+  get genreDescription(): string {
+    return this.movie?.Genre?.Description || '';
+  }
+  get directorBiography(): string {
+    return this.movie?.Director?.Bio || '';
+  }
   get favoriteLabel(): string {
     const id = this.movie?._id || '';
-    return (this.favoriteState.pendingFavorites.has(id) ? 'Updating favorites for ' :
-      this.favoriteState.isFavorite(id) ? 'Remove from Favorites: ' : 'Add to Favorites: ') + this.movie?.Title;
+    return (
+      (this.favoriteState.pendingFavorites.has(id)
+        ? 'Updating favorites for '
+        : this.favoriteState.isFavorite(id)
+          ? 'Remove from Favorites: '
+          : 'Add to Favorites: ') + this.movie?.Title
+    );
   }
 
   ngOnInit(): void {
     this.favoriteState.load();
-    this.route.paramMap.pipe(
-      tap(() => { this.movie = undefined; this.error = ''; this.isLoading = true; this.posterUnavailable = false; }),
-      switchMap(params => {
-        if (!this.favoriteState.hasSession) {
-          this.error = 'Please log in to view movie details.';
-          this.isLoading = false;
-          return EMPTY;
-        }
-        return this.api.getAllMovies().pipe(
-          tap(movies => { this.movie = movies.find(movie => movie._id === params.get('movieId')); this.isLoading = false; }),
-          catchError(() => { this.error = 'Movie details could not be loaded. Please try again later.'; this.isLoading = false; return EMPTY; }),
-        );
-      }),
-      takeUntil(this.destroyed),
-    ).subscribe();
+    this.route.paramMap
+      .pipe(
+        tap(() => {
+          this.movie = undefined;
+          this.error = '';
+          this.isLoading = true;
+          this.posterUnavailable = false;
+        }),
+        switchMap((params) => {
+          if (!this.favoriteState.hasSession) {
+            this.error = 'Please log in to view movie details.';
+            this.isLoading = false;
+            return EMPTY;
+          }
+          return this.api.getAllMovies().pipe(
+            tap((movies) => {
+              this.movie = movies.find((movie) => movie._id === params.get('movieId'));
+              this.isLoading = false;
+            }),
+            catchError(() => {
+              this.error = 'Movie details could not be loaded. Please try again later.';
+              this.isLoading = false;
+              return EMPTY;
+            })
+          );
+        }),
+        takeUntil(this.destroyed)
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

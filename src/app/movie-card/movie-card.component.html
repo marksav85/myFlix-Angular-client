@@ -1,8 +1,20 @@
 <article class="movie-card surface" [attr.aria-labelledby]="titleId">
-  <img *ngIf="movie.ImagePath && !posterUnavailable; else missingPoster" class="movie-poster"
-    [src]="movie.ImagePath" [alt]="movie.Title + ' poster'" loading="lazy" (error)="posterUnavailable = true" />
+  <img
+    *ngIf="movie.ImagePath && !posterUnavailable; else missingPoster"
+    class="movie-poster"
+    [src]="movie.ImagePath"
+    [alt]="movie.Title + ' poster'"
+    loading="lazy"
+    (error)="posterUnavailable = true"
+  />
   <ng-template #missingPoster>
-    <div class="movie-poster poster-placeholder" role="img" [attr.aria-label]="'Poster unavailable for ' + movie.Title">Poster unavailable</div>
+    <div
+      class="movie-poster poster-placeholder"
+      role="img"
+      [attr.aria-label]="'Poster unavailable for ' + movie.Title"
+    >
+      Poster unavailable
+    </div>
   </ng-template>
   <div class="movie-card-content">
     <h2 *ngIf="headingLevel === 2" [id]="titleId" class="movie-card-title">{{ movie.Title }}</h2>
@@ -11,15 +23,27 @@
     <p class="movie-metadata">Director: {{ directorName }}</p>
     <p class="movie-excerpt">{{ movie.Description }}</p>
     <div class="movie-card-actions">
-      <a class="button button-secondary" [routerLink]="['/movies', movie._id]"
-        [attr.aria-label]="'View Details for ' + movie.Title">View Details</a>
-      <button type="button" class="button button-primary" (click)="toggleFavorite()"
-        [disabled]="isPending || favoriteDisabled" [attr.aria-label]="favoriteLabel"
-        [attr.aria-pressed]="isFavorite" [attr.aria-busy]="isPending"
-        [attr.aria-describedby]="favoriteError ? errorId : null">
+      <a
+        class="button button-secondary"
+        [routerLink]="['/movies', movie._id]"
+        [attr.aria-label]="'View Details for ' + movie.Title"
+        >View Details</a
+      >
+      <button
+        type="button"
+        class="button button-primary"
+        (click)="toggleFavorite()"
+        [disabled]="isPending || favoriteDisabled"
+        [attr.aria-label]="favoriteLabel"
+        [attr.aria-pressed]="isFavorite"
+        [attr.aria-busy]="isPending"
+        [attr.aria-describedby]="favoriteError ? errorId : null"
+      >
         {{ isPending ? 'Updating...' : isFavorite ? 'Remove from Favorites' : 'Add to Favorites' }}
       </button>
-      <p *ngIf="favoriteError" [id]="errorId" role="alert" class="movie-favorite-error">{{ favoriteError }}</p>
+      <p *ngIf="favoriteError" [id]="errorId" role="alert" class="movie-favorite-error">
+        {{ favoriteError }}
+      </p>
     </div>
   </div>
 </article>

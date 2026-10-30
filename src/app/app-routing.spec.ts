@@ -13,24 +13,31 @@ describe('Application route configuration', () => {
   it('registers login, signup, welcome, movies, profile and the root redirect in the routing module', () => {
     TestBed.configureTestingModule({ imports: [RouterTestingModule, AppRoutingModule] });
     const routes = TestBed.inject(Router).config;
-    expect(routes.find(route => route.path === 'login')?.component).toBe(UserLoginFormComponent);
-    expect(routes.find(route => route.path === 'signup')?.component).toBe(UserRegistrationFormComponent);
-    expect(routes.find(route => route.path === 'welcome')?.redirectTo).toBe('login');
-    expect(routes.find(route => route.path === 'welcome')?.pathMatch).toBe('full');
-    expect(routes.find(route => route.path === 'welcome')?.component).toBeUndefined();
-    expect(routes.find(route => route.path === 'movies/:movieId')?.component).toBe(MovieDetailComponent);
-    expect(routes.find(route => route.path === 'movies')?.component).toBe(MovieLibraryComponent);
-    expect(routes.find(route => route.path === 'profile')?.component).toBe(UserProfileComponent);
-    expect(routes.find(route => route.path === '')?.redirectTo).toBe('login');
-    expect(routes.find(route => route.path === '')?.pathMatch).toBe('full');
+    expect(routes.find((route) => route.path === 'login')?.component).toBe(UserLoginFormComponent);
+    expect(routes.find((route) => route.path === 'signup')?.component).toBe(
+      UserRegistrationFormComponent
+    );
+    expect(routes.find((route) => route.path === 'welcome')?.redirectTo).toBe('login');
+    expect(routes.find((route) => route.path === 'welcome')?.pathMatch).toBe('full');
+    expect(routes.find((route) => route.path === 'welcome')?.component).toBeUndefined();
+    expect(routes.find((route) => route.path === 'movies/:movieId')?.component).toBe(
+      MovieDetailComponent
+    );
+    expect(routes.find((route) => route.path === 'movies')?.component).toBe(MovieLibraryComponent);
+    expect(routes.find((route) => route.path === 'profile')?.component).toBe(UserProfileComponent);
+    expect(routes.find((route) => route.path === '')?.redirectTo).toBe('login');
+    expect(routes.find((route) => route.path === '')?.pathMatch).toBe('full');
   });
-  ['', '/welcome'].forEach(path => {
-    it('resolves guest entry ' + (path || '/') + ' to /login', fakeAsync(() => {
-      TestBed.configureTestingModule({ imports: [RouterTestingModule, AppRoutingModule] });
-      const router = TestBed.inject(Router);
-      TestBed.inject(NgZone).run(() => router.navigateByUrl(path || '/'));
-      tick();
-      expect(router.url).toBe('/login');
-    }));
+  ['', '/welcome'].forEach((path) => {
+    it(
+      'resolves guest entry ' + (path || '/') + ' to /login',
+      fakeAsync(() => {
+        TestBed.configureTestingModule({ imports: [RouterTestingModule, AppRoutingModule] });
+        const router = TestBed.inject(Router);
+        TestBed.inject(NgZone).run(() => router.navigateByUrl(path || '/'));
+        tick();
+        expect(router.url).toBe('/login');
+      })
+    );
   });
 });

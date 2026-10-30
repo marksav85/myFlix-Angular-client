@@ -21,12 +21,25 @@
   text-decoration: none;
   border-radius: var(--radius-default);
 }
-.navigation-items { display: flex; align-items: center; gap: var(--space-2); }
-.menu-toggle { display: none; }
+.navigation-items {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.menu-toggle {
+  display: none;
+}
 @media (max-width: 639px) {
-  .navigation-layout { flex-wrap: wrap; }
-  .menu-toggle { display: inline-flex; }
-  .navigation-items { display: none; flex-basis: 100%; }
+  .navigation-layout {
+    flex-wrap: wrap;
+  }
+  .menu-toggle {
+    display: inline-flex;
+  }
+  .navigation-items {
+    display: none;
+    flex-basis: 100%;
+  }
   .navigation-items.is-open {
     display: flex;
     flex-direction: column;

@@ -19,11 +19,20 @@ export class MovieCardComponent implements OnChanges {
   @Output() favoriteToggle = new EventEmitter<void>();
   posterUnavailable = false;
 
-  get genreName(): string { return this.movie.Genre?.Name || 'Unknown'; }
-  get directorName(): string { return this.movie.Director?.Name || 'Unknown'; }
+  get genreName(): string {
+    return this.movie.Genre?.Name || 'Unknown';
+  }
+  get directorName(): string {
+    return this.movie.Director?.Name || 'Unknown';
+  }
   get favoriteLabel(): string {
-    return (this.isPending ? 'Updating favorites for ' :
-      this.isFavorite ? 'Remove from Favorites: ' : 'Add to Favorites: ') + this.movie.Title;
+    return (
+      (this.isPending
+        ? 'Updating favorites for '
+        : this.isFavorite
+          ? 'Remove from Favorites: '
+          : 'Add to Favorites: ') + this.movie.Title
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
