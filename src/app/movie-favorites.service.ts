@@ -16,7 +16,8 @@ export class MovieFavoritesService implements OnDestroy {
   private readonly destroyed = new Subject<void>();
 
   constructor(private api: FetchApiDataService) {
-    // Each response contains full membership. Serial requests avoid stale overlapping snapshots.
+    // Responses contain full membership; serialize requests to avoid stale snapshots. defer rechecks
+    // membership when each queued request starts, using the latest user state.
     this.favoriteRequests
       .pipe(
         concatMap((movieId) =>

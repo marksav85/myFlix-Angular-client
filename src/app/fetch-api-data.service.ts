@@ -19,6 +19,7 @@ export class FetchApiDataService {
   constructor(private http: HttpClient) {}
 
   userRegistration(details: RegistrationPayload): Observable<User> {
+    // Preserve 400/422 details for field-level feedback; generalize other failures.
     return this.http
       .post<User>(this.url('users'), details)
       .pipe(

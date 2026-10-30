@@ -28,6 +28,7 @@ export class RegistrationValidationDirective implements Validator, OnChanges {
     const value: string = control.value ?? '';
     if (!value) return null; // Angular's required validator handles required fields.
     if (this.appRegistrationValidation === 'password') {
+      // Count Unicode code points for the minimum; the backend maximum is 72 UTF-8 bytes.
       if (Array.from(value).length < 8) return { minlength: true };
       return new TextEncoder().encode(value).length > 72 ? { passwordBytes: true } : null;
     }
