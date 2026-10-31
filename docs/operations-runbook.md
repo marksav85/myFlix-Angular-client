@@ -45,7 +45,7 @@ The production configuration is the default for `npm run build`. Angular writes 
 
 ## Isolated backend integration test
 
-The integration runner in [`scripts/validate-integration.cjs`](../scripts/validate-integration.cjs) uses the separate Movie API checkout at `../movie-api` by default. `MYFLIX_BACKEND_PATH` selects an already prepared backend checkout. Backend dependencies must already be available there; this runbook does not authorize installing packages or changing that separate repository.
+The integration runner in [`scripts/validate-integration.cjs`](../scripts/validate-integration.cjs) uses the separate Movie API checkout at `../movie-api` by default. `MYFLIX_BACKEND_PATH` selects an already prepared backend checkout. Backend dependencies must already be available there.
 
 The runner creates a fresh MongoDB Memory Server database, starts the API on `127.0.0.1:8080`, creates a disposable account and movie fixture, performs direct HTTP checks, then runs the Angular suite including `tests/integration/client-backend.spec.ts`. It generates a random JWT secret, sets test environment values itself, does not load the backend `.env`, does not use a configured production database, and disables MongoDB runtime downloads. The API validation attempts to delete its disposable account in a `finally` block. Only after both the API phase and Angular suite succeed does the runner assert that no users remain and print its cleanup-verification message. MongoDB Memory Server and Mongoose are resolved from the backend checkout.
 
@@ -114,7 +114,7 @@ The client serves static assets and has no persistent application database. A fr
 
 No monitoring or alerting configuration is present in this repository. Use provider logs or metrics only when an authorized operator confirms they are configured and grants access. Record incidents and the affected release through the project's approved operational process; no escalation contact is defined here.
 
-The production API URL is public build-time configuration. JWTs are held in browser storage and sent as Bearer tokens; never place signing secrets, database credentials, or service credentials in this client. Backend authentication and ownership checks remain authoritative. Use least-privilege Cloudflare access, protect production data, and require explicit owner authorization before deploying, deleting accounts, changing production configuration, or performing recovery. Make repository changes only in the active Angular repository; the backend and shared Playbook are separate read-only boundaries from this workspace.
+The production API URL is public build-time configuration. JWTs are held in browser storage and sent as Bearer tokens; never place signing secrets, database credentials, or service credentials in this client. Backend authentication and ownership checks remain authoritative. Use least-privilege Cloudflare access, protect production data, and require explicit owner authorization before deploying, deleting accounts, changing production configuration, or performing recovery.
 
 ## Operational handover and unresolved checks
 
